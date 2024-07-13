@@ -154,3 +154,9 @@ buildNumber.properties
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+### MVNW ###
+# Maven should be properly installed in the OS PATH, having wrappers is pointless and redundant
+mvnw
+mvnw.cmd
+.mvn/wrapper/maven-wrapper.properties
