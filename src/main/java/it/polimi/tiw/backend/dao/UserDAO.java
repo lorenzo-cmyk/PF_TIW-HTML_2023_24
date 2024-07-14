@@ -52,14 +52,8 @@ public class UserDAO {
                 preparedStatement.setString(2, newUser.getPasswordHash());
                 preparedStatement.setString(3, newUser.getEmail());
 
-                // Execute the query and check if it had any effect.
-                if (preparedStatement.executeUpdate() == 0) {
-                    throw new RegistrationException("Unable to register user. " +
-                            "Check if the interested username is already taken.");
-                    // If the execution of the query returns 0, it means that no rows were affected.
-                    // This means that the user was not registered. The method throws a RegistrationException.
-                    // Since the operation had no effect we don't need to commit the transaction.
-                }
+                // Execute the now parameterized query.
+                preparedStatement.executeUpdate();
 
                 // The user was successfully registered, so we can safely commit the transaction.
                 connection.commit();
@@ -67,7 +61,8 @@ public class UserDAO {
         } catch (SQLException e) {
             // If an error occurs during the registration process, we need to roll back the transaction.
             connection.rollback();
-            throw e; // Re-throw the exception to the caller.
+            throw new RegistrationException("Unable to register user. " +
+                    "Check if the interested username is already taken.");
         } finally {
             // Restore the default behavior of the connection.
             connection.setAutoCommit(true);
