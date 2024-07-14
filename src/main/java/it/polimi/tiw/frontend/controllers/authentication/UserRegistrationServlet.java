@@ -12,8 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 
-import static it.polimi.tiw.backend.utilities.DatabaseConnectionHandler.closeConnection;
-import static it.polimi.tiw.backend.utilities.DatabaseConnectionHandler.getConnectionFromServletContext;
+import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.closeConnection;
+import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.getConnectionFromServlet;
 import static it.polimi.tiw.backend.utilities.PasswordHasher.hashPassword;
 
 @WebServlet(name = "UserRegistration", value = "/User-Registration")
@@ -29,7 +29,7 @@ public class UserRegistrationServlet extends HttpServlet {
     }
 
     public void init() {
-        servletConnection = getConnectionFromServletContext(this);
+        servletConnection = getConnectionFromServlet(this);
     }
 
     public void destroy() {

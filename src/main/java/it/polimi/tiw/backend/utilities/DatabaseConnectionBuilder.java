@@ -10,7 +10,7 @@ import java.sql.SQLException;
 /**
  * This class contains utility methods to handle database connections.
  */
-public class DatabaseConnectionHandler {
+public class DatabaseConnectionBuilder {
     /**
      * This method retrieves a connection to the database from a given servlet.
      *
@@ -18,7 +18,7 @@ public class DatabaseConnectionHandler {
      * @return a connection to the database
      */
     public static Connection
-    getConnectionFromServletContext(HttpServlet httpServlet) {
+    getConnectionFromServlet(HttpServlet httpServlet) {
         // Retrieve the servlet context from the servlet
         ServletContext servletContext = httpServlet.getServletContext();
         // Try to build the connection object
