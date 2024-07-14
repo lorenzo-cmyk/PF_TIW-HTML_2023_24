@@ -1,6 +1,7 @@
 package it.polimi.tiw.backend.utilities;
 
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServlet;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,13 +12,16 @@ import java.sql.SQLException;
  */
 public class DatabaseConnectionHandler {
     /**
-     * This method retrieves a connection to the database from the servlet context.
+     * This method retrieves a connection to the database from a given servlet.
      *
-     * @param servletContext the servlet context from which to retrieve the connection parameters
+     * @param httpServlet the servlet from which context retrieve the connection parameters
      * @return a connection to the database
      */
     public static Connection
-    getConnectionFromServletContext(ServletContext servletContext) {
+    getConnectionFromServletContext(HttpServlet httpServlet) {
+        // Retrieve the servlet context from the servlet
+        ServletContext servletContext = httpServlet.getServletContext();
+        // Try to build the connection object
         Connection myConnection;
         try {
             // Retrieve the connection parameters from the servlet context (set in the web.xml file)
