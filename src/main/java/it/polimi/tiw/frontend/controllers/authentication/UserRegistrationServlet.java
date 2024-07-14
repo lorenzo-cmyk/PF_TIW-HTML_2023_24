@@ -29,7 +29,7 @@ public class UserRegistrationServlet extends HttpServlet {
     }
 
     public void init() {
-        servletConnection = getConnectionFromServletContext(getServletContext());
+        servletConnection = getConnectionFromServletContext(this);
     }
 
     public void destroy() {
