@@ -44,7 +44,8 @@ public class UserDAO {
             // The raw SQL query for registering a new user.
             String registrationQuery = "INSERT INTO Users (Username, PasswordHash, Email) VALUES (?, ?, ?)";
 
-            // Try-with-resources statement used to automatically close the PreparedStatement when it is no longer needed.
+            // Try-with-resources statement used to automatically
+            // close the PreparedStatement when it is no longer needed.
             try (PreparedStatement preparedStatement = connection.prepareStatement(registrationQuery)) {
                 // Set the parameters of the query.
                 preparedStatement.setString(1, newUser.getUsername());
