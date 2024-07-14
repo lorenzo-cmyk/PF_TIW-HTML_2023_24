@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.thymeleaf.TemplateEngine;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,10 +16,12 @@ import java.sql.Connection;
 import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.closeConnection;
 import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.getConnectionFromServlet;
 import static it.polimi.tiw.backend.utilities.PasswordHasher.hashPassword;
+import static it.polimi.tiw.backend.utilities.TemplateEngineBuilder.getTemplateEngineFromServlet;
 
 @WebServlet(name = "UserRegistration", value = "/User-Registration")
 public class UserRegistrationServlet extends HttpServlet {
     private Connection servletConnection;
+    private TemplateEngine templateEngine;
 
     /**
      * Default constructor, called by the servlet container.
@@ -30,6 +33,7 @@ public class UserRegistrationServlet extends HttpServlet {
 
     public void init() {
         servletConnection = getConnectionFromServlet(this);
+        templateEngine = getTemplateEngineFromServlet(this);
     }
 
     public void destroy() {
