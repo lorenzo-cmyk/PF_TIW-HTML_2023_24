@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>TIW-DMS</title>
@@ -7,23 +7,23 @@
 <body>
 <h1>TIW-DMS</h1>
 <h2>User Registration</h2>
-<div th:text="${message}" th:if="${message}"></div>
-<form action="#" th:action="@{/UserRegistration}" method="post">
+<div th:if="${message}" th:text="${message}"></div>
+<form action="#" method="post" th:action="@{/UserRegistration}">
     <div>
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
+        <input id="username" name="username" required type="text">
     </div>
     <div>
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <input id="email" name="email" required type="email">
     </div>
     <div>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+        <input id="password" name="password" required type="password">
     </div>
     <div>
         <label for="confirmPassword">Password Confirmation:</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" required>
+        <input id="confirmPassword" name="confirmPassword" required type="password">
     </div>
     <button type="submit">Sign Up</button>
 </form>

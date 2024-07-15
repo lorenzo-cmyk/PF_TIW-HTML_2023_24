@@ -1,7 +1,7 @@
 package it.polimi.tiw.backend.dao;
 
 import it.polimi.tiw.backend.beans.User;
-import it.polimi.tiw.backend.exceptions.RegistrationException;
+import it.polimi.tiw.backend.dao.exceptions.RegistrationException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,9 +12,6 @@ import java.sql.SQLException;
  * This class provides methods to interact with the database and perform authentication and registration operations.
  */
 public class UserDAO {
-    /**
-     * The connection to the database.
-     */
     private final Connection connection;
 
     /**
@@ -35,14 +32,13 @@ public class UserDAO {
      * @throws RegistrationException if the registration fails.
      */
     public void registerUser(User newUser) throws SQLException, RegistrationException {
-        // Since we are writing to the database, we need to use a transaction
-        // in order to ensure that the operation is atomic.
-        connection.setAutoCommit(false);
+        // The raw SQL query for registering a new user.
+        String registrationQuery = "INSERT INTO Users (Username, PasswordHash, Email) VALUES (?, ?, ?)";
 
-        // Try to register the new user.
         try {
-            // The raw SQL query for registering a new user.
-            String registrationQuery = "INSERT INTO Users (Username, PasswordHash, Email) VALUES (?, ?, ?)";
+            // Since we are writing to the database, we need to use a transaction
+            // in order to ensure that the operation is atomic.
+            connection.setAutoCommit(false);
 
             // Try-with-resources statement used to automatically
             // close the PreparedStatement when it is no longer needed.
@@ -61,8 +57,17 @@ public class UserDAO {
         } catch (SQLException e) {
             // If an error occurs during the registration process, we need to roll back the transaction.
             connection.rollback();
-            throw new RegistrationException("Unable to register user. " +
-                    "Check if the interested username is already taken.");
+
+            if (e.getErrorCode() == 1062) {
+                // If the error is due to a unique constraint violation, we throw a RegistrationException.
+                // This errorCode is specific to MySQL, and it means that a unique constraint was violated.
+                throw new RegistrationException("Unable to register user. " +
+                        "Check if the interested username is already taken.");
+            } else {
+                // If the error is due to another reason, we re-throw the exception.
+                throw e;
+            }
+
         } finally {
             // Restore the default behavior of the connection.
             connection.setAutoCommit(true);
