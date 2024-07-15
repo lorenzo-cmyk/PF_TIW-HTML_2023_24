@@ -1,10 +1,13 @@
 package it.polimi.tiw.backend.dao;
 
 import it.polimi.tiw.backend.beans.User;
+import it.polimi.tiw.backend.beans.exceptions.InvalidArgumentException;
+import it.polimi.tiw.backend.dao.exceptions.LoginException;
 import it.polimi.tiw.backend.dao.exceptions.RegistrationException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -71,6 +74,61 @@ public class UserDAO {
         } finally {
             // Restore the default behavior of the connection.
             connection.setAutoCommit(true);
+        }
+    }
+
+    /**
+     * This method authenticates a user by looking for it into the database.
+     * It is called when a user tries to log in to the application.
+     *
+     * @param user a User object, which represents the user to be authenticated.
+     *             The object must contain the username and the password hash.
+     * @return a User object, which represents the authenticated user.
+     * @throws SQLException   if an error occurs during the authentication process (SQL related).
+     * @throws LoginException if the user is not found or the password is incorrect.
+     */
+    public User authenticateUser(User user) throws SQLException, LoginException {
+        // The raw SQL query for authenticating a user.
+        String authenticationQuery = "SELECT * FROM Users WHERE Username = ? AND PasswordHash = ?";
+
+        // Try-with-resources statement used to automatically
+        // close the PreparedStatement when it is no longer needed.
+        try (PreparedStatement preparedStatement = connection.prepareStatement(authenticationQuery)) {
+            // Set the parameters of the query.
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getPasswordHash());
+
+            // Execute the now parameterized query.
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                // If the query returns no results, the user is not found or the password is incorrect.
+                if (!resultSet.next()) {
+                    throw new LoginException("The credentials provided do not match any user in the database." +
+                            " Please check your input and try again.");
+                }
+
+                // If the query returns a result, the user is authenticated.
+                // We create a new User object with the data from the database.
+                User authenticatedUser;
+                try {
+                    authenticatedUser = new User(
+                            resultSet.getString("Username"),
+                            resultSet.getString("PasswordHash"),
+                            resultSet.getString("Email"),
+                            null
+                    );
+                } catch (InvalidArgumentException e) {
+                    throw new IllegalStateException("The database is corrupted." +
+                            " The user data is invalid. Please check the database integrity.");
+                }
+
+                // If the query returns more than one result, the database is corrupted.
+                if (resultSet.next()) {
+                    throw new IllegalStateException("The database is corrupted." +
+                            " More than one user with the same credentials.");
+                }
+
+                return authenticatedUser;
+            }
         }
     }
 }
