@@ -4,6 +4,7 @@ import it.polimi.tiw.backend.beans.User;
 import it.polimi.tiw.backend.beans.exceptions.InvalidArgumentException;
 import it.polimi.tiw.backend.dao.UserDAO;
 import it.polimi.tiw.backend.dao.exceptions.RegistrationException;
+import it.polimi.tiw.frontend.utilities.exceptions.FailedInputParsingException;
 import it.polimi.tiw.frontend.utilities.exceptions.PasswordMismatchException;
 import it.polimi.tiw.frontend.utilities.exceptions.UnknownErrorCodeException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,9 +23,11 @@ import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.getConne
 import static it.polimi.tiw.backend.utilities.PasswordHasher.hashPassword;
 import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getTemplateEngineFromServlet;
 import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getWebContextFromServlet;
-import static it.polimi.tiw.frontend.utilities.Validators.retrieveErrorMessageFromErrorCode;
-import static it.polimi.tiw.frontend.utilities.Validators.validatePassword;
+import static it.polimi.tiw.frontend.utilities.Validators.*;
 
+/**
+ * This servlet is used to handle the registration of a new user.
+ */
 @WebServlet(name = "UserRegistration", value = "/UserRegistration")
 public class UserRegistrationServlet extends HttpServlet {
     private Connection servletConnection;
@@ -55,32 +58,36 @@ public class UserRegistrationServlet extends HttpServlet {
         closeConnection(servletConnection);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws
-            IOException {
-        // First, we get the success parameter from the request
-        Boolean success = Boolean.parseBoolean(request.getParameter("success"));
-        // Then, we get the errorCode parameter from the request (0 if it is not present)
-        int errorCode = Integer.parseInt(request.getParameter("errorCode") == null ?
-                "0" : request.getParameter("errorCode"));
-
-        // Now, we create a new WebContext object and we process the template
-        WebContext context = getWebContextFromServlet(this, request, response);
-
+    @SuppressWarnings("ConstantValue")
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            if (!success) {
-                String message = errorCode == 0 ? "Please fill in the form to register a new user."
-                        : retrieveErrorMessageFromErrorCode(errorCode);
-                context.setVariable("message", message);
-            } else {
-                context.setVariable("message", "The user has been successfully registered.");
-            }
-        } catch (UnknownErrorCodeException e) {
-            // If an UnknownErrorCodeException is thrown, we send an error directly to the client
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                    "Unknown error code: " + errorCode);
-        }
+            // First, we get the success parameter from the request
+            boolean success = parseBoolean(request.getParameter("success") == null ?
+                    "false" : request.getParameter("success"));
+            // Then, we get the errorCode parameter from the request (0 if it is not present)
+            int errorCode = parseInt(request.getParameter("errorCode") == null ?
+                    "0" : request.getParameter("errorCode"));
 
-        templateEngine.process("UserRegistration", context, response.getWriter());
+            // Now, we create a new WebContext object and we process the template
+            WebContext context = getWebContextFromServlet(this, request, response);
+
+            if (!success && errorCode == 0) {
+                context.setVariable("message", "Please fill in the form to register a new user.");
+            } else if (!success && errorCode != 0) {
+                context.setVariable("message", retrieveErrorMessageFromErrorCode(errorCode));
+            } else if (success && errorCode == 0) {
+                context.setVariable("message", "The user has been successfully registered!");
+            } else if (success && errorCode != 0) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. Please try again.");
+                return;
+            }
+
+            templateEngine.process("UserRegistration", context, response.getWriter());
+        } catch (FailedInputParsingException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. Please try again.");
+        } catch (UnknownErrorCodeException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown error code provided. Please try again.");
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

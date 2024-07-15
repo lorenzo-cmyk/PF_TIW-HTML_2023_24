@@ -1,5 +1,7 @@
 package it.polimi.tiw.backend.utilities;
 
+import org.apache.commons.validator.routines.EmailValidator;
+
 /**
  * This class contains utility methods to validate data.
  */
@@ -16,13 +18,23 @@ public class Validators {
     }
 
     /**
-     * This method checks if an email is valid. An email is valid if it is not null and matches the regular expression
-     * "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$".
+     * This method checks if an email is valid. We use the Apache Commons EmailValidator to check if the email is valid.
      *
      * @param email the email to check
      * @return true if the email is valid, false otherwise
      */
     public static boolean isEmailValid(String email) {
-        return email != null && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+        // https://www.baeldung.com/java-email-validation-regex
+        return EmailValidator.getInstance().isValid(email);
+    }
+
+    /**
+     * This method checks if a username is valid. A username is valid if it only made of alphanumeric characters.
+     *
+     * @param username the username to check
+     * @return true if the username is valid, false otherwise
+     */
+    public static boolean isUsernameValid(String username) {
+        return username != null && username.matches("^[a-zA-Z0-9]+$");
     }
 }

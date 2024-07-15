@@ -1,8 +1,12 @@
 package it.polimi.tiw.frontend.utilities;
 
+import it.polimi.tiw.frontend.utilities.exceptions.FailedInputParsingException;
 import it.polimi.tiw.frontend.utilities.exceptions.PasswordMismatchException;
 import it.polimi.tiw.frontend.utilities.exceptions.UnknownErrorCodeException;
 
+/**
+ * This class provides some utility methods to validate data.
+ */
 public class Validators {
     /**
      * This method validates the password and the password confirmation.
@@ -42,5 +46,31 @@ public class Validators {
 
         // If the errorCode is not in the frontend ErrorCodes enum, we throw an exception
         throw new UnknownErrorCodeException("The error code " + errorCode + " is unknown.");
+    }
+
+    /**
+     * This method parse a string to a boolean.
+     * If the string is "true" it returns true, if the string is "false" it returns false.
+     * If the string is neither "true" nor "false" it throws a FailedInputParsingException.
+     */
+    public static boolean parseBoolean(String string) throws FailedInputParsingException {
+        return switch (string) {
+            case "true" -> true;
+            case "false" -> false;
+            default -> throw new FailedInputParsingException("The string provided is not a valid boolean.");
+        };
+    }
+
+    /**
+     * This method parse a string to an integer.
+     * If the string is a valid integer it returns the integer,
+     * if the string is not a valid integer it throws a FailedInputParsingException.
+     */
+    public static int parseInt(String string) throws FailedInputParsingException {
+        try {
+            return Integer.parseInt(string);
+        } catch (NumberFormatException e) {
+            throw new FailedInputParsingException("The string provided is not a valid integer.");
+        }
     }
 }

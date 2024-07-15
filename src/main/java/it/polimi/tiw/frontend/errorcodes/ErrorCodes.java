@@ -1,5 +1,9 @@
 package it.polimi.tiw.frontend.errorcodes;
 
+/**
+ * This enum contains all the error codes that can be used in the application by the frontend.
+ */
+@SuppressWarnings("SameParameterValue")
 public enum ErrorCodes {
     /**
      * This error code is used when the arguments provided are not valid.
