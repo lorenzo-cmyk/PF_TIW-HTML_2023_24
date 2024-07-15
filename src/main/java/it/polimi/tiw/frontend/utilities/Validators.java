@@ -17,7 +17,8 @@ public class Validators {
      */
     public static void validatePassword(String password, String passwordConfirmation) throws PasswordMismatchException {
         if (!password.equals(passwordConfirmation)) {
-            throw new PasswordMismatchException("The fields password and password confirmation do not match.");
+            throw new PasswordMismatchException("The fields password and password confirmation do not match." +
+                    " . Please check your input and try again.");
         }
     }
 
@@ -45,19 +46,24 @@ public class Validators {
         }
 
         // If the errorCode is not in the frontend ErrorCodes enum, we throw an exception
-        throw new UnknownErrorCodeException("The error code " + errorCode + " is unknown.");
+        throw new UnknownErrorCodeException("The error code provided does not exist." +
+                " Please check your input and try again.");
     }
 
     /**
      * This method parse a string to a boolean.
      * If the string is "true" it returns true, if the string is "false" it returns false.
      * If the string is neither "true" nor "false" it throws a FailedInputParsingException.
+     *
+     * @param string the string to parse
+     * @return the boolean parsed from the string
      */
     public static boolean parseBoolean(String string) throws FailedInputParsingException {
         return switch (string) {
             case "true" -> true;
             case "false" -> false;
-            default -> throw new FailedInputParsingException("The string provided is not a valid boolean.");
+            default -> throw new FailedInputParsingException("The input provided is not valid." +
+                    " Please check that all fields are valid and populated and try again .");
         };
     }
 
@@ -65,12 +71,31 @@ public class Validators {
      * This method parse a string to an integer.
      * If the string is a valid integer it returns the integer,
      * if the string is not a valid integer it throws a FailedInputParsingException.
+     *
+     * @param string the string to parse
+     * @return the integer parsed from the string
      */
     public static int parseInt(String string) throws FailedInputParsingException {
         try {
             return Integer.parseInt(string);
         } catch (NumberFormatException e) {
-            throw new FailedInputParsingException("The string provided is not a valid integer.");
+            throw new FailedInputParsingException("The input provided is not valid." +
+                    " Please check that all fields are valid and populated and try again .");
         }
+    }
+
+    /**
+     * This method parse a string to check if it is valid.
+     * If the string is not valid, it throws a FailedInputParsingException.
+     *
+     * @param string the string to parse
+     * @return the string validated
+     */
+    public static String parseString(String string) throws FailedInputParsingException {
+        if (string == null || string.isBlank() || string.isEmpty()) {
+            throw new FailedInputParsingException("The input provided is not valid." +
+                    " Please check that all fields are valid and populated and try again .");
+        }
+        return string;
     }
 }

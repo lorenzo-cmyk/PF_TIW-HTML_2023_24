@@ -20,7 +20,6 @@ import java.sql.SQLException;
 
 import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.closeConnection;
 import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.getConnectionFromServlet;
-import static it.polimi.tiw.backend.utilities.PasswordHasher.hashPassword;
 import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getTemplateEngineFromServlet;
 import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getWebContextFromServlet;
 import static it.polimi.tiw.frontend.utilities.Validators.*;
@@ -78,39 +77,47 @@ public class UserRegistrationServlet extends HttpServlet {
             } else if (success && errorCode == 0) {
                 context.setVariable("message", "The user has been successfully registered!");
             } else if (success && errorCode != 0) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. Please try again.");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid combination of parameters." +
+                        " Are you trying to hijack the request?");
                 return;
             }
 
             templateEngine.process("UserRegistration", context, response.getWriter());
         } catch (FailedInputParsingException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. Please try again.");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. " +
+                    "Are you trying to hijack the request?");
         } catch (UnknownErrorCodeException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown error code provided. Please try again.");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown error code provided. " +
+                    "Are you trying to hijack the request?");
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        // First, we get the parameters from the request
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String passwordRepeat = request.getParameter("confirmPassword");
-        String email = request.getParameter("email");
         try {
+            // First, we get the parameters from the request
+            String username = parseString(request.getParameter("username"));
+            String password = parseString(request.getParameter("password"));
+            String passwordRepeat = parseString(request.getParameter("confirmPassword"));
+            String email = parseString(request.getParameter("email"));
+
             // Then, we validate the password and the password confirmation
             // (PasswordMismatchException is thrown if they do not match)
             validatePassword(password, passwordRepeat);
+
             // Now, we can try to create a User object
             // (InvalidArgumentException is thrown if the arguments are not valid)
-            User newUser = new User(username, hashPassword(password), email);
+            User newUser = new User(username, password, email);
+
             // Then, we can try to register the user into the database
             // (RegistrationException is thrown if the registration fails)
             // (SQLException is thrown if an error occurs communicating with the database)
             UserDAO userDAO = new UserDAO(servletConnection);
             userDAO.registerUser(newUser);
+
             // If everything went well, we redirect the user to the registration page with a success message
             response.sendRedirect("UserRegistration?success=true");
-        } catch (PasswordMismatchException | InvalidArgumentException | RegistrationException e) {
+        } catch (PasswordMismatchException | InvalidArgumentException |
+                 RegistrationException | FailedInputParsingException e) {
             // Now we redirect the user to the registration page with the errorCode
             response.sendRedirect("UserRegistration?errorCode=" + e.getErrorCode());
         } catch (SQLException e) {
