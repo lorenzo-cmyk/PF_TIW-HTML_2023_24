@@ -23,7 +23,12 @@ public enum ErrorCodes {
      * This error code is used when the registration of a user fails.
      */
     RegistrationException(1004, "Unable to register user." +
-            " The username maybe already taken. Please try again with a different one.");
+            " The username maybe already taken. Please try again with a different one."),
+    /**
+     * This error code is used when the username provided is not syntactically valid.
+     */
+    InvalidUsernameException(1005, "The username provided is not syntactically valid." +
+            " Make sure if made only of alphanumeric characters and try again.");
 
     private final int errorCode;
     private final String errorMessage;

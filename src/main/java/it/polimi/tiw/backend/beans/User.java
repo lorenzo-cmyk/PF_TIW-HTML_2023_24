@@ -3,9 +3,11 @@ package it.polimi.tiw.backend.beans;
 import it.polimi.tiw.backend.beans.exceptions.InvalidArgumentException;
 import it.polimi.tiw.backend.beans.exceptions.InvalidEmailException;
 import it.polimi.tiw.backend.beans.exceptions.TooLongArgumentException;
+import it.polimi.tiw.backend.beans.exceptions.InvalidUsernameException;
 
 import static it.polimi.tiw.backend.utilities.Validators.isEmailValid;
 import static it.polimi.tiw.backend.utilities.Validators.isStringValid;
+import static it.polimi.tiw.backend.utilities.Validators.isUsernameValid;
 
 /**
  * This class represent a user of our DMS. It is used for communication with the DAOs classes.
@@ -32,6 +34,9 @@ public class User {
         } else if (username.length() > 64 || passwordHash.length() > 128 || eMail.length() > 64) {
             throw new TooLongArgumentException("Some of the arguments provided are too long." +
                     " Please check your input and try again.");
+        } else if(!isUsernameValid(username)) {
+            throw new InvalidUsernameException("The username provided is not syntactically valid." +
+                    " Make sure if made only of alphanumeric characters and try again.");
         } else if (!isEmailValid(eMail)) {
             throw new InvalidEmailException("The email provided is not syntactically valid." +
                     " Please check your input and try again.");
