@@ -21,7 +21,7 @@ public class User {
      * This constructor is used to create a new user. It checks that all the fields are not null.
      *
      * @param username the username of the user
-     * @param password the password hash of the user
+     * @param password the password of the user
      * @param eMail    the email of the user
      * @throws InvalidArgumentException if any of the fields is invalid
      * @see it.polimi.tiw.backend.beans.exceptions
@@ -43,6 +43,61 @@ public class User {
 
         this.username = username;
         this.passwordHash = hashPassword(password);
+        this.eMail = eMail;
+    }
+
+    /**
+     * This constructor is used to create a new user. It checks that all the fields are not null.
+     *
+     * @param username the username of the user
+     * @param password the password of the user
+     * @throws InvalidArgumentException if any of the fields is invalid
+     * @see it.polimi.tiw.backend.beans.exceptions
+     */
+    public User(String username, String password) throws InvalidArgumentException {
+        if (!isStringValid(username) || !isStringValid(password)) {
+            throw new InvalidArgumentException("Some of the arguments provided are null or empty." +
+                    " Please check your input and try again.");
+        } else if (username.length() > 64 || password.length() > 128) {
+            throw new TooLongArgumentException("Some of the arguments provided are too long." +
+                    " Please check your input and try again.");
+        } else if (!isUsernameValid(username)) {
+            throw new InvalidUsernameException("The username provided is not syntactically valid." +
+                    " Make sure it is made only of alphanumeric characters and try again.");
+        }
+
+        this.username = username;
+        this.passwordHash = hashPassword(password);
+        this.eMail = null;
+    }
+
+    /**
+     * This constructor is used to create a new user. It checks that all the fields are not null.
+     *
+     * @param username     the username of the user
+     * @param passwordHash the password hash of the user
+     * @param eMail        the email of the user
+     * @param ignored      this parameter is used to differentiate this constructor from the others (it can be whatever)
+     * @throws InvalidArgumentException if any of the fields is invalid
+     * @see it.polimi.tiw.backend.beans.exceptions
+     */
+    public User(String username, String passwordHash, String eMail, Object ignored) throws InvalidArgumentException {
+        if (!isStringValid(username) || !isStringValid(passwordHash) || !isStringValid(eMail)) {
+            throw new InvalidArgumentException("Some of the arguments provided are null or empty." +
+                    " Please check your input and try again.");
+        } else if (username.length() > 64 || passwordHash.length() > 128 || eMail.length() > 64) {
+            throw new TooLongArgumentException("Some of the arguments provided are too long." +
+                    " Please check your input and try again.");
+        } else if (!isUsernameValid(username)) {
+            throw new InvalidUsernameException("The username provided is not syntactically valid." +
+                    " Make sure it is made only of alphanumeric characters and try again.");
+        } else if (!isEmailValid(eMail)) {
+            throw new InvalidEmailException("The email provided is not syntactically valid." +
+                    " Please check your input and try again.");
+        }
+
+        this.username = username;
+        this.passwordHash = passwordHash;
         this.eMail = eMail;
     }
 
