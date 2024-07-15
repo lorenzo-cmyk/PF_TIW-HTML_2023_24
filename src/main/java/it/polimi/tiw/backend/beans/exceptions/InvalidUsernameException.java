@@ -5,7 +5,7 @@ import it.polimi.tiw.backend.errorcodes.ErrorCodes;
 /**
  * This exception is thrown when an invalid username is provided to a method.
  */
-public class InvalidUsernameException extends InvalidArgumentException{
+public class InvalidUsernameException extends InvalidArgumentException {
     /**
      * This constructor is used to create a new exception with a message.
      *
