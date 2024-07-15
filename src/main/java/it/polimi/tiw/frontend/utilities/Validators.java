@@ -3,6 +3,9 @@ package it.polimi.tiw.frontend.utilities;
 import it.polimi.tiw.frontend.utilities.exceptions.PasswordMismatchException;
 import it.polimi.tiw.frontend.utilities.exceptions.UnknownErrorCodeException;
 
+/**
+ * This class provides some utility methods to validate data.
+ */
 public class Validators {
     /**
      * This method validates the password and the password confirmation.

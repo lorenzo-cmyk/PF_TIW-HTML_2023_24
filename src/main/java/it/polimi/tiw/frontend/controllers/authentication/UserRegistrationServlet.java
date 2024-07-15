@@ -25,6 +25,9 @@ import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getWebCont
 import static it.polimi.tiw.frontend.utilities.Validators.retrieveErrorMessageFromErrorCode;
 import static it.polimi.tiw.frontend.utilities.Validators.validatePassword;
 
+/**
+ * This servlet is used to handle the registration of a new user.
+ */
 @WebServlet(name = "UserRegistration", value = "/UserRegistration")
 public class UserRegistrationServlet extends HttpServlet {
     private Connection servletConnection;
@@ -58,7 +61,7 @@ public class UserRegistrationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws
             IOException {
         // First, we get the success parameter from the request
-        Boolean success = Boolean.parseBoolean(request.getParameter("success"));
+        boolean success = Boolean.parseBoolean(request.getParameter("success"));
         // Then, we get the errorCode parameter from the request (0 if it is not present)
         int errorCode = Integer.parseInt(request.getParameter("errorCode") == null ?
                 "0" : request.getParameter("errorCode"));
