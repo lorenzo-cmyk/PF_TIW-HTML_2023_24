@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS Users
     UserID       INT AUTO_INCREMENT PRIMARY KEY, -- Unique identifier for each user
     Username     VARCHAR(64) UNIQUE NOT NULL,    -- User's chosen username, must be unique
     PasswordHash VARCHAR(128)       NOT NULL,    -- Hash of the user's password for security
-    Email        VARCHAR(64) UNIQUE NOT NULL     -- User's email address, must be unique
+    Email        VARCHAR(64)        NOT NULL     -- User's email address, must be unique
 );
 
 -- Create the table "Folders"
