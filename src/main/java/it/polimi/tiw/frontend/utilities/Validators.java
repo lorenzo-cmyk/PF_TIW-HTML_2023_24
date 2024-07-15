@@ -52,6 +52,9 @@ public class Validators {
      * This method parse a string to a boolean.
      * If the string is "true" it returns true, if the string is "false" it returns false.
      * If the string is neither "true" nor "false" it throws a FailedInputParsingException.
+     *
+     * @param string the string to parse
+     * @return the boolean parsed from the string
      */
     public static boolean parseBoolean(String string) throws FailedInputParsingException {
         return switch (string) {
@@ -65,6 +68,9 @@ public class Validators {
      * This method parse a string to an integer.
      * If the string is a valid integer it returns the integer,
      * if the string is not a valid integer it throws a FailedInputParsingException.
+     *
+     * @param string the string to parse
+     * @return the integer parsed from the string
      */
     public static int parseInt(String string) throws FailedInputParsingException {
         try {
@@ -72,5 +78,19 @@ public class Validators {
         } catch (NumberFormatException e) {
             throw new FailedInputParsingException("The string provided is not a valid integer.");
         }
+    }
+
+    /**
+     * This method parse a string to check if it is valid.
+     * If the string is not valid, it throws a FailedInputParsingException.
+     *
+     * @param string the string to parse
+     * @return the string validated
+     */
+    public static String parseString(String string) throws FailedInputParsingException {
+        if (string == null || string.isBlank() || string.isEmpty()) {
+            throw new FailedInputParsingException("The string provided is null, empty or blank.");
+        }
+        return string;
     }
 }
