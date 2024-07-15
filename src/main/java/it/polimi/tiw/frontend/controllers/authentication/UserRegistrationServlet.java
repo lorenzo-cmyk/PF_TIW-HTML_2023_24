@@ -78,15 +78,17 @@ public class UserRegistrationServlet extends HttpServlet {
                 context.setVariable("message", "The user has been successfully registered!");
             } else if (success && errorCode != 0) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid combination of parameters." +
-                        " Please try again.");
+                        " Are you trying to hijack the request?");
                 return;
             }
 
             templateEngine.process("UserRegistration", context, response.getWriter());
         } catch (FailedInputParsingException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. Please try again.");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. " +
+                    "Are you trying to hijack the request?");
         } catch (UnknownErrorCodeException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown error code provided. Please try again.");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown error code provided. " +
+                    "Are you trying to hijack the request?");
         }
     }
 
@@ -114,15 +116,14 @@ public class UserRegistrationServlet extends HttpServlet {
 
             // If everything went well, we redirect the user to the registration page with a success message
             response.sendRedirect("UserRegistration?success=true");
-        } catch (PasswordMismatchException | InvalidArgumentException | RegistrationException e) {
+        } catch (PasswordMismatchException | InvalidArgumentException |
+                 RegistrationException | FailedInputParsingException e) {
             // Now we redirect the user to the registration page with the errorCode
             response.sendRedirect("UserRegistration?errorCode=" + e.getErrorCode());
         } catch (SQLException e) {
             // If a SQLException is thrown, we send an error directly to the client
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Unable to register user due to a critical error in the database.");
-        } catch (FailedInputParsingException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. Please try again.");
         }
     }
 }
