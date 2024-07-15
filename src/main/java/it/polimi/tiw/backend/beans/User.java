@@ -27,11 +27,14 @@ public class User {
      */
     public User(String username, String passwordHash, String eMail) throws InvalidArgumentException {
         if (!isStringValid(username) || !isStringValid(passwordHash) || !isStringValid(eMail)) {
-            throw new InvalidArgumentException("The arguments provided are not valid.");
+            throw new InvalidArgumentException("Some of the arguments provided are null or empty." +
+                    " Please check your input and try again.");
         } else if (username.length() > 64 || passwordHash.length() > 128 || eMail.length() > 64) {
-            throw new TooLongArgumentException("The arguments provided exceed the maximum length.");
+            throw new TooLongArgumentException("Some of the arguments provided are too long." +
+                    " Please check your input and try again.");
         } else if (!isEmailValid(eMail)) {
-            throw new InvalidEmailException("The email provided is not syntactically valid.");
+            throw new InvalidEmailException("The email provided is not syntactically valid." +
+                    " Please check your input and try again.");
         }
 
         this.username = username;
