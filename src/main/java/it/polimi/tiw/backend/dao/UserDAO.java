@@ -12,9 +12,6 @@ import java.sql.SQLException;
  * This class provides methods to interact with the database and perform authentication and registration operations.
  */
 public class UserDAO {
-    /**
-     * The connection to the database.
-     */
     private final Connection connection;
 
     /**
