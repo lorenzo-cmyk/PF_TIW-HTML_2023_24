@@ -1,18 +1,17 @@
 package it.polimi.tiw.frontend.controllers.authentication;
 
 import it.polimi.tiw.backend.beans.User;
+import it.polimi.tiw.backend.beans.exceptions.InvalidArgumentException;
 import it.polimi.tiw.backend.dao.UserDAO;
-import it.polimi.tiw.backend.exceptions.InvalidArgumentException;
-import it.polimi.tiw.backend.exceptions.RegistrationException;
-import jakarta.servlet.ServletException;
+import it.polimi.tiw.backend.dao.exceptions.RegistrationException;
+import it.polimi.tiw.frontend.utilities.exceptions.PasswordMismatchException;
+import it.polimi.tiw.frontend.utilities.exceptions.UnknownErrorCodeException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-import org.thymeleaf.web.IWebExchange;
-import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -21,7 +20,10 @@ import java.sql.SQLException;
 import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.closeConnection;
 import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.getConnectionFromServlet;
 import static it.polimi.tiw.backend.utilities.PasswordHasher.hashPassword;
-import static it.polimi.tiw.backend.utilities.TemplateEngineBuilder.getTemplateEngineFromServlet;
+import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getTemplateEngineFromServlet;
+import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getWebContextFromServlet;
+import static it.polimi.tiw.frontend.utilities.Validators.retrieveErrorMessageFromErrorCode;
+import static it.polimi.tiw.frontend.utilities.Validators.validatePassword;
 
 @WebServlet(name = "UserRegistration", value = "/UserRegistration")
 public class UserRegistrationServlet extends HttpServlet {
@@ -53,44 +55,61 @@ public class UserRegistrationServlet extends HttpServlet {
         closeConnection(servletConnection);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws
             IOException {
-        final JakartaServletWebApplication myApplication = JakartaServletWebApplication.buildApplication(getServletContext());
-        final IWebExchange exchange = myApplication.buildExchange(request, response);
-        final WebContext context = new WebContext(exchange, exchange.getLocale());
+        // First, we get the success parameter from the request
+        Boolean success = Boolean.parseBoolean(request.getParameter("success"));
+        // Then, we get the errorCode parameter from the request (0 if it is not present)
+        int errorCode = Integer.parseInt(request.getParameter("errorCode") == null ?
+                "0" : request.getParameter("errorCode"));
+
+        // Now, we create a new WebContext object and we process the template
+        WebContext context = getWebContextFromServlet(this, request, response);
+
+        try {
+            if (!success) {
+                String message = errorCode == 0 ? "Please fill in the form to register a new user."
+                        : retrieveErrorMessageFromErrorCode(errorCode);
+                context.setVariable("message", message);
+            } else {
+                context.setVariable("message", "The user has been successfully registered.");
+            }
+        } catch (UnknownErrorCodeException e) {
+            // If an UnknownErrorCodeException is thrown, we send an error directly to the client
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "Unknown error code: " + errorCode);
+        }
+
         templateEngine.process("UserRegistration", context, response.getWriter());
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Get and parse the parameters from the request
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // First, we get the parameters from the request
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String passwordRepeat = request.getParameter("confirmPassword");
         String email = request.getParameter("email");
-
-        final JakartaServletWebApplication myApplication = JakartaServletWebApplication.buildApplication(getServletContext());
-        final IWebExchange exchange = myApplication.buildExchange(request, response);
-        final WebContext context = new WebContext(exchange, exchange.getLocale());
-
-        // Check if the password matches the repeated password
-        if (!password.equals(passwordRepeat)) {
-            context.setVariable("message", "Passwords do not match!");
-            templateEngine.process("UserRegistration", context, response.getWriter());
-            return;
-        }
-
         try {
+            // Then, we validate the password and the password confirmation
+            // (PasswordMismatchException is thrown if they do not match)
+            validatePassword(password, passwordRepeat);
+            // Now, we can try to create a User object
+            // (InvalidArgumentException is thrown if the arguments are not valid)
             User newUser = new User(username, hashPassword(password), email);
+            // Then, we can try to register the user into the database
+            // (RegistrationException is thrown if the registration fails)
+            // (SQLException is thrown if an error occurs communicating with the database)
             UserDAO userDAO = new UserDAO(servletConnection);
             userDAO.registerUser(newUser);
-        } catch (InvalidArgumentException | RegistrationException | SQLException e) {
-            context.setVariable("message", e.getMessage());
-            templateEngine.process("UserRegistration", context, response.getWriter());
-            return;
+            // If everything went well, we redirect the user to the registration page with a success message
+            response.sendRedirect("UserRegistration?success=true");
+        } catch (PasswordMismatchException | InvalidArgumentException | RegistrationException e) {
+            // Now we redirect the user to the registration page with the errorCode
+            response.sendRedirect("UserRegistration?errorCode=" + e.getErrorCode());
+        } catch (SQLException e) {
+            // If a SQLException is thrown, we send an error directly to the client
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Unable to register user due to a critical error in the database.");
         }
-
-        context.setVariable("message", "User successfully registered!");
-        templateEngine.process("UserRegistration", context, response.getWriter());
     }
-
 }
