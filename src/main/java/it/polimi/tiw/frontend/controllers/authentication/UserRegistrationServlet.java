@@ -58,32 +58,35 @@ public class UserRegistrationServlet extends HttpServlet {
         closeConnection(servletConnection);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws
-            IOException {
-        // First, we get the success parameter from the request
-        boolean success = Boolean.parseBoolean(request.getParameter("success"));
-        // Then, we get the errorCode parameter from the request (0 if it is not present)
-        int errorCode = Integer.parseInt(request.getParameter("errorCode") == null ?
-                "0" : request.getParameter("errorCode"));
-
-        // Now, we create a new WebContext object and we process the template
-        WebContext context = getWebContextFromServlet(this, request, response);
-
+    @SuppressWarnings("ConstantValue")
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            if (!success) {
-                String message = errorCode == 0 ? "Please fill in the form to register a new user."
-                        : retrieveErrorMessageFromErrorCode(errorCode);
-                context.setVariable("message", message);
-            } else {
-                context.setVariable("message", "The user has been successfully registered.");
-            }
-        } catch (UnknownErrorCodeException e) {
-            // If an UnknownErrorCodeException is thrown, we send an error directly to the client
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                    "Unknown error code: " + errorCode);
-        }
+            // First, we get the success parameter from the request
+            boolean success = Boolean.parseBoolean(request.getParameter("success"));
+            // Then, we get the errorCode parameter from the request (0 if it is not present)
+            int errorCode = Integer.parseInt(request.getParameter("errorCode") == null ?
+                    "0" : request.getParameter("errorCode"));
 
-        templateEngine.process("UserRegistration", context, response.getWriter());
+            // Now, we create a new WebContext object and we process the template
+            WebContext context = getWebContextFromServlet(this, request, response);
+
+            if (!success && errorCode == 0) {
+                context.setVariable("message", "Please fill in the form to register a new user.");
+            } else if (!success && errorCode != 0) {
+                context.setVariable("message", retrieveErrorMessageFromErrorCode(errorCode));
+            } else if (success && errorCode == 0) {
+                context.setVariable("message", "The user has been successfully registered!");
+            } else if (success && errorCode != 0) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. Please try again.");
+                return;
+            }
+
+            templateEngine.process("UserRegistration", context, response.getWriter());
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. Please try again.");
+        } catch (UnknownErrorCodeException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown error code provided. Please try again.");
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
