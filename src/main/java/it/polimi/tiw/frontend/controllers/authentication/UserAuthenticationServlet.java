@@ -3,9 +3,8 @@ package it.polimi.tiw.frontend.controllers.authentication;
 import it.polimi.tiw.backend.beans.User;
 import it.polimi.tiw.backend.beans.exceptions.InvalidArgumentException;
 import it.polimi.tiw.backend.dao.UserDAO;
-import it.polimi.tiw.backend.dao.exceptions.RegistrationException;
+import it.polimi.tiw.backend.dao.exceptions.LoginException;
 import it.polimi.tiw.frontend.utilities.exceptions.FailedInputParsingException;
-import it.polimi.tiw.frontend.utilities.exceptions.PasswordMismatchException;
 import it.polimi.tiw.frontend.utilities.exceptions.UnknownErrorCodeException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -25,10 +24,10 @@ import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getWebCont
 import static it.polimi.tiw.frontend.utilities.Validators.*;
 
 /**
- * This servlet is used to handle the registration of a new user.
+ * This servlet is used to handle the authentication of a user.
  */
-@WebServlet(name = "UserRegistrationServlet", value = "/register")
-public class UserRegistrationServlet extends HttpServlet {
+@WebServlet(name = "UserAuthenticationServlet", value = "/login")
+public class UserAuthenticationServlet extends HttpServlet {
     private Connection servletConnection;
     private TemplateEngine templateEngine;
 
@@ -36,7 +35,7 @@ public class UserRegistrationServlet extends HttpServlet {
      * Default constructor, called by the servlet container.
      */
     @SuppressWarnings("unused")
-    public UserRegistrationServlet() {
+    public UserAuthenticationServlet() {
         super();
     }
 
@@ -57,32 +56,22 @@ public class UserRegistrationServlet extends HttpServlet {
         closeConnection(servletConnection);
     }
 
-    @SuppressWarnings("ConstantValue")
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            // First, we get the success parameter from the request
-            boolean success = parseBoolean(request.getParameter("success") == null ?
-                    "false" : request.getParameter("success"));
-            // Then, we get the errorCode parameter from the request (0 if it is not present)
+            // First, we get the errorCode parameter from the request (0 if it is not present)
             int errorCode = parseInt(request.getParameter("errorCode") == null ?
                     "0" : request.getParameter("errorCode"));
 
-            // Now, we create a new WebContext object and we process the template
+            // Then, we create a new WebContext object and we process the template
             WebContext context = getWebContextFromServlet(this, request, response);
 
-            if (!success && errorCode == 0) {
-                context.setVariable("message", "Please fill in the form to register a new user.");
-            } else if (!success && errorCode != 0) {
+            if (errorCode == 0) {
+                context.setVariable("message", "Please enter your credentials to log in.");
+            } else {
                 context.setVariable("message", retrieveErrorMessageFromErrorCode(errorCode));
-            } else if (success && errorCode == 0) {
-                context.setVariable("message", "The user has been successfully registered!");
-            } else if (success && errorCode != 0) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid combination of parameters." +
-                        " Are you trying to hijack the request?");
-                return;
             }
 
-            templateEngine.process("UserRegistrationTemplate", context, response.getWriter());
+            templateEngine.process("UserAuthenticationTemplate", context, response.getWriter());
         } catch (FailedInputParsingException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. " +
                     "Are you trying to hijack the request?");
@@ -94,36 +83,29 @@ public class UserRegistrationServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            // First, we get the parameters from the request
+            // First, we get the username and password parameters from the request
             String username = parseString(request.getParameter("username"));
             String password = parseString(request.getParameter("password"));
-            String passwordRepeat = parseString(request.getParameter("confirmPassword"));
-            String email = parseString(request.getParameter("email"));
 
-            // Then, we validate the password and the password confirmation
-            // (PasswordMismatchException is thrown if they do not match)
-            validatePassword(password, passwordRepeat);
+            // Then, we use the credentials to create a new User object
+            User user = new User(username, password);
 
-            // Now, we can try to create a User object
-            // (InvalidArgumentException is thrown if the arguments are not valid)
-            User newUser = new User(username, password, email);
-
-            // Then, we can try to register the user into the database
-            // (RegistrationException is thrown if the registration fails)
-            // (SQLException is thrown if an error occurs communicating with the database)
+            // Now, we check if the user is registered in the database
             UserDAO userDAO = new UserDAO(servletConnection);
-            userDAO.registerUser(newUser);
+            User authenticatedUser = userDAO.authenticateUser(user);
 
-            // If everything went well, we redirect the user to the registration page with a success message
-            response.sendRedirect("register?success=true");
-        } catch (PasswordMismatchException | InvalidArgumentException |
-                 RegistrationException | FailedInputParsingException e) {
+            // If the user is registered, we put the user object in the session, and we redirect to the home page
+            request.getSession().setAttribute("user", authenticatedUser);
+            // FIXME: We don't have a home page yet...
+            response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, "Authentication successful! " +
+                    "Redirecting to the home page... (not implemented yet)");
+        } catch (FailedInputParsingException | InvalidArgumentException | LoginException e) {
             // Now we redirect the user to the registration page with the errorCode
-            response.sendRedirect("register?errorCode=" + e.getErrorCode());
+            response.sendRedirect("login?errorCode=" + e.getErrorCode());
         } catch (SQLException e) {
             // If a SQLException is thrown, we send an error directly to the client
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Unable to register user due to a critical error in the database.");
+                    "Unable to authenticate the user due to a critical error in the database.");
         }
     }
 }
