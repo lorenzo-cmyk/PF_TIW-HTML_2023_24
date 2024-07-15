@@ -1,4 +1,4 @@
-package it.polimi.tiw.backend.exceptions;
+package it.polimi.tiw.backend.dao.exceptions;
 
 /**
  * This exception is thrown when an error occurs during the registration process.
