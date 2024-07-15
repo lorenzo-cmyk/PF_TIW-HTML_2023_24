@@ -11,9 +11,9 @@ import org.thymeleaf.web.IWebExchange;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 /**
- * This class contains utility methods to handle template engines.
+ * This class contains utility methods to build Thymeleaf objects.
  */
-public class TemplateEngineBuilder {
+public class ThymeleafObjectsBuilder {
     private static final String templateResolverPrefix = "/WEB-INF/templates/";
     private static final String templateResolverSuffix = ".html";
 
