@@ -1,4 +1,4 @@
-package it.polimi.tiw.backend.exceptions;
+package it.polimi.tiw.backend.beans.exceptions;
 
 /**
  * This exception is thrown when an invalid argument is provided to a method.
