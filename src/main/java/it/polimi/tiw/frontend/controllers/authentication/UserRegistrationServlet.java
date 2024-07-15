@@ -20,7 +20,6 @@ import java.sql.SQLException;
 
 import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.closeConnection;
 import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.getConnectionFromServlet;
-import static it.polimi.tiw.backend.utilities.PasswordHasher.hashPassword;
 import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getTemplateEngineFromServlet;
 import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getWebContextFromServlet;
 import static it.polimi.tiw.frontend.utilities.Validators.*;
@@ -92,6 +91,7 @@ public class UserRegistrationServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // First, we get the parameters from the request
+        // As with all strings for now on, their checks are done in the beans and utilities classes
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String passwordRepeat = request.getParameter("confirmPassword");
@@ -102,7 +102,7 @@ public class UserRegistrationServlet extends HttpServlet {
             validatePassword(password, passwordRepeat);
             // Now, we can try to create a User object
             // (InvalidArgumentException is thrown if the arguments are not valid)
-            User newUser = new User(username, hashPassword(password), email);
+            User newUser = new User(username, password, email);
             // Then, we can try to register the user into the database
             // (RegistrationException is thrown if the registration fails)
             // (SQLException is thrown if an error occurs communicating with the database)

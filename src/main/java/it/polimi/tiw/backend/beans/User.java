@@ -5,6 +5,7 @@ import it.polimi.tiw.backend.beans.exceptions.InvalidEmailException;
 import it.polimi.tiw.backend.beans.exceptions.InvalidUsernameException;
 import it.polimi.tiw.backend.beans.exceptions.TooLongArgumentException;
 
+import static it.polimi.tiw.backend.utilities.PasswordHasher.hashPassword;
 import static it.polimi.tiw.backend.utilities.Validators.*;
 
 /**
@@ -19,17 +20,17 @@ public class User {
     /**
      * This constructor is used to create a new user. It checks that all the fields are not null.
      *
-     * @param username     the username of the user
-     * @param passwordHash the password hash of the user
-     * @param eMail        the email of the user
+     * @param username the username of the user
+     * @param password the password hash of the user
+     * @param eMail    the email of the user
      * @throws InvalidArgumentException if any of the fields is invalid
      * @see it.polimi.tiw.backend.beans.exceptions
      */
-    public User(String username, String passwordHash, String eMail) throws InvalidArgumentException {
-        if (!isStringValid(username) || !isStringValid(passwordHash) || !isStringValid(eMail)) {
+    public User(String username, String password, String eMail) throws InvalidArgumentException {
+        if (!isStringValid(username) || !isStringValid(password) || !isStringValid(eMail)) {
             throw new InvalidArgumentException("Some of the arguments provided are null or empty." +
                     " Please check your input and try again.");
-        } else if (username.length() > 64 || passwordHash.length() > 128 || eMail.length() > 64) {
+        } else if (username.length() > 64 || password.length() > 128 || eMail.length() > 64) {
             throw new TooLongArgumentException("Some of the arguments provided are too long." +
                     " Please check your input and try again.");
         } else if (!isUsernameValid(username)) {
@@ -41,7 +42,7 @@ public class User {
         }
 
         this.username = username;
-        this.passwordHash = passwordHash;
+        this.passwordHash = hashPassword(password);
         this.eMail = eMail;
     }
 
