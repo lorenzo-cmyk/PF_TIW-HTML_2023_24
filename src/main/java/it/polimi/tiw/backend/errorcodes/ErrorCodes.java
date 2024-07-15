@@ -24,7 +24,8 @@ public enum ErrorCodes {
 
     /**
      * This constructor is used to create a new ErrorCode with an errorCode and an errorMessage.
-     * @param errorCode the errorCode of the ErrorCode
+     *
+     * @param errorCode    the errorCode of the ErrorCode
      * @param errorMessage the errorMessage of the ErrorCode
      */
     ErrorCodes(int errorCode, String errorMessage) {
@@ -34,6 +35,7 @@ public enum ErrorCodes {
 
     /**
      * This method returns the error code of the error code.
+     *
      * @return the error code of the error code
      */
     public int getErrorCode() {
@@ -42,6 +44,7 @@ public enum ErrorCodes {
 
     /**
      * This method returns the error message of the error code.
+     *
      * @return the error message of the error code
      */
     public String getErrorMessage() {
