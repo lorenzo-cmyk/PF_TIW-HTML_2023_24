@@ -8,7 +8,18 @@ public enum ErrorCodes {
     /**
      * This error code is used when the arguments provided are not valid.
      */
-    PasswordMismatchException(2001, "The fields password and password confirmation do not match.");
+    PasswordMismatchException(2001, "The fields password and password confirmation do not match." +
+            " . Please check your input and try again."),
+    /**
+     * This error code is used when the user tries to look up a non-existing errorCode
+     */
+    UnknownErrorCode(2002, "The error code provided does not exist." +
+            " Please check your input and try again."),
+    /**
+     * This error code in case of failure in parsing the input
+     */
+    FailedInputParsingException(2003, "The input provided is not valid." +
+            " Please check that all fields are valid and populated and try again .");
 
     private final int errorCode;
     private final String errorMessage;

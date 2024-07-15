@@ -17,7 +17,8 @@ public class Validators {
      */
     public static void validatePassword(String password, String passwordConfirmation) throws PasswordMismatchException {
         if (!password.equals(passwordConfirmation)) {
-            throw new PasswordMismatchException("The fields password and password confirmation do not match.");
+            throw new PasswordMismatchException("The fields password and password confirmation do not match." +
+                    " . Please check your input and try again.");
         }
     }
 
@@ -45,7 +46,8 @@ public class Validators {
         }
 
         // If the errorCode is not in the frontend ErrorCodes enum, we throw an exception
-        throw new UnknownErrorCodeException("The error code " + errorCode + " is unknown.");
+        throw new UnknownErrorCodeException("The error code provided does not exist." +
+                " Please check your input and try again.");
     }
 
     /**
@@ -60,7 +62,8 @@ public class Validators {
         return switch (string) {
             case "true" -> true;
             case "false" -> false;
-            default -> throw new FailedInputParsingException("The string provided is not a valid boolean.");
+            default -> throw new FailedInputParsingException("The input provided is not valid." +
+                    " Please check that all fields are valid and populated and try again .");
         };
     }
 
@@ -76,7 +79,8 @@ public class Validators {
         try {
             return Integer.parseInt(string);
         } catch (NumberFormatException e) {
-            throw new FailedInputParsingException("The string provided is not a valid integer.");
+            throw new FailedInputParsingException("The input provided is not valid." +
+                    " Please check that all fields are valid and populated and try again .");
         }
     }
 
@@ -89,7 +93,8 @@ public class Validators {
      */
     public static String parseString(String string) throws FailedInputParsingException {
         if (string == null || string.isBlank() || string.isEmpty()) {
-            throw new FailedInputParsingException("The string provided is null, empty or blank.");
+            throw new FailedInputParsingException("The input provided is not valid." +
+                    " Please check that all fields are valid and populated and try again .");
         }
         return string;
     }
