@@ -9,5 +9,6 @@
 </h1>
 <br/>
 <a href="register">UserRegistrationServlet</a>
+<a href="login">UserAuthenticationServlet</a>
 </body>
 </html>
