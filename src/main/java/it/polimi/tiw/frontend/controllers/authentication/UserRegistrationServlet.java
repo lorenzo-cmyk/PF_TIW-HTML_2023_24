@@ -27,7 +27,7 @@ import static it.polimi.tiw.frontend.utilities.Validators.*;
 /**
  * This servlet is used to handle the registration of a new user.
  */
-@WebServlet(name = "UserRegistration", value = "/UserRegistration")
+@WebServlet(name = "UserRegistrationServlet", value = "/register")
 public class UserRegistrationServlet extends HttpServlet {
     private Connection servletConnection;
     private TemplateEngine templateEngine;
@@ -82,7 +82,7 @@ public class UserRegistrationServlet extends HttpServlet {
                 return;
             }
 
-            templateEngine.process("UserRegistration", context, response.getWriter());
+            templateEngine.process("UserRegistrationTemplate", context, response.getWriter());
         } catch (FailedInputParsingException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. " +
                     "Are you trying to hijack the request?");
@@ -115,11 +115,11 @@ public class UserRegistrationServlet extends HttpServlet {
             userDAO.registerUser(newUser);
 
             // If everything went well, we redirect the user to the registration page with a success message
-            response.sendRedirect("UserRegistration?success=true");
+            response.sendRedirect("register?success=true");
         } catch (PasswordMismatchException | InvalidArgumentException |
                  RegistrationException | FailedInputParsingException e) {
             // Now we redirect the user to the registration page with the errorCode
-            response.sendRedirect("UserRegistration?errorCode=" + e.getErrorCode());
+            response.sendRedirect("register?errorCode=" + e.getErrorCode());
         } catch (SQLException e) {
             // If a SQLException is thrown, we send an error directly to the client
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
