@@ -1,5 +1,8 @@
 package it.polimi.tiw.backend.errorcodes;
 
+/**
+ * This enum contains all the error codes that can be used in the application by the backend.
+ */
 public enum ErrorCodes {
     /**
      * This error code is used when the arguments provided are not valid.

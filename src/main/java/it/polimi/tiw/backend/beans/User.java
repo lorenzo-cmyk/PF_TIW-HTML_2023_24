@@ -22,8 +22,7 @@ public class User {
      * @param username     the username of the user
      * @param passwordHash the password hash of the user
      * @param eMail        the email of the user
-     * @throws InvalidArgumentException if any of the fields is
-     * invalid (from this exception are derived TooLongArgumentException and InvalidEmailException)
+     * @throws InvalidArgumentException if any of the fields is invalid
      * @see it.polimi.tiw.backend.beans.exceptions
      */
     public User(String username, String passwordHash, String eMail) throws InvalidArgumentException {
