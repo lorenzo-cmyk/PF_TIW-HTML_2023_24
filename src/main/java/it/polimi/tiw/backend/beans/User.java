@@ -34,7 +34,7 @@ public class User {
                     " Please check your input and try again.");
         } else if (!isUsernameValid(username)) {
             throw new InvalidUsernameException("The username provided is not syntactically valid." +
-                    " Make sure if made only of alphanumeric characters and try again.");
+                    " Make sure it is made only of alphanumeric characters and try again.");
         } else if (!isEmailValid(eMail)) {
             throw new InvalidEmailException("The email provided is not syntactically valid." +
                     " Please check your input and try again.");
