@@ -1,9 +1,13 @@
 package it.polimi.tiw.backend.utilities;
 
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.WebApplicationTemplateResolver;
+import org.thymeleaf.web.IWebExchange;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 /**
@@ -64,5 +68,21 @@ public class TemplateEngineBuilder {
         webApplicationTemplateResolver.setCacheTTLMs(3600000L);
 
         return webApplicationTemplateResolver;
+    }
+
+    /**
+     * This method retrieves a WebContext object from a given servlet, request, and response.
+     *
+     * @param httpServlet the servlet from which context build a new JakartaServletWebApplication
+     * @param request     the request from which build a new IWebExchange
+     * @param response    the response from which build a new IWebExchange
+     * @return a WebContext object
+     */
+    public static WebContext
+    getWebContextFromServlet(HttpServlet httpServlet, HttpServletRequest request, HttpServletResponse response) {
+        JakartaServletWebApplication jakartaServletWebApplication =
+                JakartaServletWebApplication.buildApplication(httpServlet.getServletContext());
+        IWebExchange exchange = jakartaServletWebApplication.buildExchange(request, response);
+        return new WebContext(exchange, exchange.getLocale());
     }
 }
