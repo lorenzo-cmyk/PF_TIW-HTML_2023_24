@@ -28,7 +28,12 @@ public enum ErrorCodes {
      * This error code is used when the username provided is not syntactically valid.
      */
     InvalidUsernameException(1005, "The username provided is not syntactically valid." +
-            " Make sure it is made only of alphanumeric characters and try again.");
+            " Make sure it is made only of alphanumeric characters and try again."),
+    /**
+     * This error code is used for when the credentials provided does not match any user in the database.
+     */
+    LoginException(1006, "The credentials provided do not match any user in the database." +
+            " Please check your input and try again.");
 
     private final int errorCode;
     private final String errorMessage;
