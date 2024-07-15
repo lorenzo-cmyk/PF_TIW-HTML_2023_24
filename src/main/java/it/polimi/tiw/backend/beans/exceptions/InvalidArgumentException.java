@@ -1,11 +1,12 @@
 package it.polimi.tiw.backend.beans.exceptions;
 
 import it.polimi.tiw.backend.errorcodes.ErrorCodes;
+import it.polimi.tiw.backend.utilities.templates.ExtendedException;
 
 /**
  * This exception is thrown when an invalid argument is provided to a method.
  */
-public class InvalidArgumentException extends Exception {
+public class InvalidArgumentException extends ExtendedException {
     /**
      * This constructor is used to create a new exception with a message.
      *
@@ -16,11 +17,11 @@ public class InvalidArgumentException extends Exception {
     }
 
     /**
-     * This method returns the error code of the exception.
+     * This method returns the errorCode of the exception.
      *
-     * @return the error code of the exception
+     * @return the errorCode of the exception
      */
-    public ErrorCodes getErrorCode() {
-        return ErrorCodes.InvalidArgumentException;
+    public int getErrorCode() {
+        return ErrorCodes.InvalidArgumentException.getErrorCode();
     }
 }

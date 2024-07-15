@@ -16,11 +16,11 @@ public class InvalidEmailException extends InvalidArgumentException {
     }
 
     /**
-     * This method returns the error code of the exception.
+     * This method returns the errorCode of the exception.
      *
-     * @return the error code of the exception
+     * @return the errorCode of the exception
      */
-    public ErrorCodes getErrorCode() {
-        return ErrorCodes.InvalidEmailException;
+    public int getErrorCode() {
+        return ErrorCodes.InvalidEmailException.getErrorCode();
     }
 }

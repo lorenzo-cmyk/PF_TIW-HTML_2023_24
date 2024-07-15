@@ -16,11 +16,11 @@ public class TooLongArgumentException extends InvalidArgumentException {
     }
 
     /**
-     * This method returns the error code of the exception.
+     * This method returns the errorCode of the exception.
      *
-     * @return the error code of the exception
+     * @return the errorCode of the exception
      */
-    public ErrorCodes getErrorCode() {
-        return ErrorCodes.TooLongArgumentException;
+    public int getErrorCode() {
+        return ErrorCodes.TooLongArgumentException.getErrorCode();
     }
 }
