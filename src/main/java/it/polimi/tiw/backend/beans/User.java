@@ -13,6 +13,7 @@ import static it.polimi.tiw.backend.utilities.Validators.*;
  * This class cannot be a record because it needs to throw an exception in the constructor.
  */
 public class User {
+    private final int userID;
     private final String username;
     private final String passwordHash;
     private final String eMail;
@@ -41,6 +42,7 @@ public class User {
                     " Please check your input and try again.");
         }
 
+        this.userID = -1;
         this.username = username;
         this.passwordHash = hashPassword(password);
         this.eMail = eMail;
@@ -66,6 +68,7 @@ public class User {
                     " Make sure it is made only of alphanumeric characters and try again.");
         }
 
+        this.userID = -1;
         this.username = username;
         this.passwordHash = hashPassword(password);
         this.eMail = null;
@@ -74,15 +77,15 @@ public class User {
     /**
      * This constructor is used to create a new user. It checks that all the fields are not null.
      *
+     * @param userID       the ID of the user
      * @param username     the username of the user
      * @param passwordHash the password hash of the user
      * @param eMail        the email of the user
-     * @param ignored      this parameter is used to differentiate this constructor from the others (it can be whatever)
      * @throws InvalidArgumentException if any of the fields is invalid
      * @see it.polimi.tiw.backend.beans.exceptions
      */
-    public User(String username, String passwordHash, String eMail, Object ignored) throws InvalidArgumentException {
-        if (!isStringValid(username) || !isStringValid(passwordHash) || !isStringValid(eMail)) {
+    public User(int userID, String username, String passwordHash, String eMail) throws InvalidArgumentException {
+        if (!isIDValid(userID) || !isStringValid(username) || !isStringValid(passwordHash) || !isStringValid(eMail)) {
             throw new InvalidArgumentException("Some of the arguments provided are null or empty." +
                     " Please check your input and try again.");
         } else if (username.length() > 64 || passwordHash.length() > 128 || eMail.length() > 64) {
@@ -96,6 +99,7 @@ public class User {
                     " Please check your input and try again.");
         }
 
+        this.userID = userID;
         this.username = username;
         this.passwordHash = passwordHash;
         this.eMail = eMail;
@@ -126,5 +130,14 @@ public class User {
      */
     public String getEmail() {
         return eMail;
+    }
+
+    /**
+     * This method returns the ID of the user.
+     *
+     * @return the ID of the user
+     */
+    public int getUserID() {
+        return userID;
     }
 }
