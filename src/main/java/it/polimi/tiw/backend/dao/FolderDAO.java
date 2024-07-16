@@ -45,7 +45,8 @@ public class FolderDAO {
         // close the PreparedStatement when it is no longer needed.
         try (PreparedStatement preparedStatement = connection.prepareStatement(findSubfoldersQuery)) {
             // Set the parameters of the query.
-            preparedStatement.setInt(1, folderID);
+            // If the folderID is -1, we set the parameter to null.
+            preparedStatement.setObject(1, folderID == -1 ? null : folderID, java.sql.Types.INTEGER);
             preparedStatement.setInt(2, ownerID);
 
             // Execute the now parameterized query.
