@@ -178,4 +178,57 @@ public class FolderDAO {
         }
     }
 
+    /**
+     * This method retrieves a folder by looking for its ID.
+     *
+     * @param folderID the ID of the folder to be retrieved.
+     * @return a Folder object representing the folder with the given ID.
+     * @throws SQLException if an error occurs while retrieving the folder from the database (SQL-Related).
+     */
+    public Folder getFolderByID(int folderID, int ownerID) throws SQLException {
+        // The raw SQL query for retrieving a folder by its ID.
+        String findFolderByIDQuery = "SELECT * FROM Folders WHERE FolderID = ?";
+
+        // Try-with-resources statement used to automatically
+        // close the PreparedStatement when it is no longer needed.
+        try (PreparedStatement preparedStatement = connection.prepareStatement(findFolderByIDQuery)) {
+            // Set the parameters of the query.
+            preparedStatement.setInt(1, folderID);
+
+            // Execute the now parameterized query.
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                // If the query returns no results, we can just return null
+                if (!resultSet.next()) {
+                    return null;
+                }
+
+                // If the query returns a result, the folder is found.
+                // We create a new Folder object with the data from the database.
+                Folder foundFolder;
+                try {
+                    foundFolder = new Folder(
+                            resultSet.getInt("FolderID"),
+                            resultSet.getString("FolderName"),
+                            resultSet.getDate("CreationDate"),
+                            resultSet.getInt("OwnerID"),
+                            // If the parentFolderID is null, we set it to -1.
+                            resultSet.getObject("ParentFolderID") == null ? -1
+                                    : resultSet.getInt("ParentFolderID")
+                    );
+                } catch (InvalidArgumentException e) {
+                    throw new IllegalStateException("The database is corrupted." +
+                            " The user data is invalid. Please check the database integrity.");
+                }
+
+                // If the query returns more than one result, the database is corrupted.
+                if (resultSet.next()) {
+                    throw new IllegalStateException("The database is corrupted." +
+                            " More than one user with the same credentials.");
+                }
+
+                return foundFolder;
+            }
+        }
+    }
+
 }
