@@ -38,7 +38,12 @@ public class FolderDAO {
      */
     public List<Folder> getSubfolders(int folderID, int ownerID) throws SQLException {
         // The raw SQL query for retrieving the subfolders of a folder.
-        String findSubfoldersQuery = "SELECT * FROM Folders WHERE ParentFolderID = ? AND OwnerID = ?";
+        String findSubfoldersQuery;
+        if (folderID != -1) {
+            findSubfoldersQuery = "SELECT * FROM Folders WHERE OwnerID = ? AND ParentFolderID = ?";
+        } else {
+            findSubfoldersQuery = "SELECT * FROM Folders WHERE OwnerID = ? AND ParentFolderID IS NULL";
+        }
         List<Folder> subfolders = new ArrayList<>();
 
         // Try-with-resources statement used to automatically
@@ -46,8 +51,10 @@ public class FolderDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(findSubfoldersQuery)) {
             // Set the parameters of the query.
             // If the folderID is -1, we set the parameter to null.
-            preparedStatement.setObject(1, folderID == -1 ? null : folderID, java.sql.Types.INTEGER);
-            preparedStatement.setInt(2, ownerID);
+            preparedStatement.setInt(1, ownerID);
+            if (folderID != -1) {
+                preparedStatement.setInt(2, folderID);
+            }
 
             // Execute the now parameterized query.
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -58,7 +65,9 @@ public class FolderDAO {
                             resultSet.getString("FolderName"),
                             resultSet.getDate("CreationDate"),
                             resultSet.getInt("OwnerID"),
-                            resultSet.getInt("ParentFolderID")
+                            // If the parentFolderID is null, we set it to -1.
+                            resultSet.getObject("ParentFolderID") == null ? -1
+                                    : resultSet.getInt("ParentFolderID")
                     );
                     subfolders.add(subfolder);
                 }
