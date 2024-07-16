@@ -45,22 +45,20 @@ public class Folder {
      * This constructor is used to create a new folder. It checks that all the fields provided are valid.
      *
      * @param folderName     the name of the folder
-     * @param creationDate   the creation date of the folder
      * @param ownerID        the ID of the owner of the folder
      * @param parentFolderID the ID of the parent folder
      * @throws InvalidArgumentException if any of the fields is invalid
      */
-    public Folder(String folderName, Date creationDate, int ownerID, int parentFolderID)
+    public Folder(String folderName, int ownerID, int parentFolderID)
             throws InvalidArgumentException {
-        if (!isStringValid(folderName) || !isDateValid(creationDate) ||
-                !isIDValid(ownerID) || !isIDValid(parentFolderID)) {
+        if (!isStringValid(folderName) || !isIDValid(ownerID) || !isIDValid(parentFolderID)) {
             throw new InvalidArgumentException("Some of the arguments provided are invalid." +
                     " Please check your input and try again.");
         }
 
         this.folderID = -1;
         this.folderName = folderName;
-        this.creationDate = creationDate;
+        this.creationDate = null;
         this.ownerID = ownerID;
         this.parentFolderID = parentFolderID;
     }
