@@ -9,13 +9,13 @@ import java.util.Date;
  */
 public class Validators {
     /**
-     * This method checks if a integer ID is valid. An integer ID is valid if it is greater than 0.
+     * This method checks if a integer ID is valid. An integer ID is valid if it is greater than -2.
      *
      * @param id the integer ID to check
      * @return true if the integer ID is valid, false otherwise
      */
     public static boolean isIDValid(int id) {
-        return id > 0;
+        return id >= -1;
     }
 
     /**
