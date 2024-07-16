@@ -14,6 +14,7 @@ public class Validators {
      * @param id the integer ID to check
      * @return true if the integer ID is valid, false otherwise
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isIDValid(int id) {
         return id >= -1;
     }
@@ -24,6 +25,7 @@ public class Validators {
      * @param date the Date to check
      * @return true if the Date is valid, false otherwise
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isDateValid(Date date) {
         return date != null;
     }
@@ -45,6 +47,7 @@ public class Validators {
      * @param email the email to check
      * @return true if the email is valid, false otherwise
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isEmailValid(String email) {
         // https://www.baeldung.com/java-email-validation-regex
         return EmailValidator.getInstance().isValid(email);
@@ -56,6 +59,7 @@ public class Validators {
      * @param username the username to check
      * @return true if the username is valid, false otherwise
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isUsernameValid(String username) {
         return username != null && username.matches("^[a-zA-Z0-9]+$");
     }

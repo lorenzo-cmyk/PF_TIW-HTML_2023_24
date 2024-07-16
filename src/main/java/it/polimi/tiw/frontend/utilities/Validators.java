@@ -57,6 +57,7 @@ public class Validators {
      *
      * @param string the string to parse
      * @return the boolean parsed from the string
+     * @throws FailedInputParsingException if the string is not "true" or "false"
      */
     public static boolean parseBoolean(String string) throws FailedInputParsingException {
         return switch (string) {
@@ -74,6 +75,7 @@ public class Validators {
      *
      * @param string the string to parse
      * @return the integer parsed from the string
+     * @throws FailedInputParsingException if the string is not a valid integer
      */
     public static int parseInt(String string) throws FailedInputParsingException {
         try {
@@ -90,6 +92,7 @@ public class Validators {
      *
      * @param string the string to parse
      * @return the string validated
+     * @throws FailedInputParsingException if the string is not valid
      */
     public static String parseString(String string) throws FailedInputParsingException {
         if (string == null || string.isBlank() || string.isEmpty()) {
