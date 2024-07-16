@@ -96,9 +96,8 @@ public class UserAuthenticationServlet extends HttpServlet {
 
             // If the user is registered, we put the user object in the session, and we redirect to the home page
             request.getSession().setAttribute("user", authenticatedUser);
-            // FIXME: We don't have a home page yet...
-            response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, "Authentication successful! " +
-                    "Redirecting to the home page... (not implemented yet)");
+            // Redirect the user to the homepage
+            response.sendRedirect("home");
         } catch (FailedInputParsingException | InvalidArgumentException | LoginException e) {
             // Now we redirect the user to the registration page with the errorCode
             response.sendRedirect("login?errorCode=" + e.getErrorCode());
