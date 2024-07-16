@@ -111,10 +111,10 @@ public class UserDAO {
                 User authenticatedUser;
                 try {
                     authenticatedUser = new User(
+                            resultSet.getInt("UserID"),
                             resultSet.getString("Username"),
                             resultSet.getString("PasswordHash"),
-                            resultSet.getString("Email"),
-                            null
+                            resultSet.getString("Email")
                     );
                 } catch (InvalidArgumentException e) {
                     throw new IllegalStateException("The database is corrupted." +
