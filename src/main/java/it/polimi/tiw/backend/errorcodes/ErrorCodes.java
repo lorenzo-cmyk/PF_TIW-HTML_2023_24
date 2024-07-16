@@ -33,6 +33,16 @@ public enum ErrorCodes {
      * This error code is used for when the credentials provided does not match any user in the database.
      */
     LoginException(1006, "The credentials provided do not match any user in the database." +
+            " Please check your input and try again."),
+    /**
+     * This error code is used when the creation of a folder fails.
+     */
+    FolderCreationException(1007, "The provided parentFolderID and/or the ownerID are not valid." +
+            " Please check your input and try again."),
+    /**
+     * This error code is used when the deletion of a folder fails.
+     */
+    FolderDeletionException(1008, "The provided folderID is not valid." +
             " Please check your input and try again.");
 
     private final int errorCode;
