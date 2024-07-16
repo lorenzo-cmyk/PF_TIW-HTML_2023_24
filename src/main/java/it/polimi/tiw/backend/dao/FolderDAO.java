@@ -32,12 +32,13 @@ public class FolderDAO {
      * This method retrieves all the subfolders of a given folder.
      *
      * @param folderID the ID of the folder whose subfolders are to be retrieved.
+     * @param ownerID  the ID of the user who owns the folder.
      * @return a List of Folder objects, which represent the subfolders of the given folder.
      * @throws SQLException if an error occurs while retrieving the subfolders from the database (SQL-Related).
      */
-    public List<Folder> getSubfolders(int folderID) throws SQLException {
+    public List<Folder> getSubfolders(int folderID, int ownerID) throws SQLException {
         // The raw SQL query for retrieving the subfolders of a folder.
-        String findSubfoldersQuery = "SELECT * FROM Folders WHERE ParentFolderID = ?";
+        String findSubfoldersQuery = "SELECT * FROM Folders WHERE ParentFolderID = ? AND OwnerID = ?";
         List<Folder> subfolders = new ArrayList<>();
 
         // Try-with-resources statement used to automatically
@@ -45,6 +46,7 @@ public class FolderDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(findSubfoldersQuery)) {
             // Set the parameters of the query.
             preparedStatement.setInt(1, folderID);
+            preparedStatement.setInt(2, ownerID);
 
             // Execute the now parameterized query.
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
