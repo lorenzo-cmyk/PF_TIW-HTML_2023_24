@@ -183,18 +183,20 @@ public class FolderDAO {
      * This method retrieves a folder by looking for its ID.
      *
      * @param folderID the ID of the folder to be retrieved.
+     * @param ownerID  the ID of the user who owns the folder.
      * @return a Folder object representing the folder with the given ID.
      * @throws SQLException if an error occurs while retrieving the folder from the database (SQL-Related).
      */
     public Folder getFolderByID(int folderID, int ownerID) throws SQLException {
         // The raw SQL query for retrieving a folder by its ID.
-        String findFolderByIDQuery = "SELECT * FROM Folders WHERE FolderID = ?";
+        String findFolderByIDQuery = "SELECT * FROM Folders WHERE FolderID = ? AND OwnerID = ?";
 
         // Try-with-resources statement used to automatically
         // close the PreparedStatement when it is no longer needed.
         try (PreparedStatement preparedStatement = connection.prepareStatement(findFolderByIDQuery)) {
             // Set the parameters of the query.
             preparedStatement.setInt(1, folderID);
+            preparedStatement.setInt(2, ownerID);
 
             // Execute the now parameterized query.
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -232,6 +234,14 @@ public class FolderDAO {
         }
     }
 
+    /**
+     * This method builds the tree structure of the folders owned by a user.
+     *
+     * @param rootFolderID the ID of the root folder of the tree.
+     * @param ownerID      the ID of the user who owns the folders.
+     * @return a TreeNode object representing the root of the tree.
+     * @throws SQLException if an error occurs while building the tree (SQL-Related).
+     */
     public TreeNode<Folder> buildFolderTree(int rootFolderID, int ownerID) throws SQLException {
         TreeNode<Folder> rootNode = new TreeNode<>(null);
         List<Folder> rootSubfolders = getSubfolders(rootFolderID, ownerID);
