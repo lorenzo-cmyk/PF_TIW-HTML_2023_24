@@ -4,6 +4,7 @@ import it.polimi.tiw.backend.beans.Folder;
 import it.polimi.tiw.backend.beans.exceptions.InvalidArgumentException;
 import it.polimi.tiw.backend.dao.exceptions.FolderCreationException;
 import it.polimi.tiw.backend.dao.exceptions.FolderDeletionException;
+import it.polimi.tiw.backend.utilities.templates.TreeNode;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -229,6 +230,29 @@ public class FolderDAO {
                 return foundFolder;
             }
         }
+    }
+
+    public TreeNode<Folder> buildFolderTree(int rootFolderID, int ownerID) throws SQLException {
+        TreeNode<Folder> rootNode = new TreeNode<>(null);
+        List<Folder> rootSubfolders = getSubfolders(rootFolderID, ownerID);
+
+        for (Folder subfolder : rootSubfolders) {
+            rootNode.addChild(buildTreeNode(subfolder.getFolderID(), ownerID));
+        }
+
+        return rootNode;
+    }
+
+    private TreeNode<Folder> buildTreeNode(int folderID, int ownerID) throws SQLException {
+        Folder folder = getFolderByID(folderID, ownerID);
+        TreeNode<Folder> node = new TreeNode<>(folder);
+        List<Folder> subfolders = getSubfolders(folderID, ownerID);
+
+        for (Folder subfolder : subfolders) {
+            node.addChild(buildTreeNode(subfolder.getFolderID(), ownerID));
+        }
+
+        return node;
     }
 
 }
