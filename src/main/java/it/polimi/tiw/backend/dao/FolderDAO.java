@@ -102,6 +102,12 @@ public class FolderDAO {
                 }
             }
 
+            // Prevent the user from creating a folder inside a folder that it does not own.
+            Folder parentFolder = getFolderByID(newFolder.getParentFolderID(), newFolder.getOwnerID());
+            if (parentFolder == null) {
+                throw new FolderCreationException();
+            }
+
             // Since we are writing to the database, we need to use a transaction
             // in order to ensure that the operation is atomic.
             connection.setAutoCommit(false);
@@ -143,12 +149,13 @@ public class FolderDAO {
      * This method is used to delete a folder (and all its content) from the database.
      *
      * @param folderID the ID of the folder to be deleted.
+     * @param ownerID  the ID of the user who owns the folder.
      * @throws SQLException            if an error occurs while deleting the folder from the database (SQL-Related).
      * @throws FolderDeletionException if an error occurs while deleting the folder (non SQL-Related).
      */
-    public void deleteFolder(int folderID) throws SQLException, FolderDeletionException {
+    public void deleteFolder(int folderID, int ownerID) throws SQLException, FolderDeletionException {
         // The raw SQL query for deleting a folder.
-        String deleteFolderQuery = "DELETE FROM Folders WHERE FolderID = ?";
+        String deleteFolderQuery = "DELETE FROM Folders WHERE FolderID = ? AND OwnerID = ?";
 
         try {
             // Since we are writing to the database, we need to use a transaction
@@ -160,6 +167,7 @@ public class FolderDAO {
             try (PreparedStatement preparedStatement = connection.prepareStatement(deleteFolderQuery)) {
                 // Set the parameters of the query.
                 preparedStatement.setInt(1, folderID);
+                preparedStatement.setInt(2, ownerID);
 
                 // Execute the now parameterized query.
                 preparedStatement.executeUpdate();
