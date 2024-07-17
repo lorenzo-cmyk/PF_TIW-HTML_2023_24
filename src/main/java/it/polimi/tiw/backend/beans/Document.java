@@ -34,8 +34,7 @@ public class Document {
                     int ownerID, int folderID) throws InvalidArgumentException {
         if (!isIDValid(documentID) || !isStringValid(documentName) || !isDateValid(creationDate) ||
                 !isStringValid(type) || !isStringValid(summary) || !isIDValid(ownerID) || !isIDValid(folderID)) {
-            throw new InvalidArgumentException("Some of the arguments provided are invalid." +
-                    " Please check your input and try again.");
+            throw new InvalidArgumentException();
         }
 
         this.documentID = documentID;
@@ -62,8 +61,7 @@ public class Document {
             throws InvalidArgumentException {
         if (!isStringValid(documentName) || !isDateValid(creationDate) || !isStringValid(type) ||
                 !isStringValid(summary) || !isIDValid(ownerID) || !isIDValid(folderID)) {
-            throw new InvalidArgumentException("Some of the arguments provided are invalid." +
-                    " Please check your input and try again.");
+            throw new InvalidArgumentException();
         }
 
         this.documentID = -1;

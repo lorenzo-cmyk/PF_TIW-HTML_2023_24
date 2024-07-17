@@ -4,9 +4,10 @@ import it.polimi.tiw.backend.beans.User;
 import it.polimi.tiw.backend.beans.exceptions.InvalidArgumentException;
 import it.polimi.tiw.backend.dao.UserDAO;
 import it.polimi.tiw.backend.dao.exceptions.RegistrationException;
-import it.polimi.tiw.frontend.utilities.exceptions.FailedInputParsingException;
-import it.polimi.tiw.frontend.utilities.exceptions.PasswordMismatchException;
-import it.polimi.tiw.frontend.utilities.exceptions.UnknownErrorCodeException;
+import it.polimi.tiw.backend.utilities.Validators;
+import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
+import it.polimi.tiw.backend.utilities.exceptions.PasswordMismatchException;
+import it.polimi.tiw.backend.utilities.exceptions.UnknownErrorCodeException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +23,6 @@ import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.closeCon
 import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.getConnectionFromServlet;
 import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getTemplateEngineFromServlet;
 import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getWebContextFromServlet;
-import static it.polimi.tiw.frontend.utilities.Validators.*;
 
 /**
  * This servlet is used to handle the registration of a new user.
@@ -61,10 +61,10 @@ public class UserRegistrationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             // First, we get the success parameter from the request
-            boolean success = parseBoolean(request.getParameter("success") == null ?
+            boolean success = Validators.parseBoolean(request.getParameter("success") == null ?
                     "false" : request.getParameter("success"));
             // Then, we get the errorCode parameter from the request (0 if it is not present)
-            int errorCode = parseInt(request.getParameter("errorCode") == null ?
+            int errorCode = Validators.parseInt(request.getParameter("errorCode") == null ?
                     "0" : request.getParameter("errorCode"));
 
             // Now, we create a new WebContext object and we process the template
@@ -73,7 +73,7 @@ public class UserRegistrationServlet extends HttpServlet {
             if (!success && errorCode == 0) {
                 context.setVariable("message", "Please fill in the form to register a new user.");
             } else if (!success && errorCode != 0) {
-                context.setVariable("message", retrieveErrorMessageFromErrorCode(errorCode));
+                context.setVariable("message", Validators.retrieveErrorMessageFromErrorCode(errorCode));
             } else if (success && errorCode == 0) {
                 context.setVariable("message", "The user has been successfully registered!");
             } else if (success && errorCode != 0) {
@@ -95,14 +95,14 @@ public class UserRegistrationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             // First, we get the parameters from the request
-            String username = parseString(request.getParameter("username"));
-            String password = parseString(request.getParameter("password"));
-            String passwordRepeat = parseString(request.getParameter("confirmPassword"));
-            String email = parseString(request.getParameter("email"));
+            String username = Validators.parseString(request.getParameter("username"));
+            String password = Validators.parseString(request.getParameter("password"));
+            String passwordRepeat = Validators.parseString(request.getParameter("confirmPassword"));
+            String email = Validators.parseString(request.getParameter("email"));
 
             // Then, we validate the password and the password confirmation
             // (PasswordMismatchException is thrown if they do not match)
-            validatePassword(password, passwordRepeat);
+            Validators.validatePassword(password, passwordRepeat);
 
             // Now, we can try to create a User object
             // (InvalidArgumentException is thrown if the arguments are not valid)

@@ -11,9 +11,19 @@ public class InvalidArgumentException extends ExtendedException {
      * This constructor is used to create a new exception with a message.
      *
      * @param message the message of the exception
+     * @see InvalidEmailException
+     * @see InvalidUsernameException
+     * @see TooLongArgumentException
      */
     public InvalidArgumentException(String message) {
         super(message);
+    }
+
+    /**
+     * This constructor is used to create a new exception with the default message.
+     */
+    public InvalidArgumentException() {
+        super(ErrorCodes.InvalidArgumentException.getErrorMessage());
     }
 
     /**

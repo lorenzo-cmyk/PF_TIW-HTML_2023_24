@@ -8,12 +8,10 @@ import it.polimi.tiw.backend.utilities.templates.ExtendedException;
  */
 public class LoginException extends ExtendedException {
     /**
-     * This constructor is used to create a new exception with a message.
-     *
-     * @param message the message of the exception
+     * This constructor is used to create a new exception with the default message.
      */
-    public LoginException(String message) {
-        super(message);
+    public LoginException() {
+        super(ErrorCodes.LoginException.getErrorMessage());
     }
 
     /**

@@ -7,12 +7,10 @@ import it.polimi.tiw.backend.errorcodes.ErrorCodes;
  */
 public class InvalidUsernameException extends InvalidArgumentException {
     /**
-     * This constructor is used to create a new exception with a message.
-     *
-     * @param message the message of the exception
+     * This constructor is used to create a new exception with the default message.
      */
-    public InvalidUsernameException(String message) {
-        super(message);
+    public InvalidUsernameException() {
+        super(ErrorCodes.InvalidUsernameException.getErrorMessage());
     }
 
     /**

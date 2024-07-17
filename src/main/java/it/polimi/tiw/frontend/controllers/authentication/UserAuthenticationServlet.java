@@ -4,8 +4,9 @@ import it.polimi.tiw.backend.beans.User;
 import it.polimi.tiw.backend.beans.exceptions.InvalidArgumentException;
 import it.polimi.tiw.backend.dao.UserDAO;
 import it.polimi.tiw.backend.dao.exceptions.LoginException;
-import it.polimi.tiw.frontend.utilities.exceptions.FailedInputParsingException;
-import it.polimi.tiw.frontend.utilities.exceptions.UnknownErrorCodeException;
+import it.polimi.tiw.backend.utilities.Validators;
+import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
+import it.polimi.tiw.backend.utilities.exceptions.UnknownErrorCodeException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +22,6 @@ import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.closeCon
 import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.getConnectionFromServlet;
 import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getTemplateEngineFromServlet;
 import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getWebContextFromServlet;
-import static it.polimi.tiw.frontend.utilities.Validators.*;
 
 /**
  * This servlet is used to handle the authentication of a user.
@@ -59,7 +59,7 @@ public class UserAuthenticationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             // First, we get the errorCode parameter from the request (0 if it is not present)
-            int errorCode = parseInt(request.getParameter("errorCode") == null ?
+            int errorCode = Validators.parseInt(request.getParameter("errorCode") == null ?
                     "0" : request.getParameter("errorCode"));
 
             // Then, we create a new WebContext object and we process the template
@@ -68,7 +68,7 @@ public class UserAuthenticationServlet extends HttpServlet {
             if (errorCode == 0) {
                 context.setVariable("message", "Please enter your credentials to log in.");
             } else {
-                context.setVariable("message", retrieveErrorMessageFromErrorCode(errorCode));
+                context.setVariable("message", Validators.retrieveErrorMessageFromErrorCode(errorCode));
             }
 
             templateEngine.process("UserAuthenticationTemplate", context, response.getWriter());
@@ -84,8 +84,8 @@ public class UserAuthenticationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             // First, we get the username and password parameters from the request
-            String username = parseString(request.getParameter("username"));
-            String password = parseString(request.getParameter("password"));
+            String username = Validators.parseString(request.getParameter("username"));
+            String password = Validators.parseString(request.getParameter("password"));
 
             // Then, we use the credentials to create a new User object
             User user = new User(username, password);

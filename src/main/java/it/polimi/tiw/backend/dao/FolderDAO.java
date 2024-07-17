@@ -119,8 +119,7 @@ public class FolderDAO {
             // If the error is due to a violation of the foreign key constraint, we throw a FolderAccessException.
             // This means that the parentFolderID and/or the ownerID are not valid.
             if (e.getErrorCode() == 1452) {
-                throw new FolderCreationException("The provided parentFolderID and/or the ownerID are not valid." +
-                        " Please check your input and try again.");
+                throw new FolderCreationException();
             } else {
                 // If the error is due to another reason, we re-throw the exception.
                 throw e;
@@ -167,8 +166,7 @@ public class FolderDAO {
             // If the error is due to a violation of the foreign key constraint, we throw a FolderAccessException.
             // This means that the folderID is not valid.
             if (e.getErrorCode() == 1451) {
-                throw new FolderDeletionException("The provided folderID is not valid." +
-                        " Please check your input and try again.");
+                throw new FolderDeletionException();
             } else {
                 // If the error is due to another reason, we re-throw the exception.
                 throw e;

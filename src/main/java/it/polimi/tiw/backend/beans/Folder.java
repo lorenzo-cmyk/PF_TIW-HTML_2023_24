@@ -30,8 +30,7 @@ public class Folder {
             throws InvalidArgumentException {
         if (!isIDValid(folderID) || !isStringValid(folderName) || !isDateValid(creationDate) ||
                 !isIDValid(ownerID) || !isIDValid(parentFolderID)) {
-            throw new InvalidArgumentException("Some of the arguments provided are invalid." +
-                    " Please check your input and try again.");
+            throw new InvalidArgumentException();
         }
 
         this.folderID = folderID;
@@ -52,8 +51,7 @@ public class Folder {
     public Folder(String folderName, int ownerID, int parentFolderID)
             throws InvalidArgumentException {
         if (!isStringValid(folderName) || !isIDValid(ownerID) || !isIDValid(parentFolderID)) {
-            throw new InvalidArgumentException("Some of the arguments provided are invalid." +
-                    " Please check your input and try again.");
+            throw new InvalidArgumentException();
         }
 
         this.folderID = -1;

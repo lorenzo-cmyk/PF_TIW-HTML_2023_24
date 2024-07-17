@@ -29,17 +29,13 @@ public class User {
      */
     public User(String username, String password, String eMail) throws InvalidArgumentException {
         if (!isStringValid(username) || !isStringValid(password) || !isStringValid(eMail)) {
-            throw new InvalidArgumentException("Some of the arguments provided are null or empty." +
-                    " Please check your input and try again.");
+            throw new InvalidArgumentException();
         } else if (username.length() > 64 || password.length() > 128 || eMail.length() > 64) {
-            throw new TooLongArgumentException("Some of the arguments provided are too long." +
-                    " Please check your input and try again.");
+            throw new TooLongArgumentException();
         } else if (!isUsernameValid(username)) {
-            throw new InvalidUsernameException("The username provided is not syntactically valid." +
-                    " Make sure it is made only of alphanumeric characters and try again.");
+            throw new InvalidUsernameException();
         } else if (!isEmailValid(eMail)) {
-            throw new InvalidEmailException("The email provided is not syntactically valid." +
-                    " Please check your input and try again.");
+            throw new InvalidEmailException();
         }
 
         this.userID = -1;
@@ -58,14 +54,11 @@ public class User {
      */
     public User(String username, String password) throws InvalidArgumentException {
         if (!isStringValid(username) || !isStringValid(password)) {
-            throw new InvalidArgumentException("Some of the arguments provided are null or empty." +
-                    " Please check your input and try again.");
+            throw new InvalidArgumentException();
         } else if (username.length() > 64 || password.length() > 128) {
-            throw new TooLongArgumentException("Some of the arguments provided are too long." +
-                    " Please check your input and try again.");
+            throw new TooLongArgumentException();
         } else if (!isUsernameValid(username)) {
-            throw new InvalidUsernameException("The username provided is not syntactically valid." +
-                    " Make sure it is made only of alphanumeric characters and try again.");
+            throw new InvalidUsernameException();
         }
 
         this.userID = -1;
@@ -86,17 +79,13 @@ public class User {
      */
     public User(int userID, String username, String passwordHash, String eMail) throws InvalidArgumentException {
         if (!isIDValid(userID) || !isStringValid(username) || !isStringValid(passwordHash) || !isStringValid(eMail)) {
-            throw new InvalidArgumentException("Some of the arguments provided are null or empty." +
-                    " Please check your input and try again.");
+            throw new InvalidArgumentException();
         } else if (username.length() > 64 || passwordHash.length() > 128 || eMail.length() > 64) {
-            throw new TooLongArgumentException("Some of the arguments provided are too long." +
-                    " Please check your input and try again.");
+            throw new TooLongArgumentException();
         } else if (!isUsernameValid(username)) {
-            throw new InvalidUsernameException("The username provided is not syntactically valid." +
-                    " Make sure it is made only of alphanumeric characters and try again.");
+            throw new InvalidUsernameException();
         } else if (!isEmailValid(eMail)) {
-            throw new InvalidEmailException("The email provided is not syntactically valid." +
-                    " Please check your input and try again.");
+            throw new InvalidEmailException();
         }
 
         this.userID = userID;
