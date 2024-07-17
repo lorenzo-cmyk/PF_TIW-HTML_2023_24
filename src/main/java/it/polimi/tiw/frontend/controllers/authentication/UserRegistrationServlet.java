@@ -75,7 +75,8 @@ public class UserRegistrationServlet extends HttpServlet {
             } else if (!success && errorCode != 0) {
                 context.setVariable("message", Validators.retrieveErrorMessageFromErrorCode(errorCode));
             } else if (success && errorCode == 0) {
-                context.setVariable("message", "The user has been successfully registered!");
+                context.setVariable("message", "The user has been successfully registered!" +
+                        " You can now log in with your credentials.");
             } else if (success && errorCode != 0) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid combination of parameters." +
                         " Are you trying to hijack the request?");
