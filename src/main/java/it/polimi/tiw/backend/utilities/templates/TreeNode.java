@@ -9,8 +9,8 @@ import java.util.List;
  * @param <T> The type of the data stored in the node.
  */
 public class TreeNode<T> {
-    private T nodeData;
-    private List<TreeNode<T>> nodeChildren;
+    private final T nodeData;
+    private final List<TreeNode<T>> nodeChildren;
 
     /**
      * Constructs a new TreeNode with the specified data and no children.
@@ -32,30 +32,12 @@ public class TreeNode<T> {
     }
 
     /**
-     * Sets the data for the node.
-     *
-     * @param nodeData The data to be stored in the node.
-     */
-    public void setNodeData(T nodeData) {
-        this.nodeData = nodeData;
-    }
-
-    /**
      * Returns the list of children nodes.
      *
      * @return The list of children nodes.
      */
     public List<TreeNode<T>> getNodeChildren() {
         return nodeChildren;
-    }
-
-    /**
-     * Sets the list of children nodes.
-     *
-     * @param nodeChildren The list of children nodes to be set.
-     */
-    public void setNodeChildren(List<TreeNode<T>> nodeChildren) {
-        this.nodeChildren = nodeChildren;
     }
 
     /**
