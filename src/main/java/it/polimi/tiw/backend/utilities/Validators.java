@@ -1,5 +1,6 @@
 package it.polimi.tiw.backend.utilities;
 
+import it.polimi.tiw.backend.errorcodes.ErrorCodes;
 import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
 import it.polimi.tiw.backend.utilities.exceptions.PasswordMismatchException;
 import it.polimi.tiw.backend.utilities.exceptions.UnknownErrorCodeException;
@@ -88,15 +89,12 @@ public class Validators {
      * @throws UnknownErrorCodeException if the errorCode is unknown
      */
     public static String retrieveErrorMessageFromErrorCode(int errorCode) throws UnknownErrorCodeException {
-        // Fist we scan the backend ErrorCodes enum to see if the errorCode is there
-        for (it.polimi.tiw.backend.errorcodes.ErrorCodes backendErrorCode :
-                it.polimi.tiw.backend.errorcodes.ErrorCodes.values()) {
-            if (backendErrorCode.getErrorCode() == errorCode) {
-                return backendErrorCode.getErrorMessage();
+        for (ErrorCodes entry : ErrorCodes.values()) {
+            if (entry.getErrorCode() == errorCode) {
+                return entry.getErrorMessage();
             }
         }
 
-        // If the errorCode is not in the frontend ErrorCodes enum, we throw an exception
         throw new UnknownErrorCodeException();
     }
 
