@@ -1,8 +1,8 @@
 package it.polimi.tiw.frontend.utilities;
 
-import it.polimi.tiw.frontend.utilities.exceptions.FailedInputParsingException;
-import it.polimi.tiw.frontend.utilities.exceptions.PasswordMismatchException;
-import it.polimi.tiw.frontend.utilities.exceptions.UnknownErrorCodeException;
+import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
+import it.polimi.tiw.backend.utilities.exceptions.PasswordMismatchException;
+import it.polimi.tiw.backend.utilities.exceptions.UnknownErrorCodeException;
 
 /**
  * This class provides some utility methods to validate data.

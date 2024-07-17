@@ -1,18 +1,18 @@
-package it.polimi.tiw.frontend.utilities.exceptions;
+package it.polimi.tiw.backend.utilities.exceptions;
 
 import it.polimi.tiw.backend.utilities.templates.ExtendedException;
 import it.polimi.tiw.frontend.errorcodes.ErrorCodes;
 
 /**
- * This exception is thrown when the input parsing fails.
+ * This exception is thrown when the password and the password confirmation do not match.
  */
-public class FailedInputParsingException extends ExtendedException {
+public class PasswordMismatchException extends ExtendedException {
     /**
      * This constructor is used to create a new exception with a message.
      *
      * @param message the message of the exception
      */
-    public FailedInputParsingException(String message) {
+    public PasswordMismatchException(String message) {
         super(message);
     }
 
@@ -22,6 +22,6 @@ public class FailedInputParsingException extends ExtendedException {
      * @return the errorCode of the exception
      */
     public int getErrorCode() {
-        return ErrorCodes.FailedInputParsingException.getErrorCode();
+        return ErrorCodes.PasswordMismatchException.getErrorCode();
     }
 }
