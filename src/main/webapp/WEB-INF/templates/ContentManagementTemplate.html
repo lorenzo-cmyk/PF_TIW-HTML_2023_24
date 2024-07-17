@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h2>Content management</h2>
+
+<div th:if="${message}" th:text="${message}"></div>
+
+<div>
+    <h3>Create a new root folder</h3>
+    <form action="content-management" method="post">
+        <label for="folderName">Folder name:</label>
+        <input id="folderName" name="folderName" type="text">
+        <input id="parentFolderID" type="hidden" value="-1">
+        <input type="submit" value="Create">
+    </form>
+</div>
+
+</body>
+</html>
