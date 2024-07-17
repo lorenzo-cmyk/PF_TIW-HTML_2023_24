@@ -7,12 +7,10 @@ import it.polimi.tiw.backend.errorcodes.ErrorCodes;
  */
 public class InvalidEmailException extends InvalidArgumentException {
     /**
-     * This constructor is used to create a new exception with a message.
-     *
-     * @param message the message of the exception
+     * This constructor is used to create a new exception with the default message.
      */
-    public InvalidEmailException(String message) {
-        super(message);
+    public InvalidEmailException() {
+        super(ErrorCodes.InvalidEmailException.getErrorMessage());
     }
 
     /**
