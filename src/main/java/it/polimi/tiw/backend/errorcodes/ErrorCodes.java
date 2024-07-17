@@ -43,7 +43,22 @@ public enum ErrorCodes {
      * This error code is used when the deletion of a folder fails.
      */
     FolderDeletionException(1008, "The provided folderID is not valid." +
-            " Please check your input and try again.");
+            " Please check your input and try again."),
+    /**
+     * This error code is used when the arguments provided are not valid.
+     */
+    PasswordMismatchException(1009, "The fields password and password confirmation do not match." +
+            " . Please check your input and try again."),
+    /**
+     * This error code is used when the user tries to look up a non-existing errorCode
+     */
+    UnknownErrorCode(1010, "The error code provided does not exist." +
+            " Please check your input and try again."),
+    /**
+     * This error code in case of failure in parsing the input
+     */
+    FailedInputParsingException(1011, "The input provided is not valid." +
+            " Please check that all fields are valid and populated and try again .");
 
     private final int errorCode;
     private final String errorMessage;
