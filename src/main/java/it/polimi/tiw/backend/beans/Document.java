@@ -1,6 +1,7 @@
 package it.polimi.tiw.backend.beans;
 
 import it.polimi.tiw.backend.beans.exceptions.InvalidArgumentException;
+import it.polimi.tiw.backend.beans.exceptions.TooLongArgumentException;
 
 import java.util.Date;
 
@@ -35,6 +36,8 @@ public class Document {
         if (!isIDValid(documentID) || !isStringValid(documentName) || !isDateValid(creationDate) ||
                 !isStringValid(type) || !isStringValid(summary) || !isIDValid(ownerID) || !isIDValid(folderID)) {
             throw new InvalidArgumentException();
+        } else if (documentName.length() > 64 || type.length() > 64 || summary.length() > 4096) {
+            throw new TooLongArgumentException();
         }
 
         this.documentID = documentID;
@@ -62,6 +65,8 @@ public class Document {
         if (!isStringValid(documentName) || !isDateValid(creationDate) || !isStringValid(type) ||
                 !isStringValid(summary) || !isIDValid(ownerID) || !isIDValid(folderID)) {
             throw new InvalidArgumentException();
+        } else if (documentName.length() > 64 || type.length() > 64 || summary.length() > 4096) {
+            throw new TooLongArgumentException();
         }
 
         this.documentID = -1;

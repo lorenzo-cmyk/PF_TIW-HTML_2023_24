@@ -1,6 +1,7 @@
 package it.polimi.tiw.backend.beans;
 
 import it.polimi.tiw.backend.beans.exceptions.InvalidArgumentException;
+import it.polimi.tiw.backend.beans.exceptions.TooLongArgumentException;
 
 import java.util.Date;
 
@@ -31,6 +32,8 @@ public class Folder {
         if (!isIDValid(folderID) || !isStringValid(folderName) || !isDateValid(creationDate) ||
                 !isIDValid(ownerID) || !isIDValid(parentFolderID)) {
             throw new InvalidArgumentException();
+        } else if (folderName.length() > 64) {
+            throw new TooLongArgumentException();
         }
 
         this.folderID = folderID;
@@ -52,6 +55,8 @@ public class Folder {
             throws InvalidArgumentException {
         if (!isStringValid(folderName) || !isIDValid(ownerID) || !isIDValid(parentFolderID)) {
             throw new InvalidArgumentException();
+        } else if (folderName.length() > 64) {
+            throw new TooLongArgumentException();
         }
 
         this.folderID = -1;
