@@ -4,6 +4,7 @@ import it.polimi.tiw.backend.beans.Folder;
 import it.polimi.tiw.backend.beans.User;
 import it.polimi.tiw.backend.beans.exceptions.InvalidArgumentException;
 import it.polimi.tiw.backend.dao.FolderDAO;
+import it.polimi.tiw.backend.dao.exceptions.DuplicateFolderException;
 import it.polimi.tiw.backend.dao.exceptions.FolderCreationException;
 import it.polimi.tiw.backend.utilities.Validators;
 import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
@@ -113,7 +114,8 @@ public class ContentManagementServlet extends HttpServlet {
 
             // Redirect to the content management page
             response.sendRedirect("content-management?success=true");
-        } catch (FailedInputParsingException | InvalidArgumentException | FolderCreationException e) {
+        } catch (FailedInputParsingException | InvalidArgumentException |
+                 FolderCreationException | DuplicateFolderException e) {
             // Now we redirect the user to the registration page with the errorCode
             response.sendRedirect("content-management?errorCode=" + e.getErrorCode());
         } catch (SQLException e) {
