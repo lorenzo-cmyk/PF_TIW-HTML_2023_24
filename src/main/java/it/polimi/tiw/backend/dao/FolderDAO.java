@@ -93,6 +93,15 @@ public class FolderDAO {
                 " VALUES (?, NOW(), ?, ?)";
 
         try {
+            // First, retrieve the subfolders of the parent folder. If a subfolder with the same name already exists,
+            // we throw a FolderCreationException as two folders with the same name cannot exist in the same directory.
+            List<Folder> subfolders = getSubfolders(newFolder.getParentFolderID(), newFolder.getOwnerID());
+            for (Folder subfolder : subfolders) {
+                if (subfolder.getFolderName().equals(newFolder.getFolderName())) {
+                    throw new FolderCreationException();
+                }
+            }
+
             // Since we are writing to the database, we need to use a transaction
             // in order to ensure that the operation is atomic.
             connection.setAutoCommit(false);
