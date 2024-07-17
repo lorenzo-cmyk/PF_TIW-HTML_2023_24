@@ -2,6 +2,7 @@ package it.polimi.tiw.backend.dao;
 
 import it.polimi.tiw.backend.beans.Folder;
 import it.polimi.tiw.backend.beans.exceptions.InvalidArgumentException;
+import it.polimi.tiw.backend.dao.exceptions.DuplicateFolderException;
 import it.polimi.tiw.backend.dao.exceptions.FolderCreationException;
 import it.polimi.tiw.backend.dao.exceptions.FolderDeletionException;
 import it.polimi.tiw.backend.utilities.templates.TreeNode;
@@ -84,13 +85,20 @@ public class FolderDAO {
      * This method creates a new folder in the database.
      *
      * @param newFolder the Folder object representing the folder to be created.
-     * @throws SQLException            if an error occurs while creating the folder in the database (SQL-Related).
-     * @throws FolderCreationException if an error occurs while creating the folder (non SQL-Related).
+     * @throws SQLException             if an error occurs while creating the folder in the database (SQL-Related).
+     * @throws FolderCreationException  if an error occurs while creating the folder (non SQL-Related).
+     * @throws DuplicateFolderException if a folder with the same name already exists in the parent directory.
      */
-    public void createFolder(Folder newFolder) throws SQLException, FolderCreationException {
+    public void createFolder(Folder newFolder) throws SQLException, FolderCreationException, DuplicateFolderException {
         // The raw SQL query for creating a new folder.
-        String createFolderQuery = "INSERT INTO Folders (FolderName, CreationDate, OwnerID, ParentFolderID)" +
-                " VALUES (?, NOW(), ?, ?)";
+        String createFolderQuery;
+        if (newFolder.getParentFolderID() != -1) {
+            createFolderQuery = "INSERT INTO Folders (FolderName, CreationDate, OwnerID, ParentFolderID)" +
+                    " VALUES (?, NOW(), ?, ?)";
+        } else {
+            createFolderQuery = "INSERT INTO Folders (FolderName, CreationDate, OwnerID, ParentFolderID)" +
+                    " VALUES (?, NOW(), ?, NULL)";
+        }
 
         try {
             // First, retrieve the subfolders of the parent folder. If a subfolder with the same name already exists,
@@ -98,14 +106,15 @@ public class FolderDAO {
             List<Folder> subfolders = getSubfolders(newFolder.getParentFolderID(), newFolder.getOwnerID());
             for (Folder subfolder : subfolders) {
                 if (subfolder.getFolderName().equals(newFolder.getFolderName())) {
-                    throw new FolderCreationException();
+                    throw new DuplicateFolderException();
                 }
             }
 
             // Prevent the user from creating a folder inside a folder that it does not own.
             Folder parentFolder = getFolderByID(newFolder.getParentFolderID(), newFolder.getOwnerID());
             if (parentFolder == null && newFolder.getParentFolderID() != -1) {
-                throw new FolderCreationException();
+                throw new SecurityException("The user is attempting to create a folder " +
+                        "inside a directory that it does not own. Security violation detected.");
             }
 
             // Since we are writing to the database, we need to use a transaction
@@ -118,7 +127,9 @@ public class FolderDAO {
                 // Set the parameters of the query.
                 preparedStatement.setString(1, newFolder.getFolderName());
                 preparedStatement.setInt(2, newFolder.getOwnerID());
-                preparedStatement.setInt(3, newFolder.getParentFolderID());
+                if (newFolder.getParentFolderID() != -1) {
+                    preparedStatement.setInt(3, newFolder.getParentFolderID());
+                }
 
                 // Execute the now parameterized query.
                 preparedStatement.executeUpdate();
