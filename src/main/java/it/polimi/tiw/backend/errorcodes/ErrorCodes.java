@@ -58,7 +58,13 @@ public enum ErrorCodes {
      * This error code in case of failure in parsing the input
      */
     FailedInputParsingException(1011, "The input provided is not valid." +
-            " Please check that all fields are valid and populated and try again .");
+            " Please check that all fields are valid and populated and try again ."),
+    /**
+     * This error code is used when the user tries to create a folder with a name
+     * that already exists in the parent directory.
+     */
+    DuplicateFolderException(1012, "A folder with the same name already exists" +
+            "in the parent directory. Please check your input and try again.");
 
     private final int errorCode;
     private final String errorMessage;
