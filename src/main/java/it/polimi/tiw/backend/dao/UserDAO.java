@@ -64,8 +64,7 @@ public class UserDAO {
             if (e.getErrorCode() == 1062) {
                 // If the error is due to a unique constraint violation, we throw a RegistrationException.
                 // This errorCode is specific to MySQL, and it means that a unique constraint was violated.
-                throw new RegistrationException("Unable to register user." +
-                        " The username maybe already taken. Please try again with a different one.");
+                throw new RegistrationException();
             } else {
                 // If the error is due to another reason, we re-throw the exception.
                 throw e;
@@ -102,8 +101,7 @@ public class UserDAO {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 // If the query returns no results, the user is not found or the password is incorrect.
                 if (!resultSet.next()) {
-                    throw new LoginException("The credentials provided do not match any user in the database." +
-                            " Please check your input and try again.");
+                    throw new LoginException();
                 }
 
                 // If the query returns a result, the user is authenticated.

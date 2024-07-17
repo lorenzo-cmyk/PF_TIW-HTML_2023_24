@@ -8,12 +8,10 @@ import it.polimi.tiw.backend.utilities.templates.ExtendedException;
  */
 public class RegistrationException extends ExtendedException {
     /**
-     * This constructor is used to create a new exception with a message.
-     *
-     * @param message the message of the exception
+     * This constructor is used to create a new exception with the default message.
      */
-    public RegistrationException(String message) {
-        super(message);
+    public RegistrationException() {
+        super(ErrorCodes.RegistrationException.getErrorMessage());
     }
 
     /**

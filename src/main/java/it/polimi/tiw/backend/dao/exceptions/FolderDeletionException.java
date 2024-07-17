@@ -8,12 +8,10 @@ import it.polimi.tiw.backend.utilities.templates.ExtendedException;
  */
 public class FolderDeletionException extends ExtendedException {
     /**
-     * This constructor is used to create a new exception with a message.
-     *
-     * @param message the message of the exception
+     * This constructor is used to create a new exception with the default message.
      */
-    public FolderDeletionException(String message) {
-        super(message);
+    public FolderDeletionException() {
+        super(ErrorCodes.FolderDeletionException.getErrorMessage());
     }
 
     /**

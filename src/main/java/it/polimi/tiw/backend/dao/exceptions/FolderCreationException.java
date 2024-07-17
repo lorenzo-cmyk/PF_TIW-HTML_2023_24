@@ -8,12 +8,10 @@ import it.polimi.tiw.backend.utilities.templates.ExtendedException;
  */
 public class FolderCreationException extends ExtendedException {
     /**
-     * This constructor is used to create a new exception with a message.
-     *
-     * @param message the message of the exception
+     * This constructor is used to create a new exception with the default message.
      */
-    public FolderCreationException(String message) {
-        super(message);
+    public FolderCreationException() {
+        super(ErrorCodes.FolderCreationException.getErrorMessage());
     }
 
     /**
