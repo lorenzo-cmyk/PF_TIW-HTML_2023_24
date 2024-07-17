@@ -104,7 +104,7 @@ public class FolderDAO {
 
             // Prevent the user from creating a folder inside a folder that it does not own.
             Folder parentFolder = getFolderByID(newFolder.getParentFolderID(), newFolder.getOwnerID());
-            if (parentFolder == null) {
+            if (parentFolder == null && newFolder.getParentFolderID() != -1) {
                 throw new FolderCreationException();
             }
 
