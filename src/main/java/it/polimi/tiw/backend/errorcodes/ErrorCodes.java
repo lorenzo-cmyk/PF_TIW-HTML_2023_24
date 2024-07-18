@@ -64,7 +64,28 @@ public enum ErrorCodes {
      * that already exists in the parent directory.
      */
     DuplicateFolderException(1012, "A folder with the same name already exists" +
-            "in the parent directory. Please check your input and try again.");
+            "in the parent directory. Please check your input and try again."),
+    /**
+     * This error code is used when the creation of a document fails.
+     */
+    DocumentCreationException(1013, "The provided folderID and/or the ownerID are not valid." +
+            " Please check your input and try again."),
+    /**
+     * This error code is used when the deletion of a document fails.
+     */
+    DocumentDeletionException(1014, "The provided documentID is not valid." +
+            " Please check your input and try again."),
+    /**
+     * This error code is used when the moving of a document fails.
+     */
+    DocumentMovingException(1015, "The provided documentID and/or" +
+            "the new parentFolderID are not valid. Please check your input and try again."),
+    /**
+     * This error code is used when the user tries to create a document with a name
+     * that already exists in the destination directory.
+     */
+    DuplicateDocumentException(1016, "A document with the same name already exists" +
+            "in the destination directory. Please check your input and try again.");
 
     private final int errorCode;
     private final String errorMessage;
