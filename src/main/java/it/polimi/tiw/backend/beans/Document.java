@@ -36,7 +36,7 @@ public class Document {
         if (!isIDValid(documentID) || !isStringValid(documentName) || !isDateValid(creationDate) ||
                 !isStringValid(type) || !isStringValid(summary) || !isIDValid(ownerID) || !isIDValid(folderID)) {
             throw new InvalidArgumentException();
-        } else if (documentName.length() > 64 || type.length() > 64 || summary.length() > 4096) {
+        } else if (documentName.length() > 64 || type.length() > 64 || summary.length() > 256) {
             throw new TooLongArgumentException();
         }
 
@@ -65,7 +65,7 @@ public class Document {
         if (!isStringValid(documentName) || !isDateValid(creationDate) || !isStringValid(type) ||
                 !isStringValid(summary) || !isIDValid(ownerID) || !isIDValid(folderID)) {
             throw new InvalidArgumentException();
-        } else if (documentName.length() > 64 || type.length() > 64 || summary.length() > 4096) {
+        } else if (documentName.length() > 64 || type.length() > 64 || summary.length() > 256) {
             throw new TooLongArgumentException();
         }
 
