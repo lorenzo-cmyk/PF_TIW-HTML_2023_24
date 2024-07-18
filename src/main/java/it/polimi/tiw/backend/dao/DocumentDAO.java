@@ -5,6 +5,7 @@ import it.polimi.tiw.backend.beans.Folder;
 import it.polimi.tiw.backend.beans.exceptions.InvalidArgumentException;
 import it.polimi.tiw.backend.dao.exceptions.DocumentCreationException;
 import it.polimi.tiw.backend.dao.exceptions.DocumentDeletionException;
+import it.polimi.tiw.backend.dao.exceptions.DocumentMovingException;
 import it.polimi.tiw.backend.dao.exceptions.DuplicateDocumentException;
 
 import java.sql.Connection;
@@ -268,4 +269,81 @@ public class DocumentDAO {
         }
     }
 
+    /**
+     * This method is used to move a document to a different folder.
+     *
+     * @param documentID the ID of the document to be moved.
+     * @param ownerID    the ID of the user who owns the document.
+     * @param folderID   the ID of the folder to which the document is to be moved.
+     * @throws SQLException            if an error occurs while moving the document in the database (SQL-Related).
+     * @throws DocumentMovingException if an error occurs while moving the document (non SQL-Related).
+     */
+    public void moveDocument(int documentID, int ownerID, int folderID) throws SQLException, DocumentMovingException {
+        // The raw SQL query for moving a document.
+        String moveDocumentQuery;
+        if (folderID != -1) {
+            moveDocumentQuery = "UPDATE Documents SET FolderID = ? WHERE DocumentID = ? AND OwnerID = ?";
+        } else {
+            moveDocumentQuery = "UPDATE Documents SET FolderID = NULL WHERE DocumentID = ? AND OwnerID = ?";
+        }
+
+        try {
+            Document document = getDocumentByID(documentID, ownerID);
+            // Check that the document we want to move exists and is owned by the user.
+            if (document == null) {
+                throw new DocumentMovingException();
+            }
+            // Check that the user is not attempting to move the document where it already is.
+            if (document.getFolderID() == folderID) {
+                return;
+            }
+            // Check that the user is not attempting to move the document to a folder that it does not own.
+            FolderDAO folderDAO = new FolderDAO(connection);
+            Folder newFolder = folderDAO.getFolderByID(folderID, ownerID);
+            if (newFolder == null && folderID != -1) {
+                throw new SecurityException("The user is attempting to move a document " +
+                        "to a directory that it does not own. Security violation detected.");
+            }
+
+            // Since we are writing to the database, we need to use a transaction
+            // in order to ensure that the operation is atomic.
+            connection.setAutoCommit(false);
+
+            // Try-with-resources statement used to automatically
+            // close the PreparedStatement when it is no longer needed.
+            try (PreparedStatement preparedStatement = connection.prepareStatement(moveDocumentQuery)) {
+                // Set the parameters of the query.
+                if (folderID != -1) {
+                    preparedStatement.setInt(1, folderID);
+                    preparedStatement.setInt(2, documentID);
+                    preparedStatement.setInt(3, ownerID);
+                } else {
+                    preparedStatement.setInt(1, documentID);
+                    preparedStatement.setInt(2, ownerID);
+                }
+
+                // Execute the now parameterized query.
+                preparedStatement.executeUpdate();
+
+                // The document was successfully moved, so we can safely commit the transaction.
+                connection.commit();
+            }
+
+        } catch (SQLException e) {
+            // If an error occurs during the registration process, we need to roll back the transaction.
+            connection.rollback();
+
+            // If the error is due to a violation of the foreign key constraint, we throw a DocumentMovingException.
+            // This means that the documentID and/or ownerID are not valid.
+            if (e.getErrorCode() == 1452) {
+                throw new DocumentMovingException();
+            } else {
+                // If the error is due to another reason, we re-throw the exception.
+                throw e;
+            }
+        } finally {
+            // Restore the default behavior of the connection.
+            connection.setAutoCommit(true);
+        }
+    }
 }
