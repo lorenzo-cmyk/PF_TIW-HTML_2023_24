@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS Documents
     DocumentName VARCHAR(64) NOT NULL,           -- Name of the document
     CreationDate DATETIME    NOT NULL,           -- Date and time the document was created
     Type         VARCHAR(64) NOT NULL,           -- Type of the document (e.g., PDF, TXT)
-    Summary      TEXT,                           -- Optional summary of the document's content
+    Summary      VARCHAR(256),                   -- Optional summary of the document's content
     OwnerID      INT         NOT NULL,           -- UserID of the document's owner
     FolderID     INT,                            -- FolderID of the folder containing the document
     FOREIGN KEY (OwnerID) REFERENCES Users (UserID) ON DELETE CASCADE ON UPDATE CASCADE,
