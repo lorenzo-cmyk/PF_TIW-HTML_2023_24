@@ -17,7 +17,9 @@
 <div>
     <h2>Documents</h2>
     <ul>
-        <li th:each="document : ${documents}" th:text="${document.documentName}">Document Name</li>
+        <li th:each="document : ${documents}">
+            <a th:href="@{/document(documentID=${document.documentID})}" th:text="${document.documentName}">Document Name</a>
+        </li>
     </ul>
 </div>
 </body>
