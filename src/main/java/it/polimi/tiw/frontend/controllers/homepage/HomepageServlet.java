@@ -1,4 +1,4 @@
-package it.polimi.tiw.frontend.controllers;
+package it.polimi.tiw.frontend.controllers.homepage;
 
 import it.polimi.tiw.backend.beans.Folder;
 import it.polimi.tiw.backend.beans.User;
@@ -6,7 +6,6 @@ import it.polimi.tiw.backend.dao.FolderDAO;
 import it.polimi.tiw.backend.utilities.Validators;
 import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
 import it.polimi.tiw.backend.utilities.templates.TreeNode;
-import it.polimi.tiw.frontend.controllers.home.HomepageActionEnumeration;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

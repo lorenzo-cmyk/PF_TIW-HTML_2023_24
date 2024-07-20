@@ -1,4 +1,4 @@
-package it.polimi.tiw.frontend.controllers.home;
+package it.polimi.tiw.frontend.controllers.homepage;
 
 /**
  * Defines the enumeration for homepage actions with associated action codes.
