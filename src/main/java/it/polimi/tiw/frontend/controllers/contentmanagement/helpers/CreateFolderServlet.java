@@ -1,6 +1,5 @@
 package it.polimi.tiw.frontend.controllers.contentmanagement.helpers;
 
-
 import it.polimi.tiw.backend.beans.Folder;
 import it.polimi.tiw.backend.beans.User;
 import it.polimi.tiw.backend.beans.exceptions.InvalidArgumentException;
@@ -60,7 +59,8 @@ public class CreateFolderServlet extends HttpServlet {
         try {
             // Retrieve and parse the parameters from the request
             String folderName = Validators.parseString(request.getParameter("folderName"));
-            int parentFolderID = Validators.parseInt(request.getParameter("parentFolderID"));
+            // Yes, it should be parentFolderID, not folderID, it's done so to stay consistent with the other servlets
+            int parentFolderID = Validators.parseInt(request.getParameter("folderID"));
             int ownerID = ((User) request.getSession().getAttribute("user")).getUserID();
 
             // Create the folder object
