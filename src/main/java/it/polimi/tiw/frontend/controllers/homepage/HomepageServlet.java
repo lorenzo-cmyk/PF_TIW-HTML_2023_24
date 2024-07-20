@@ -76,8 +76,8 @@ public class HomepageServlet extends HttpServlet {
                 folderURL = "";
             } else {
                 // TODO: Implementation not done yet
-                message = "DEFAULT_ACTION_HOMEPAGE";
-                folderURL = "";
+                message = "Hi, welcome to the DMS!";
+                folderURL = "/folder";
             }
 
             // Retrieving the user object from the session

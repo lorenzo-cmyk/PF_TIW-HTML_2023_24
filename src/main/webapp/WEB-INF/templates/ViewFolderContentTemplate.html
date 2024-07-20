@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${folderName}">Folder Name</title>
+</head>
+<body>
+<h1 th:text="${folderName}">Folder Name</h1>
+<div>
+    <h2>Subfolders</h2>
+    <ul>
+        <li th:each="subfolder : ${subfolders}">
+            <a th:href="@{/folder(folderID=${subfolder.folderID})}" th:text="${subfolder.folderName}">Subfolder Name</a>
+        </li>
+    </ul>
+</div>
+<div>
+    <h2>Documents</h2>
+    <ul>
+        <li th:each="document : ${documents}" th:text="${document.documentName}">Document Name</li>
+    </ul>
+</div>
+</body>
+</html>
