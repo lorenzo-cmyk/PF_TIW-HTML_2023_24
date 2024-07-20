@@ -9,6 +9,8 @@
 
 <a href="logout">Logout</a>
 
+<div th:if="${message}" th:text="${message}"></div>
+
 <ul th:insert="~{::subtree(fragment='subtree')}" th:with="nodes=${foldersTree.getNodeChildren}"></ul>
 
 <!-- Recursive fragment for rendering subtrees -->

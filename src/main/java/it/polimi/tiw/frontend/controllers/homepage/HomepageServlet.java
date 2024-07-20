@@ -1,11 +1,14 @@
 package it.polimi.tiw.frontend.controllers.homepage;
 
+import it.polimi.tiw.backend.beans.Document;
 import it.polimi.tiw.backend.beans.Folder;
 import it.polimi.tiw.backend.beans.User;
+import it.polimi.tiw.backend.dao.DocumentDAO;
 import it.polimi.tiw.backend.dao.FolderDAO;
 import it.polimi.tiw.backend.utilities.Validators;
 import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
 import it.polimi.tiw.backend.utilities.templates.TreeNode;
+import it.polimi.tiw.backend.utilities.templates.Tuple;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,6 +64,9 @@ public class HomepageServlet extends HttpServlet {
             int actionCode = Validators.parseInt(request.getParameter("actionCode") == null ?
                     "0" : request.getParameter("actionCode"));
 
+            // Creating the WebContext object that will be passed to the Thymeleaf template
+            WebContext webContext = getWebContextFromServlet(this, request, response);
+
             // Building the page message and the folderURL based on the actionCode
             String message;
             String folderURL;
@@ -71,8 +77,15 @@ public class HomepageServlet extends HttpServlet {
                 message = "Choose the folder where you want to create the new document";
                 folderURL = getFoldersLink_CreateDocument(request);
             } else if (actionCode == HomepageActionEnumeration.CHOOSE_FOLDER_MOVE_DOCUMENT.getActionCode()) {
-                // TODO: Implement the correct message according to the specifications
-                message = "Choose the folder where you want to move the document into";
+                Tuple<String, Integer> results = getCompliantMessage_MoveDocument(request);
+                if(results == null) {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                            "Unable to move the document due to a critical error in the database.");
+                    return;
+                }
+                webContext.setVariable("originalFolderID", results.secondItem());
+
+                message = results.firstItem();
                 folderURL = getFoldersLink_MoveDocument(request);
             } else {
                 message = "Hi, welcome to the DMS!";
@@ -84,9 +97,6 @@ public class HomepageServlet extends HttpServlet {
             // Building a FolderDAO object and using it to retrieve the client's folders tree
             FolderDAO folderDAO = new FolderDAO(servletConnection);
             TreeNode<Folder> foldersTree = folderDAO.buildFolderTree(-1, user.getUserID());
-
-            // Creating the WebContext object that will be passed to the Thymeleaf template
-            WebContext webContext = getWebContextFromServlet(this, request, response);
 
             webContext.setVariable("foldersTree", foldersTree);
             webContext.setVariable("message", message);
@@ -129,6 +139,36 @@ public class HomepageServlet extends HttpServlet {
 
         // The URL will be relative and not absolute, as it will be used in the HTML
         return ("/move/move-document?documentID=" + documentID);
+    }
+
+    private Tuple<String, Integer> getCompliantMessage_MoveDocument(HttpServletRequest request)
+            throws FailedInputParsingException {
+        // Retrieve and parse the parameters from the request and the session
+        int documentID = Validators.parseInt(request.getParameter("documentID"));
+        int ownerID = ((User) request.getSession().getAttribute("user")).getUserID();
+
+        // Retrieve the document and the folder from the database
+        DocumentDAO documentDAO = new DocumentDAO(servletConnection);
+        Document document;
+        try {
+            document = documentDAO.getDocumentByID(documentID, ownerID);
+        } catch (SQLException e) {
+            return null;
+        }
+
+        FolderDAO folderDAO = new FolderDAO(servletConnection);
+        Folder folder;
+        try {
+            folder = folderDAO.getFolderByID(document.getFolderID(), ownerID);
+        } catch (SQLException e) {
+            return null;
+        }
+
+        // Create the message
+        String message = "You are moving the document " + document.getDocumentName() +
+                " from the folder " + folder.getFolderName() + ". Choose the destination folder.";
+
+        return new Tuple<>(message, folder.getFolderID());
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
