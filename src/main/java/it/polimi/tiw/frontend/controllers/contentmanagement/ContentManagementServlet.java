@@ -18,7 +18,9 @@ import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.getConne
 import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getTemplateEngineFromServlet;
 import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getWebContextFromServlet;
 
-
+/**
+ * This servlet manages the creation of new content inside the DMS.
+ */
 @WebServlet(name = "ContentManagementServlet", urlPatterns = "/create")
 public class ContentManagementServlet extends HttpServlet {
     private Connection servletConnection;
@@ -71,7 +73,6 @@ public class ContentManagementServlet extends HttpServlet {
 
             // Process the template
             templateEngine.process("ContentManagementTemplate", webContext, response.getWriter());
-
         } catch (FailedInputParsingException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. " +
                     "Are you trying to hijack the request?");
