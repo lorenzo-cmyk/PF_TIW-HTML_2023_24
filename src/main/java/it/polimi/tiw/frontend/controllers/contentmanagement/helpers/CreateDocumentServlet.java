@@ -74,7 +74,8 @@ public class CreateDocumentServlet extends HttpServlet {
             documentDAO.createDocument(document);
 
             // Redirect to the folder page
-            response.sendRedirect("/content?folderID=" + folderID);
+            response.sendRedirect(getServletContext().getContextPath() +
+                    "/content?folderID=" + folderID);
         } catch (FailedInputParsingException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. " +
                     "Are you trying to hijack the request?");
@@ -83,7 +84,8 @@ public class CreateDocumentServlet extends HttpServlet {
                     "Unable to create the document due to a critical error in the database.");
         } catch (DocumentCreationException | DuplicateDocumentException | InvalidArgumentException e) {
             // Redirect to the create page with an error message
-            response.sendRedirect("/create?errorCode=" + e.getErrorCode());
+            response.sendRedirect(getServletContext().getContextPath() +
+                    "/create?errorCode=" + e.getErrorCode());
         }
     }
 }

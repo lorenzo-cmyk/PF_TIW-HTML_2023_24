@@ -97,10 +97,12 @@ public class UserAuthenticationServlet extends HttpServlet {
             // If the user is registered, we put the user object in the session, and we redirect to the home page
             request.getSession().setAttribute("user", authenticatedUser);
             // Redirect the user to the homepage
-            response.sendRedirect("home");
+            response.sendRedirect(getServletContext().getContextPath() +
+                    "/home");
         } catch (FailedInputParsingException | InvalidArgumentException | LoginException e) {
             // Now we redirect the user to the registration page with the errorCode
-            response.sendRedirect("login?errorCode=" + e.getErrorCode());
+            response.sendRedirect(getServletContext().getContextPath() +
+                    "/login?errorCode=" + e.getErrorCode());
         } catch (SQLException e) {
             // If a SQLException is thrown, we send an error directly to the client
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,

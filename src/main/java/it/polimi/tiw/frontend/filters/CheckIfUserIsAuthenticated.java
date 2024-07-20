@@ -2,6 +2,8 @@ package it.polimi.tiw.frontend.filters;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
@@ -27,10 +29,12 @@ public class CheckIfUserIsAuthenticated implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         // Extract the session from the request
-        HttpSession httpSession = ((jakarta.servlet.http.HttpServletRequest) servletRequest).getSession();
+        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+        HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
+        HttpSession httpSession = httpRequest.getSession();
         // If the user is already authenticated, redirect them to the homepage
         if (!httpSession.isNew() && httpSession.getAttribute("user") != null) {
-            ((jakarta.servlet.http.HttpServletResponse) servletResponse).sendRedirect("home");
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/home");
         } else {
             // If the user is not authenticated, let them continue to the requested page
             filterChain.doFilter(servletRequest, servletResponse);
