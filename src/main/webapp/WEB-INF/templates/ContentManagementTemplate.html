@@ -22,16 +22,17 @@
 
 <div>
     <h3>Create a new subfolder</h3>
-    <form action="content-management" method="post">
-        <label for="subfolderName">Folder name:</label>
-        <input id="subfolderName" name="folderName" type="text">
-        <button formaction="choose-parent-folder" type="submit">Choose the parent folder</button>
+    <form action="home" method="get">
+        <label for="folderName">Folder name:</label>
+        <input id="folderName" name="folderName" type="text">
+        <input name="actionCode" type="hidden" value="2">
+        <button formaction="home" type="submit">Choose the parent folder</button>
     </form>
 </div>
 
 <div>
     <h3>Create a new document</h3>
-    <form action="create/create-document" method="post">
+    <form action="home" method="get">
         <div>
             <label for="documentName">Document Name:</label>
             <input id="documentName" name="documentName" type="text">
@@ -44,7 +45,8 @@
             <label for="summary">Summary:</label>
             <input id="summary" name="summary" type="text">
         </div>
-        <button formaction="choose-parent-folder" type="submit">Choose the parent folder</button>
+        <input name="actionCode" type="hidden" value="1">
+        <button formaction="home" type="submit">Choose the parent folder</button>
     </form>
 </div>
 

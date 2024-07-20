@@ -9,12 +9,13 @@
 
 <a href="logout">Logout</a>
 
-<ul th:insert="~{::subtree(fragment='subtree')}" th:with="nodes=${root.getNodeChildren}"></ul>
+<ul th:insert="~{::subtree(fragment='subtree')}" th:with="nodes=${foldersTree.getNodeChildren}"></ul>
 
 <!-- Recursive fragment for rendering subtrees -->
 <div th:fragment="subtree">
     <li th:each="node : ${nodes}">
-        <span th:text="${node.getNodeData.getFolderName}"></span>
+        <a th:href="@{${folderURL}(folderID=${node.getNodeData.getFolderID})}"
+           th:text="${node.getNodeData.getFolderName}"></a>
         <ul th:if="${node.getNodeChildren.size() > 0}" th:insert="~{::subtree(fragment='subtree')}"
             th:with="nodes=${node.getNodeChildren}"></ul>
     </li>
