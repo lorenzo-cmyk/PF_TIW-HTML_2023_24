@@ -60,18 +60,18 @@ public class CreateFolderServlet extends HttpServlet {
         try {
             // Retrieve and parse the parameters from the request
             String folderName = Validators.parseString(request.getParameter("folderName"));
-            int parentFolderId = Validators.parseInt(request.getParameter("parentFolderId"));
+            int parentFolderID = Validators.parseInt(request.getParameter("parentFolderID"));
             int ownerID = ((User) request.getSession().getAttribute("user")).getUserID();
 
             // Create the folder object
-            Folder folder = new Folder(folderName, ownerID, parentFolderId);
+            Folder folder = new Folder(folderName, ownerID, parentFolderID);
 
             // Create the folder in the database
             FolderDAO folderDAO = new FolderDAO(servletConnection);
             folderDAO.createFolder(folder);
 
             // Redirect to the home page
-            response.sendRedirect("/home");
+            response.sendRedirect("home");
         } catch (FailedInputParsingException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. " +
                     "Are you trying to hijack the request?");
@@ -80,7 +80,7 @@ public class CreateFolderServlet extends HttpServlet {
                     "Unable to create the folder due to a critical error in the database.");
         } catch (FolderCreationException | DuplicateFolderException | InvalidArgumentException e) {
             // Redirect to the create page with an error message
-            response.sendRedirect("/create?errorCode=" + e.getErrorCode());
+            response.sendRedirect("create?errorCode=" + e.getErrorCode());
         }
     }
 

@@ -6,17 +6,45 @@
 </head>
 <body>
 
-<h2>Content management</h2>
+<h1>Document Management</h1>
 
 <div th:if="${message}" th:text="${message}"></div>
 
 <div>
     <h3>Create a new root folder</h3>
-    <form action="content-management" method="post">
+    <form action="create/create-folder" method="get">
         <label for="folderName">Folder name:</label>
         <input id="folderName" name="folderName" type="text">
-        <input id="parentFolderID" type="hidden" value="-1">
-        <input type="submit" value="Create">
+        <input name="parentFolderID" type="hidden" value="-1">
+        <button type="submit">Create</button>
+    </form>
+</div>
+
+<div>
+    <h3>Create a new subfolder</h3>
+    <form action="content-management" method="post">
+        <label for="subfolderName">Folder name:</label>
+        <input id="subfolderName" name="folderName" type="text">
+        <button formaction="choose-parent-folder" type="submit">Choose the parent folder</button>
+    </form>
+</div>
+
+<div>
+    <h3>Create a new document</h3>
+    <form action="create/create-document" method="post">
+        <div>
+            <label for="documentName">Document Name:</label>
+            <input id="documentName" name="documentName" type="text">
+        </div>
+        <div>
+            <label for="type">Type:</label>
+            <input id="type" name="type" type="text">
+        </div>
+        <div>
+            <label for="summary">Summary:</label>
+            <input id="summary" name="summary" type="text">
+        </div>
+        <button formaction="choose-parent-folder" type="submit">Choose the parent folder</button>
     </form>
 </div>
 
