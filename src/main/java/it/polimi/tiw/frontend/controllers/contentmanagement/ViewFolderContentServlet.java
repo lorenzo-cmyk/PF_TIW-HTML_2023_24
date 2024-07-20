@@ -27,8 +27,8 @@ import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getWebCont
 /**
  * This servlet manages the visualization of the content of a folder inside the DMS.
  */
-@WebServlet(name = "ViewFolderContent", value = "/folder")
-public class ViewFolderContent extends HttpServlet {
+@WebServlet(name = "ViewFolderContentServlet", value = "/folder")
+public class ViewFolderContentServlet extends HttpServlet {
     private Connection servletConnection;
     private TemplateEngine templateEngine;
 
@@ -36,7 +36,7 @@ public class ViewFolderContent extends HttpServlet {
      * Default constructor, called by the servlet container.
      */
     @SuppressWarnings("unused")
-    public ViewFolderContent() {
+    public ViewFolderContentServlet() {
         super();
     }
 
