@@ -18,7 +18,10 @@
     <h2>Documents</h2>
     <ul>
         <li th:each="document : ${documents}">
-            <a th:href="@{/document(documentID=${document.documentID})}" th:text="${document.documentName}">Document Name</a>
+            <a th:href="@{/document(documentID=${document.documentID})}" th:text="${document.documentName}">Document
+                Name</a>
+            <!-- Add a Move link next to each document name -->
+            <a th:href="@{/home(actionCode=3, documentID=${document.documentID})}">Move</a>
         </li>
     </ul>
 </div>

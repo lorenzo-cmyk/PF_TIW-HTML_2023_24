@@ -71,11 +71,10 @@ public class HomepageServlet extends HttpServlet {
                 message = "Choose the folder where you want to create the new document";
                 folderURL = getFoldersLink_CreateDocument(request);
             } else if (actionCode == HomepageActionEnumeration.CHOOSE_FOLDER_MOVE_DOCUMENT.getActionCode()) {
-                // TODO: Implementation not done yet
-                message = "CHOOSE_FOLDER_MOVE_DOCUMENT";
-                folderURL = "";
+                // TODO: Implement the correct message according to the specifications
+                message = "Choose the folder where you want to move the document into";
+                folderURL = getFoldersLink_MoveDocument(request);
             } else {
-                // TODO: Implementation not done yet
                 message = "Hi, welcome to the DMS!";
                 folderURL = "/folder";
             }
@@ -122,6 +121,14 @@ public class HomepageServlet extends HttpServlet {
         return ("/create/create-document?documentName=" + documentName +
                 "&type=" + type +
                 "&summary=" + summary);
+    }
+
+    private String getFoldersLink_MoveDocument(HttpServletRequest request) throws FailedInputParsingException {
+        // Retrieve the documentID from the request
+        int documentID = Validators.parseInt(request.getParameter("documentID"));
+
+        // The URL will be relative and not absolute, as it will be used in the HTML
+        return ("/move/move-document?documentID=" + documentID);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
