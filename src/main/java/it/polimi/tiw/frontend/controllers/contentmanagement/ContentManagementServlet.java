@@ -51,7 +51,6 @@ public class ContentManagementServlet extends HttpServlet {
         closeConnection(servletConnection);
     }
 
-    @SuppressWarnings("ConstantValue")
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             // Retrieve and parse the parameters from the request

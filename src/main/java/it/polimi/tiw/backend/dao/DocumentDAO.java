@@ -148,6 +148,7 @@ public class DocumentDAO {
      * @throws DocumentCreationException  if an error occurs while creating the document (non SQL-Related).
      * @throws DuplicateDocumentException if a document with the same name already exists in the parent directory.
      */
+    @SuppressWarnings("ExtractMethodRecommender")
     public void createDocument(Document newDocument)
             throws SQLException, DocumentCreationException, DuplicateDocumentException {
         // The raw SQL query for creating a new document.

@@ -7,11 +7,17 @@ package it.polimi.tiw.frontend.controllers.homepage;
  * Each action is associated with a unique action code.
  */
 public enum HomepageActionEnumeration {
-    // Action for choosing a folder and creating a document within it.
+    /**
+     * Action for choosing a folder and creating a document within it.
+     */
     CHOOSE_FOLDER_CREATE_DOCUMENT(1),
-    // Action for choosing a folder and creating a new folder within it.
+    /**
+     * Action for choosing a folder and creating a new folder within it.
+     */
     CHOOSE_FOLDER_CREATE_FOLDER(2),
-    // Action for choosing a folder and moving a document to it.
+    /**
+     * Action for choosing a folder and moving a document to it.
+     */
     CHOOSE_FOLDER_MOVE_DOCUMENT(3);
 
     // The unique action code associated with the homepage action.

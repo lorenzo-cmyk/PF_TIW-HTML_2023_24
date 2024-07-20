@@ -7,7 +7,6 @@ import it.polimi.tiw.backend.dao.DocumentDAO;
 import it.polimi.tiw.backend.dao.FolderDAO;
 import it.polimi.tiw.backend.utilities.Validators;
 import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -59,7 +58,7 @@ public class ViewFolderContent extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         doGet(request, response);
     }
 
