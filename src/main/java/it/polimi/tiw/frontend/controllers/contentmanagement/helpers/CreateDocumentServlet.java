@@ -64,7 +64,7 @@ public class CreateDocumentServlet extends HttpServlet {
             String type = Validators.parseString(request.getParameter("type"));
             String summary = Validators.parseString(request.getParameter("summary"));
             int ownerID = ((User) request.getSession().getAttribute("user")).getUserID();
-            int folderID = Integer.parseInt(request.getParameter("folderID"));
+            int folderID = Validators.parseInt(request.getParameter("folderID"));
 
             // Create the document object
             Document document = new Document(documentName, creationDate, type, summary, ownerID, folderID);
