@@ -1,8 +1,10 @@
 package it.polimi.tiw.frontend.controllers.contentmanagement;
 
+import it.polimi.tiw.backend.beans.Document;
+import it.polimi.tiw.backend.beans.User;
+import it.polimi.tiw.backend.dao.DocumentDAO;
 import it.polimi.tiw.backend.utilities.Validators;
 import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
-import it.polimi.tiw.backend.utilities.exceptions.UnknownErrorCodeException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +14,7 @@ import org.thymeleaf.context.WebContext;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.closeConnection;
 import static it.polimi.tiw.backend.utilities.DatabaseConnectionBuilder.getConnectionFromServlet;
@@ -19,10 +22,10 @@ import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getTemplat
 import static it.polimi.tiw.backend.utilities.ThymeleafObjectsBuilder.getWebContextFromServlet;
 
 /**
- * This servlet manages the creation of new content inside the DMS.
+ * This servlet manages the visualization of the details of a document inside the DMS.
  */
-@WebServlet(name = "ContentManagementServlet", urlPatterns = "/create")
-public class ContentManagementServlet extends HttpServlet {
+@WebServlet(name = "ViewDocumentDetailsServlet", value = "/document")
+public class ViewDocumentDetailsServlet extends HttpServlet {
     private Connection servletConnection;
     private TemplateEngine templateEngine;
 
@@ -30,7 +33,7 @@ public class ContentManagementServlet extends HttpServlet {
      * Default constructor, called by the servlet container.
      */
     @SuppressWarnings("unused")
-    public ContentManagementServlet() {
+    public ViewDocumentDetailsServlet() {
         super();
     }
 
@@ -51,37 +54,44 @@ public class ContentManagementServlet extends HttpServlet {
         closeConnection(servletConnection);
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        doGet(request, response);
+    }
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             // Retrieve and parse the parameters from the request
-            int errorCode = Validators.parseInt(request.getParameter("errorCode") == null ?
-                    "0" : request.getParameter("errorCode"));
+            int documentID = Validators.parseInt(request.getParameter("documentID"));
+            // Get the ownerID from the session and store it in a variable
+            int ownerID = ((User) request.getSession().getAttribute("user")).getUserID();
+
+            // Retrieve the document from the database
+            DocumentDAO documentDAO = new DocumentDAO(servletConnection);
+            Document document = documentDAO.getDocumentByID(documentID, ownerID);
+            // Ensure that the document exists and is owned by the user
+            if (document == null) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "The document you are asking for does not exist or is not owned by the logged user." +
+                                " Are you trying to hijack the request?");
+                return;
+            }
 
             // Create the WebContext object that will be passed to the Thymeleaf template
             WebContext webContext = getWebContextFromServlet(this, request, response);
 
-            String message;
-            if (errorCode == 0) {
-                message = "Here you can create a new folder, a new subfolder or a new document.";
-            } else {
-                message = Validators.retrieveErrorMessageFromErrorCode(errorCode);
-            }
-
-            // Set the errorCode parameter in the context
-            webContext.setVariable("message", message);
+            // Set the variables in the context
+            webContext.setVariable("document", document);
 
             // Process the template
-            templateEngine.process("ContentManagementTemplate", webContext, response.getWriter());
+            templateEngine.process("ViewDocumentDetailsTemplate", webContext, response.getWriter());
         } catch (FailedInputParsingException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. " +
                     "Are you trying to hijack the request?");
-        } catch (UnknownErrorCodeException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown error code provided. " +
-                    "Are you trying to hijack the request?");
+        } catch (SQLException e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Unable to retrieve the document details due to a critical error in the database.");
         }
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        doGet(request, response);
     }
 }

@@ -23,7 +23,7 @@ public class UserDisconnectionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // Invalidate the session and redirect the user to the login page
         request.getSession().invalidate();
-        response.sendRedirect("login");
+        response.sendRedirect(getServletContext().getContextPath() + "/login");
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

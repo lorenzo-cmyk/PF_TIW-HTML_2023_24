@@ -2,6 +2,8 @@ package it.polimi.tiw.frontend.filters;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
@@ -11,7 +13,7 @@ import java.io.IOException;
  * This filter intercepts requests to the homepage and redirects non-authenticated users to the login page.
  * It ensures that only authenticated users can access the user-dependant pages.
  */
-@WebFilter({"/home", "/logout"})
+@WebFilter({"/logout", "/home", "/create", "/create/create-folder", "/create/create-document", "/folder", "/document"})
 public class CheckIfUserIsNotAuthenticated implements Filter {
     /**
      * This method checks if the user is not authenticated by looking for a user attribute in the session.
@@ -28,10 +30,12 @@ public class CheckIfUserIsNotAuthenticated implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         // Extract the session from the request
-        HttpSession httpSession = ((jakarta.servlet.http.HttpServletRequest) servletRequest).getSession();
+        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+        HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
+        HttpSession httpSession = httpRequest.getSession();
         // If the user is not authenticated, redirect them to the login page
         if (httpSession.isNew() || httpSession.getAttribute("user") == null) {
-            ((jakarta.servlet.http.HttpServletResponse) servletResponse).sendRedirect("login");
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
         } else {
             // If the user is authenticated, let them continue to the requested page
             filterChain.doFilter(servletRequest, servletResponse);

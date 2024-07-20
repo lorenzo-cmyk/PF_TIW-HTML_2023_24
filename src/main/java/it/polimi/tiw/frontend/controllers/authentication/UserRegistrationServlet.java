@@ -116,11 +116,13 @@ public class UserRegistrationServlet extends HttpServlet {
             userDAO.registerUser(newUser);
 
             // If everything went well, we redirect the user to the registration page with a success message
-            response.sendRedirect("register?success=true");
+            response.sendRedirect(getServletContext().getContextPath() +
+                    "/register?success=true");
         } catch (PasswordMismatchException | InvalidArgumentException |
                  RegistrationException | FailedInputParsingException e) {
             // Now we redirect the user to the registration page with the errorCode
-            response.sendRedirect("register?errorCode=" + e.getErrorCode());
+            response.sendRedirect(getServletContext().getContextPath() +
+                    "register?errorCode=" + e.getErrorCode());
         } catch (SQLException e) {
             // If a SQLException is thrown, we send an error directly to the client
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,

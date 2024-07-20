@@ -141,7 +141,7 @@ public class Validators {
      * @throws FailedInputParsingException if the string is not valid
      */
     public static String parseString(String string) throws FailedInputParsingException {
-        if (string == null || string.isBlank() || string.isEmpty()) {
+        if (string == null || string.isBlank() || string.isEmpty() || string.equals("null")) {
             throw new FailedInputParsingException();
         }
         return string;
