@@ -11,7 +11,7 @@ import java.io.IOException;
  * This filter intercepts requests to the homepage and redirects non-authenticated users to the login page.
  * It ensures that only authenticated users can access the user-dependant pages.
  */
-@WebFilter({"/home", "/logout"})
+@WebFilter({"/logout", "/home", "/create", "/create/create-folder", "/create/create-document"})
 public class CheckIfUserIsNotAuthenticated implements Filter {
     /**
      * This method checks if the user is not authenticated by looking for a user attribute in the session.
