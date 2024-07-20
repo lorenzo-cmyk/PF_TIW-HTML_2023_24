@@ -6,6 +6,9 @@
 </head>
 <body>
 <h1 th:text="${folderName}">Folder Name</h1>
+
+<div th:if="${message}" th:text="${message}"></div>
+
 <div>
     <h2>Subfolders</h2>
     <ul>

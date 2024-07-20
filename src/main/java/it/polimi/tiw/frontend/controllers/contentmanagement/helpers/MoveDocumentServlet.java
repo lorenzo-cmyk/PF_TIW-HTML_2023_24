@@ -76,7 +76,13 @@ public class MoveDocumentServlet extends HttpServlet {
             }
 
             // Move the document to the new folder
-            documentDAO.moveDocument(documentID, ownerID, folderID);
+            try {
+                documentDAO.moveDocument(documentID, ownerID, folderID);
+            } catch (DocumentMovingException e) {
+                // Redirect to the original folder page with an error message
+                response.sendRedirect(getServletContext().getContextPath() +
+                        "/folder?folderID=" + document.getFolderID() + "&errorCode=" + e.getErrorCode());
+            }
 
             // Redirect to the folder page
             response.sendRedirect(getServletContext().getContextPath() +
@@ -87,12 +93,6 @@ public class MoveDocumentServlet extends HttpServlet {
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Unable to move the document due to a critical error in the database.");
-        } catch (DocumentMovingException e) {
-            // TODO: Redirect to the original folder page with an error message for now send a 500 error
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Error display not yet implemented");
         }
-
     }
-
 }

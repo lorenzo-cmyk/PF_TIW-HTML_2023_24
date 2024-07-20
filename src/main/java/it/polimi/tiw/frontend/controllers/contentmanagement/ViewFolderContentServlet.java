@@ -7,6 +7,7 @@ import it.polimi.tiw.backend.dao.DocumentDAO;
 import it.polimi.tiw.backend.dao.FolderDAO;
 import it.polimi.tiw.backend.utilities.Validators;
 import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
+import it.polimi.tiw.backend.utilities.exceptions.UnknownErrorCodeException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -68,6 +69,17 @@ public class ViewFolderContentServlet extends HttpServlet {
             int folderID = Validators.parseInt(request.getParameter("folderID"));
             // Get the ownerID from the session and store it in a variable
             int ownerID = ((User) request.getSession().getAttribute("user")).getUserID();
+            // If present, retrieve the errorCode parameter from the request
+            int errorCode = Validators.parseInt(request.getParameter("errorCode") == null ?
+                    "0" : request.getParameter("errorCode"));
+
+            // Build the page message based on the errorCode
+            String message;
+            if (errorCode == 0) {
+                message = "";
+            } else {
+                message = Validators.retrieveErrorMessageFromErrorCode(errorCode);
+            }
 
             // Ensure that the folder I want to view actually exists and is owned by the user
             FolderDAO folderDAO = new FolderDAO(servletConnection);
@@ -90,6 +102,7 @@ public class ViewFolderContentServlet extends HttpServlet {
             WebContext webContext = getWebContextFromServlet(this, request, response);
 
             // Set the variables in the context
+            webContext.setVariable("message", message);
             webContext.setVariable("folderName", folderName);
             webContext.setVariable("subfolders", subfolders);
             webContext.setVariable("documents", documents);
@@ -102,6 +115,9 @@ public class ViewFolderContentServlet extends HttpServlet {
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Unable to retrieve the folder content due to a critical error in the database.");
+        } catch (UnknownErrorCodeException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown error code provided. " +
+                    "Are you trying to hijack the request?");
         }
     }
 }
