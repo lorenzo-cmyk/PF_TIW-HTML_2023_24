@@ -1,0 +1,104 @@
+/* General Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+h1, h2, h3, h4 {
+    color: #333;
+}
+
+/* Hover and Focus States for Links */
+a:hover, a:focus {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Form Styling */
+form div.form-input {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 95%; /* Reduced width */
+    padding: 10px;
+    margin: 10px auto; /* Added margin for top, bottom, and auto for left and right for centering */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input:focus {
+    border-color: #007bff;
+}
+
+
+/* Centering and Layout */
+.v-centering {
+    display: flex;
+    align-items: center;
+    height: 100vh;
+}
+
+.h-centering {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.columns {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.column {
+    flex: 1;
+}
+
+.is-6 {
+    flex: 0 0 50%;
+}
+
+.is-offset-3 {
+    margin-left: 25%;
+}
+
+/* Box Styling */
+.box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 800px; /* Maximum width */
+    max-height: 600px; /* Maximum height */
+    margin: auto; /* Centering horizontally */
+    margin-bottom: 20px; /* Adds space below the box */
+}
+
+.subtitle h4 {
+    margin-bottom: 20px;
+}
+
