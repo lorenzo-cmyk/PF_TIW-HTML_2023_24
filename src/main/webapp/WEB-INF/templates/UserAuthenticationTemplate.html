@@ -18,7 +18,7 @@
                 <div class="box">
                     <!-- Subtitle -->
                     <div class="subtitle">
-                        <h2>Authentication 🚪</h2>
+                        <h2>Authentication 🔒</h2>
                     </div>
                     <!-- Message -->
                     <div class="message>">
@@ -30,11 +30,13 @@
                         <form action="#" method="POST" th:action="@{/login}">
                             <div class="form-input">
                                 <label for="username">Username:</label>
-                                <input id="username" name="username" required type="text">
+                                <input id="username" maxlength="63" minlength="1" name="username"
+                                       pattern="^[a-zA-Z0-9]+$" required type="text">
                             </div>
                             <div class="form-input">
                                 <label for="password">Password:</label>
-                                <input id="password" name="password" required type="password">
+                                <input id="password" maxlength="127" minlength="1" name="password" required
+                                       type="password">
                             </div>
                             <button type="submit">Log in</button>
                         </form>
