@@ -75,15 +75,34 @@ input:focus {
 }
 
 .column {
-    flex: 1;
+    padding: 0.75rem; /* Adjust padding as needed */
+    margin-right: 0.75rem; /* Horizontal space between columns */
+    margin-left: 0.75rem; /* Horizontal space between columns */
+    /* Ensure the total width including margins does not exceed container width */
+}
+
+.is-6, .is-3 {
+    flex: 1; /* Allow flexible widths but respect the below max-widths */
 }
 
 .is-6 {
-    flex: 0 0 50%;
+    max-width: calc(50% - 10px); /* Adjust based on actual margin sizes to ensure fit */
+}
+
+.is-3 {
+    max-width: calc(25% - 10px); /* Adjust based on actual margin sizes to ensure fit */
 }
 
 .is-offset-3 {
-    margin-left: 25%;
+    margin-left: calc(25% - 10px);
+}
+
+.is-offset-2 {
+    margin-left: calc(16.666% - 10px);
+}
+
+.is-offset-9 {
+    margin-left: calc(75% - 10px);
 }
 
 /* Box Styling */
