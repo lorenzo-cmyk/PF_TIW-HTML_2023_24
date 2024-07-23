@@ -34,16 +34,33 @@ public class FilterBadRequests implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
 
         if (isUserAuthenticated(httpRequest)) {
+            // User authenticated: I need to check if the URL is valid for the user's role (e.g. /home, /create, ...)
+            // If it is, I let the request pass, otherwise I redirect to the Homepage.
             if (!isURLAuthenticated(httpRequest)) {
+                // isURLAuthenticated returns false if the URL is not valid for the user's status (e.g. /login &
+                // /register) but also if the URL is not valid at all (e.g. /invalidURL). An authenticated user that
+                // makes an invalid request is redirected to the homepage in both cases.
+
+                // The conditions could be rewritten as: !isURLAuthenticated(httpRequest) || !isURLValid(httpRequest)
+                // but the second check is redundant because the first one already includes it.
+
                 httpResponse.sendRedirect(httpRequest.getContextPath() + "/home");
             } else {
                 filterChain.doFilter(servletRequest, servletResponse);
             }
         } else {
-            if (isURLValid(httpRequest) && !isURLAuthenticated(httpRequest)) {
-                filterChain.doFilter(servletRequest, servletResponse);
-            } else {
+            // User not authenticated: I need to check if the URL is valid and accessible without authentication
+            // (e.g. /login & /register). If it is, I let the request pass, otherwise I redirect to Login page.
+            if (isURLAuthenticated(httpRequest) || !isURLValid(httpRequest)) {
+                // isURLAuthenticated returns true if the URL requires authentication. -> Go to the Login page.
+                // isURLValid returns false if the URL is not valid at all. -> Go to the Login page.
+
+                // The conditions cannot be simplified because the first one is a logical OR and the second one is a
+                // logical AND: if I removed the second one, I would let pass invalid URLs.
+
                 httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
+            } else {
+                filterChain.doFilter(servletRequest, servletResponse);
             }
         }
     }
