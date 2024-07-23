@@ -94,8 +94,8 @@ input:focus {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 800px; /* Maximum width */
     max-height: 600px; /* Maximum height */
-    margin: auto; /* Centering horizontally */
-    margin-bottom: 20px; /* Adds space below the box */
+    margin: 20px auto; /* Updated to set both top and bottom margins to 20px, and auto for left and right */
+    margin-bottom: 20px; /* This line can be removed since margin is already defined above */
 }
 
 .subtitle h4 {
