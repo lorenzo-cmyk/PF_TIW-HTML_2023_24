@@ -48,7 +48,7 @@ public enum ErrorCodes {
      * This error code is used when the arguments provided are not valid.
      */
     PasswordMismatchException(1009, "The fields password and password confirmation do not match." +
-            " . Please check your input and try again."),
+            " Please check your input and try again."),
     /**
      * This error code is used when the user tries to look up a non-existing errorCode
      */

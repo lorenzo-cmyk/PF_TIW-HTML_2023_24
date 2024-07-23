@@ -1,32 +1,78 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
+    <link rel="stylesheet" th:href="@{/resources/CSS.css}" href="CSS.css" type="text/css"/>
     <meta charset="UTF-8">
-    <title th:text="${folderName}">Folder Name</title>
+    <title>TIW-DMS - Folder Content</title>
 </head>
 <body>
-<h1 th:text="${folderName}">Folder Name</h1>
-
-<div th:if="${message}" th:text="${message}"></div>
-
-<div>
-    <h2>Subfolders</h2>
-    <ul>
-        <li th:each="subfolder : ${subfolders}">
-            <a th:href="@{/folder(folderID=${subfolder.folderID})}" th:text="${subfolder.folderName}">Subfolder Name</a>
-        </li>
-    </ul>
-</div>
-<div>
-    <h2>Documents</h2>
-    <ul>
-        <li th:each="document : ${documents}">
-            <a th:href="@{/document(documentID=${document.documentID})}" th:text="${document.documentName}">Document
-                Name</a>
-            <!-- Add a Move link next to each document name -->
-            <a th:href="@{/home(actionCode=3, documentID=${document.documentID})}">Move</a>
-        </li>
-    </ul>
+<!-- Container (vertical centering) -->
+<div class="v-centering">
+    <!-- Container (horizontal centering) -->
+    <div class="h-centering">
+        <!-- Columns (divide the horizontal space in 12 equal parts) -->
+        <div class="columns">
+            <!-- Column (occupy 6/12 parts and offsets it 3 parts to the right) -->
+            <div class="column is-6 is-offset-3">
+                <!-- Box (white background, padding, round corner, ...) -->
+                <div class="box">
+                    <!-- Subtitle -->
+                    <div class="subtitle">
+                        <h2 th:text="'📂 Content of the folder: ' + ${folderName}">FOLDER_NAME_PLACEHOLDER</h2>
+                    </div>
+                    <!-- Message -->
+                    <div class="message>">
+                        <div th:if="${message}" th:text="${message}">MESSAGE_PLACEHOLDER</div>
+                    </div>
+                    <!-- Subfolders -->
+                    <div class="subfolders-container">
+                        <h3>🗂️ Subfolders</h3>
+                        <div class="subfolders">
+                            <ul style="list-style-type: disc;">
+                                <li th:each="subfolder : ${subfolders}">
+                                    <span th:text="${subfolder.folderName}">Subfolder Name</span>
+                                    <a th:href="@{/folder(folderID=${subfolder.folderID})}">>View</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Documents -->
+                    <div class="documents-container">
+                        <h3>📑 Documents</h3>
+                        <div class="documents">
+                            <ul>
+                                <li th:each="document : ${documents}">
+                                    <span th:text="${document.documentName}">Document Name</span>
+                                    <a th:href="@{/document(documentID=${document.documentID})}"> >View</a>
+                                    <a th:href="@{/home(actionCode=3, documentID=${document.documentID})}"> >Move</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Column (occupy 3/12 parts) -->
+            <div class="column is-3">
+                <!-- Box (white background, padding, round corner, ...) -->
+                <div class="box">
+                    <!-- Title -->
+                    <div class="title">
+                        <h2>⚙️ Actions</h2>
+                    </div>
+                    <!-- Actions -->
+                    <div class="actions">
+                        <ul>
+                            <li><a href="/logout">🚪 Logout</a></li>
+                        </ul>
+                        <ul>
+                            <!-- FIXME: I cannot use Javascript! -->
+                            <li><a href="javascript:history.back()">🔙 Back</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

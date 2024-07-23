@@ -1,0 +1,123 @@
+/* General Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+h1, h2, h3, h4 {
+    color: #333;
+}
+
+/* Hover and Focus States for Links */
+a:hover, a:focus {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Form Styling */
+form div.form-input {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 95%; /* Reduced width */
+    padding: 10px;
+    margin: 10px auto; /* Added margin for top, bottom, and auto for left and right for centering */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input:focus {
+    border-color: #007bff;
+}
+
+
+/* Centering and Layout */
+.v-centering {
+    display: flex;
+    align-items: center;
+    height: 100vh;
+}
+
+.h-centering {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.columns {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.column {
+    padding: 0.75rem; /* Adjust padding as needed */
+    margin-right: 0.75rem; /* Horizontal space between columns */
+    margin-left: 0.75rem; /* Horizontal space between columns */
+    /* Ensure the total width including margins does not exceed container width */
+}
+
+.is-6, .is-3 {
+    flex: 1; /* Allow flexible widths but respect the below max-widths */
+}
+
+.is-6 {
+    max-width: calc(50% - 10px); /* Adjust based on actual margin sizes to ensure fit */
+}
+
+.is-3 {
+    max-width: calc(25% - 10px); /* Adjust based on actual margin sizes to ensure fit */
+}
+
+.is-offset-3 {
+    margin-left: calc(25% - 10px);
+}
+
+.is-offset-2 {
+    margin-left: calc(16.666% - 10px);
+}
+
+.is-offset-9 {
+    margin-left: calc(75% - 10px);
+}
+
+/* Box Styling */
+.box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 800px; /* Maximum width */
+    max-height: 600px; /* Maximum height */
+    margin: 20px auto; /* Updated to set both top and bottom margins to 20px, and auto for left and right */
+    margin-bottom: 20px; /* This line can be removed since margin is already defined above */
+}
+
+.subtitle h4 {
+    margin-bottom: 20px;
+}
+

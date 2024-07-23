@@ -33,6 +33,13 @@ public class FilterBadRequests implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
 
+        // Let the browser access to the static resources files without any check.
+        String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
+        if (path.startsWith("/resources")) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
         if (isUserAuthenticated(httpRequest)) {
             // User authenticated: I need to check if the URL is valid for the user's role (e.g. /home, /create, ...)
             // If it is, I let the request pass, otherwise I redirect to the Homepage.
