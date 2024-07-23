@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css" rel="stylesheet">
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
           integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-          referrerpolicy="no-referrer" rel="stylesheet" />
+          referrerpolicy="no-referrer" rel="stylesheet"/>
 </head>
 
 <body>
@@ -48,8 +48,7 @@
                                     <li th:each="document : ${documents}">
                                         <span th:text="${document.documentName}">Document1</span>
                                         <a th:href="@{/document(documentID=${document.documentID})}">>View</a>
-                                        <a
-                                                th:href="@{/home(actionCode=3, documentID=${document.documentID})}">>Move</a>
+                                        <a th:href="@{/home(actionCode=3, documentID=${document.documentID})}">>Move</a>
                                     </li>
                                 </ul>
                             </div>
