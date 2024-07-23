@@ -30,19 +30,23 @@
                         <form action="#" method="POST" th:action="@{/register}">
                             <div class="form-input">
                                 <label for="username">Username:</label>
-                                <input id="username" name="username" required type="text">
+                                <input id="username" maxlength="63" minlength="1" name="username"
+                                       pattern="^[a-zA-Z0-9]+$" required type="text">
                             </div>
                             <div class="form-input">
                                 <label for="email">Email:</label>
-                                <input id="email" name="email" required type="email">
+                                <input id="email" maxlength="63" minlength="1" name="email"
+                                       required type="email">
                             </div>
                             <div class="form-input">
                                 <label for="password">Password:</label>
-                                <input id="password" name="password" required type="password">
+                                <input id="password" maxlength="127" minlength="1" name="password"
+                                       required type="password">
                             </div>
                             <div class="form-input">
                                 <label for="confirmPassword">Confirm Password:</label>
-                                <input id="confirmPassword" name="confirmPassword" required type="password">
+                                <input id="confirmPassword" maxlength="127" minlength="1" name="confirmPassword"
+                                       required type="password">
                             </div>
                             <button type="submit">Register</button>
                         </form>
