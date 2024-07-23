@@ -1,24 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
+    <link rel="stylesheet" th:href="@{/resources/CSS.css}" type="text/css"/>
     <meta charset="UTF-8">
-    <title>TIW-DMS</title>
+    <title>TIW-DMS - Authentication</title>
 </head>
 <body>
-<h1>TIW-DMS</h1>
-<h2>User Authentication</h2>
-<div th:if="${message}" th:text="${message}"></div>
-<form action="#" method="post" th:action="@{/login}">
-    <div>
-        <label for="username">Username:</label>
-        <input id="username" name="username" required type="text">
+<!-- Container (vertical centering) -->
+<div class="v-centering">
+    <!-- Container (horizontal centering) -->
+    <div class="h-centering">
+        <!-- Columns (divide the horizontal space in 12 equal parts) -->
+        <div class="columns">
+            <!-- Column (occupy 6/12 parts and offsets it 3 parts to the right) -->
+            <div class="column is-6 is-offset-3">
+                <!-- Box (white background, padding, round corner, ...) -->
+                <div class="box">
+                    <!-- Subtitle -->
+                    <div class="subtitle">
+                        <h2>Authentication 🚪</h2>
+                    </div>
+                    <!-- Message -->
+                    <div class="message>">
+                        <div th:if="${message}" th:text="${message}">MESSAGE_PLACEHOLDER</div>
+                    </div>
+                    <br>
+                    <!-- Form -->
+                    <div class="form">
+                        <form action="#" method="POST" th:action="@{/login}">
+                            <div class="form-input">
+                                <label for="username">Username:</label>
+                                <input id="username" name="username" required type="text">
+                            </div>
+                            <div class="form-input">
+                                <label for="password">Password:</label>
+                                <input id="password" name="password" required type="password">
+                            </div>
+                            <button type="submit">Log in</button>
+                        </form>
+                    </div>
+                    <br>
+                    <!-- Link -->
+                    <div class="link">
+                        <div>Don't have an account yet? You can register one <a href="register">here!</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <label for="password">Password:</label>
-        <input id="password" name="password" required type="password">
-    </div>
-    <button type="submit">Sign In</button>
-</form>
-<div>Don't have an account yet? You can sign up <a href="register">here!</a></div>
+</div>
 </body>
 </html>
