@@ -1,54 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>TIW-DMS - Document Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
 </head>
+
 <body>
 
-<h1>Document Management</h1>
+<!-- Hero: Used to archive vertical centering -->
+<div class="hero is-fullheight">
+    <div class="hero-body">
+        <!-- Container: Used to archive horizontal centering -->
+        <div class="container is-fluid">
+            <!-- Columns: Used to divide the horizontal width in even parts -->
+            <div class="columns">
+                <!-- Column: Used to set the width of the child inside -->
+                <div class="column is-6 is-offset-2">
+                    <!-- Box: Used to archive shadowing, padding, ... -->
+                    <div class="box">
+                        <!-- Section: Used to divide the box content-->
+                        <section class="section">
+                            <!-- Now the page content is formatted as usual -->
+                            <h1 class="title">Document Management ➕</h1>
+                            <div class="content">
+                                <p th:if="${message}" th:text="${message}">Here you can create a new folder, a new
+                                    subfolder or a new document.</p>
+                            </div>
 
-<div th:if="${message}" th:text="${message}"></div>
+                            <div class="card">
+                                <header class="card-header">
+                                    <p class="card-header-title">Add a New Root Folder</p>
+                                    <button aria-label="more options" class="card-header-icon">
+                                        <span class="icon">
+                                          <i aria-hidden="true" class="fas fa-folder"></i>
+                                        </span>
+                                    </button>
+                                </header>
+                                <form action="create/create-folder" method="GET">
+                                    <div class="card-content">
+                                        <div class="field">
+                                            <label class="label" for="folderName-one">Folder Name</label>
+                                            <div class="control has-icons-left">
+                                                <input class="input" id="folderName-one" maxlength="63" minlength="1"
+                                                       name="folderName" placeholder="e.g. newRootFolder" required
+                                                       type="text">
+                                                <span class="icon is-small is-left">
+                                                    <i class="fas fa-text-width"></i>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <input name="folderID" type="hidden" value="-1">
+                                    </div>
+                                    <footer class="card-footer">
+                                        <div class="card-footer-item">
+                                            <!-- I have no idea why I should be supposed to nest
+                                            card-footer-item, but it works very well! -->
+                                            <button class="button card-footer-item" type="submit">Create!</button>
+                                        </div>
+                                    </footer>
+                                </form>
+                            </div>
 
-<div>
-    <h3>Create a new root folder</h3>
-    <form action="create/create-folder" method="get">
-        <label for="folderName">Folder name:</label>
-        <input id="folderName" name="folderName" type="text">
-        <input name="parentFolderID" type="hidden" value="-1">
-        <button type="submit">Create</button>
-    </form>
-</div>
+                            <div class="card">
+                                <header class="card-header">
+                                    <p class="card-header-title">Add a New Subfolder</p>
+                                    <button aria-label="more options" class="card-header-icon">
+                                        <span class="icon">
+                                          <i aria-hidden="true" class="fas fa-folder-open"></i>
+                                        </span>
+                                    </button>
+                                </header>
+                                <form action="home" method="GET">
+                                    <div class="card-content">
+                                        <div class="field">
+                                            <label class="label" for="folderName-two">Folder Name</label>
+                                            <div class="control has-icons-left">
+                                                <input class="input" id="folderName-two" maxlength="63" minlength="1"
+                                                       name="folderName" placeholder="e.g. newSubfolder" required
+                                                       type="text">
+                                                <span class="icon is-small is-left">
+                                                    <i class="fas fa-text-width"></i>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <input name="actionCode" type="hidden" value="2">
+                                    </div>
+                                    <footer class="card-footer">
+                                        <div class="card-footer-item">
+                                            <!-- I have no idea why I should be supposed to nest
+                                            card-footer-item, but it works very well! -->
+                                            <button class="button card-footer-item" type="submit">Select the parent
+                                                folder!
+                                            </button>
+                                        </div>
+                                    </footer>
+                                </form>
+                            </div>
 
-<div>
-    <h3>Create a new subfolder</h3>
-    <form action="home" method="get">
-        <label for="folderName">Folder name:</label>
-        <input id="folderName" name="folderName" type="text">
-        <input name="actionCode" type="hidden" value="2">
-        <button formaction="home" type="submit">Choose the parent folder</button>
-    </form>
-</div>
+                            <div class="card">
+                                <header class="card-header">
+                                    <p class="card-header-title">Create a New Document</p>
+                                    <button aria-label="more options" class="card-header-icon">
+                                        <span class="icon">
+                                          <i aria-hidden="true" class="fas fa-file-text"></i>
+                                        </span>
+                                    </button>
+                                </header>
+                                <form action="home" method="GET">
+                                    <div class="card-content">
+                                        <div class="field">
+                                            <label class="label" for="documentName">Document Name</label>
+                                            <div class="control has-icons-left">
+                                                <input class="input" id="documentName" maxlength="63" minlength="1"
+                                                       name="documentName" placeholder="e.g. newDocument" required
+                                                       type="text">
+                                                <span class="icon is-small is-left">
+                                                    <i class="fas fa-text-width"></i>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label class="label" for="documentType">Type</label>
+                                            <div class="control has-icons-left">
+                                                <input class="input" id="documentType" maxlength="63" minlength="1"
+                                                       name="type" placeholder="e.g. PDF" required type="text">
+                                                <span class="icon is-small is-left">
+                                                    <i class="fas fa-flask"></i>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label class="label" for="documentSummary">Summary</label>
+                                            <div class="control has-icons-left">
+                                                <textarea class="textarea" id="documentSummary" maxlength="255"
+                                                          minlength="1" name="summary"
+                                                          placeholder="e.g. Classified document, do not share!" required
+                                                ></textarea>
+                                            </div>
+                                        </div>
+                                        <input name="actionCode" type="hidden" value="1">
+                                    </div>
+                                    <footer class="card-footer">
+                                        <div class="card-footer-item">
+                                            <!-- I have no idea why I should be supposed to nest
+                                            card-footer-item, but it works very well! -->
+                                            <button class="button card-footer-item" type="submit">Select the desired
+                                                folder!
+                                            </button>
+                                        </div>
+                                    </footer>
+                                </form>
+                            </div>
 
-<div>
-    <h3>Create a new document</h3>
-    <form action="home" method="get">
-        <div>
-            <label for="documentName">Document Name:</label>
-            <input id="documentName" name="documentName" type="text">
+                        </section>
+                    </div>
+                </div>
+                <div class="column is-3">
+                    <div class="box">
+                        <aside class="menu">
+                            <p class="menu-label">Actions ⚙️</p>
+                            <ul class="menu-list">
+                                <!-- FIXME: Add link -->
+                                <li><a href="TODO">🔙 Back</a></li>
+                                <li><a href="logout">🚪 Logout</a></li>
+                            </ul>
+                        </aside>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="type">Type:</label>
-            <input id="type" name="type" type="text">
-        </div>
-        <div>
-            <label for="summary">Summary:</label>
-            <input id="summary" name="summary" type="text">
-        </div>
-        <input name="actionCode" type="hidden" value="1">
-        <button formaction="home" type="submit">Choose the parent folder</button>
-    </form>
+    </div>
 </div>
-
 </body>
 </html>
