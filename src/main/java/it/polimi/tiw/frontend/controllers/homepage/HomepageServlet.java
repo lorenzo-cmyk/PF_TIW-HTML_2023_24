@@ -78,7 +78,7 @@ public class HomepageServlet extends HttpServlet {
                 folderURL = getFoldersLink_CreateDocument(request);
             } else if (actionCode == HomepageActionEnumeration.CHOOSE_FOLDER_MOVE_DOCUMENT.getActionCode()) {
                 Tuple<String, Integer> results = getCompliantMessage_MoveDocument(request);
-                if(results == null) {
+                if (results == null) {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                             "Unable to move the document due to a critical error in the database.");
                     return;
