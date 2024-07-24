@@ -37,7 +37,7 @@ public enum ValidURLsEnumeration {
     /**
      * Servlet for moving a document, authentication required, does not override history.
      */
-    MoveDocumentServlet("/move", true, false),
+    MoveDocumentServlet("/move/move-document", true, false),
     /**
      * Servlet for viewing folder content, authentication required, overrides history.
      */

@@ -165,8 +165,8 @@ public class HomepageServlet extends HttpServlet {
         }
 
         // Create the message
-        String message = "You are moving the document " + document.getDocumentName() +
-                " from the folder " + folder.getFolderName() + ". Choose the destination folder.";
+        String message = "You are moving the document " + document.getDocumentName().toUpperCase() +
+                " from the folder " + folder.getFolderName().toUpperCase() + ". Choose the destination folder.";
 
         return new Tuple<>(message, folder.getFolderID());
     }

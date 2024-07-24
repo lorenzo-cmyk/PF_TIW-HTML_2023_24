@@ -1,60 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" th:href="@{/resources/CSS.css}" type="text/css"/>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>TIW-DMS - Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
 </head>
 <body>
-<!-- Container (vertical centering) -->
-<div class="v-centering">
-    <!-- Container (horizontal centering) -->
-    <div class="h-centering">
-        <!-- Columns (divide the horizontal space in 12 equal parts) -->
-        <div class="columns">
-            <!-- Column (occupy 6/12 parts and offsets it 3 parts to the right) -->
-            <div class="column is-6 is-offset-3">
-                <!-- Box (white background, padding, round corner, ...) -->
-                <div class="box">
-                    <!-- Subtitle -->
-                    <div class="subtitle">
-                        <h2>Registration 📝</h2>
-                    </div>
-                    <!-- Message -->
-                    <div class="message>">
-                        <div th:if="${message}" th:text="${message}">MESSAGE_PLACEHOLDER</div>
-                    </div>
-                    <br>
-                    <!-- Form -->
-                    <div class="form">
-                        <form action="#" method="POST" th:action="@{/register}">
-                            <div class="form-input">
-                                <label for="username">Username:</label>
-                                <input id="username" maxlength="63" minlength="1" name="username"
-                                       pattern="^[a-zA-Z0-9]+$" required type="text">
+<div class="hero is-fullheight">
+    <div class="hero-body">
+        <div class="container is-fluid">
+            <div class="columns is-vcentered">
+                <div class="column is-three-fifths is-offset-one-fifth">
+                    <div class="box">
+                        <section class="section">
+                            <h1 class="title">Registration 📝</h1>
+                            <div class="content">
+                                <p th:if="${message}" th:text="${message}">Please fill in the form to register a new
+                                    user.</p>
                             </div>
-                            <div class="form-input">
-                                <label for="email">Email:</label>
-                                <input id="email" maxlength="63" minlength="1" name="email"
-                                       required type="email">
+                            <form action="#" method="POST" th:action="@{/register}">
+                                <div class="field">
+                                    <label class="label" for="username">Username</label>
+                                    <div class="control has-icons-left">
+                                        <input class="input" id="username" maxlength="63" minlength="1" name="username"
+                                               pattern="^[a-zA-Z0-9]+$" placeholder="e.g. hi1234" required type="text">
+                                        <span class="icon is-small is-left">
+                                                <i class="fas fa-user"></i>
+                                            </span>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label" for="email">Email</label>
+                                    <div class="control has-icons-left">
+                                        <input class="input" id="email" maxlength="63" minlength="1"
+                                               name="email" placeholder="e.g. hi@mail.arpa" required type="email">
+                                        <span class="icon is-small is-left">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label" for="password">Password</label>
+                                    <div class="control has-icons-left">
+                                        <input class="input" id="password" maxlength="127" minlength="1"
+                                               name="password" placeholder="e.g. ********" required type="password">
+                                        <span class="icon is-small is-left">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label" for="confirmPassword">Confirm Password</label>
+                                    <div class="control has-icons-left">
+                                        <input class="input" id="confirmPassword" maxlength="127" minlength="1"
+                                               name="confirmPassword" placeholder="e.g. ********" required
+                                               type="password">
+                                        <span class="icon is-small is-left">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        <button class="button is-link" type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="content">
+                                <br>
+                                <p>Do you already have an account? You can log in <a href="login">here!</a></p>
                             </div>
-                            <div class="form-input">
-                                <label for="password">Password:</label>
-                                <input id="password" maxlength="127" minlength="1" name="password"
-                                       required type="password">
-                            </div>
-                            <div class="form-input">
-                                <label for="confirmPassword">Confirm Password:</label>
-                                <input id="confirmPassword" maxlength="127" minlength="1" name="confirmPassword"
-                                       required type="password">
-                            </div>
-                            <button type="submit">Register</button>
-                        </form>
-                    </div>
-                    <br>
-                    <!-- Link -->
-                    <div class="link">
-                        <div>Do you already have an account? You can log in <a href="login">here!</a></div>
+                        </section>
                     </div>
                 </div>
             </div>
