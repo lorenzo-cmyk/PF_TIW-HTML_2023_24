@@ -18,7 +18,7 @@
                     <div class="box">
                         <section class="section">
                             <h1 class="title is-4">Content of the folder:</h1>
-                            <h2 class="subtitle is-6"><span th:text="${folderName}">myAwesomeFolder</span></h2>
+                            <h2 class="subtitle is-6"><span th:text="${folder.folderName}">myAwesomeFolder</span></h2>
                             <div class="content">
                                 <p th:if="${message}" th:text="${message}">A document with the same name already
                                     exists in the destination directory. Please check your input and try again.</p>
@@ -50,10 +50,9 @@
                         <aside class="menu">
                             <p class="menu-label">Actions ⚙️</p>
                             <ul class="menu-list">
-                                <!-- FIXME: Need to fix later -->
-                                <li><a href="TODO">⬆️ Parent Folder</a></li>
-                                <!-- FIXME: I cannot use Javascript! -->
-                                <li><a href="javascript:history.back()">🔙 Back</a></li>
+                                <li><a th:href="@{/folder(folderID=${folder.parentFolderID})}"
+                                       th:if="${folder.parentFolderID != -1}">⬆️ Parent Folder</a></li>
+                                <li><a href="home">🏠 Home</a></li>
                                 <li><a href="logout">🚪 Logout</a></li>
                             </ul>
                         </aside>

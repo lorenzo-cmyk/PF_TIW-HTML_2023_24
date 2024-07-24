@@ -91,7 +91,6 @@ public class ViewFolderContentServlet extends HttpServlet {
                 return;
             }
             // The folder actually exists and is owned by the user, so I can proceed
-            String folderName = folder.getFolderName();
             List<Folder> subfolders = folderDAO.getSubfolders(folderID, ownerID);
 
             // Retrieve the documents contained in the folder
@@ -103,7 +102,7 @@ public class ViewFolderContentServlet extends HttpServlet {
 
             // Set the variables in the context
             webContext.setVariable("message", message);
-            webContext.setVariable("folderName", folderName);
+            webContext.setVariable("folder", folder);
             webContext.setVariable("subfolders", subfolders);
             webContext.setVariable("documents", documents);
 

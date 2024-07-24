@@ -77,8 +77,7 @@
                                 <li th:with="folderID=${document.folderID}">
                                     <a th:href="@{/folder(folderID=${folderID})}">⬆️ Parent Folder</a>
                                 </li>
-                                <!-- FIXME: I cannot use Javascript! -->
-                                <li><a href="javascript:history.back()">🔙 Back</a></li>
+                                <li><a href="home">🏠 Home</a></li>
                                 <li><a href="logout">🚪 Logout</a></li>
                             </ul>
                         </aside>
