@@ -35,7 +35,7 @@ public class FilterBadRequests implements Filter {
 
         // Let the browser access to the static resources files without any check.
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
-        if (path.startsWith("/resources")) {
+        if (path.startsWith("/webjars")) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
