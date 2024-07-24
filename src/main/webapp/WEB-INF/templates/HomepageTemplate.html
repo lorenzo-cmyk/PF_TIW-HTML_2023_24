@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
@@ -16,34 +15,25 @@
         }
     </style>
 </head>
-
 <body>
-
-<!-- Hero: Used to archive vertical centering -->
 <div class="hero is-fullheight">
     <div class="hero-body">
-        <!-- Container: Used to archive horizontal centering -->
         <div class="container is-fluid">
-            <!-- Columns: Used to divide the horizontal width in even parts -->
             <div class="columns">
-                <!-- Column: Used to set the width of the child inside -->
                 <div class="column is-6 is-offset-2">
-                    <!-- Box: Used to archive shadowing, padding, ... -->
                     <div class="box">
-                        <!-- Section: Used to divide the box content-->
                         <section class="section">
-                            <!-- Now the page content is formatted as usual -->
                             <h1 class="title">Homepage 🏠</h1>
                             <div class="content">
                                 <p th:if="${message}" th:text="${message}">Hi, welcome to the DMS!</p>
                             </div>
-
                             <div class="content">
                                 <h1 class="title is-4">Directory Structure 🗂️</h1>
+                                <!-- Starting point of the recursive algorithm -->
                                 <ul th:insert="~{::subtree(fragment='subtree')}"
                                     th:with="nodes=${foldersTree.getNodeChildren},
                                      originalFolderID=${originalFolderID}"></ul>
-                                <!-- Recursive fragment for rendering subtrees -->
+                                <!-- Recursive fragment to explore the folder tree -->
                                 <div th:fragment="subtree">
                                     <li th:each="node : ${nodes}">
                                         <span class="red-folder"
@@ -52,7 +42,7 @@
                                         <a th:href="@{${folderURL}(folderID=${node.getNodeData.getFolderID})}"
                                            th:text="${node.getNodeData.getFolderName}"
                                            th:unless="${node.getNodeData.getFolderID} == ${originalFolderID}"></a>
-                                        <!-- Check if the current node has children -->
+                                        <!-- If the current node has children we need to continue the process -->
                                         <ul th:if="${node.getNodeChildren.size() > 0}"
                                             th:insert="~{::subtree(fragment='subtree')}"
                                             th:with="nodes=${node.getNodeChildren},
@@ -60,7 +50,6 @@
                                     </li>
                                 </div>
                             </div>
-
                         </section>
                     </div>
                 </div>

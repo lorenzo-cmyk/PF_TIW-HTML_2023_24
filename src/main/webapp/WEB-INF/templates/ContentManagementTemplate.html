@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
@@ -10,29 +9,19 @@
           integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
           referrerpolicy="no-referrer" rel="stylesheet"/>
 </head>
-
 <body>
-
-<!-- Hero: Used to archive vertical centering -->
 <div class="hero is-fullheight">
     <div class="hero-body">
-        <!-- Container: Used to archive horizontal centering -->
         <div class="container is-fluid">
-            <!-- Columns: Used to divide the horizontal width in even parts -->
             <div class="columns">
-                <!-- Column: Used to set the width of the child inside -->
                 <div class="column is-6 is-offset-2">
-                    <!-- Box: Used to archive shadowing, padding, ... -->
                     <div class="box">
-                        <!-- Section: Used to divide the box content-->
                         <section class="section">
-                            <!-- Now the page content is formatted as usual -->
                             <h1 class="title">Document Management ➕</h1>
                             <div class="content">
                                 <p th:if="${message}" th:text="${message}">Here you can create a new folder, a new
                                     subfolder or a new document.</p>
                             </div>
-
                             <div class="card">
                                 <header class="card-header">
                                     <p class="card-header-title">Add a New Root Folder</p>
@@ -59,14 +48,11 @@
                                     </div>
                                     <footer class="card-footer">
                                         <div class="card-footer-item">
-                                            <!-- I have no idea why I should be supposed to nest
-                                            card-footer-item, but it works very well! -->
                                             <button class="button card-footer-item" type="submit">Create!</button>
                                         </div>
                                     </footer>
                                 </form>
                             </div>
-
                             <div class="card">
                                 <header class="card-header">
                                     <p class="card-header-title">Add a New Subfolder</p>
@@ -93,8 +79,6 @@
                                     </div>
                                     <footer class="card-footer">
                                         <div class="card-footer-item">
-                                            <!-- I have no idea why I should be supposed to nest
-                                            card-footer-item, but it works very well! -->
                                             <button class="button card-footer-item" type="submit">Select the parent
                                                 folder!
                                             </button>
@@ -102,7 +86,6 @@
                                     </footer>
                                 </form>
                             </div>
-
                             <div class="card">
                                 <header class="card-header">
                                     <p class="card-header-title">Create a New Document</p>
@@ -148,8 +131,6 @@
                                     </div>
                                     <footer class="card-footer">
                                         <div class="card-footer-item">
-                                            <!-- I have no idea why I should be supposed to nest
-                                            card-footer-item, but it works very well! -->
                                             <button class="button card-footer-item" type="submit">Select the desired
                                                 folder!
                                             </button>
@@ -157,7 +138,6 @@
                                     </footer>
                                 </form>
                             </div>
-
                         </section>
                     </div>
                 </div>
