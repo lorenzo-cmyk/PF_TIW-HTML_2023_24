@@ -1,22 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Document Details</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>TIW-DMS - Document Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
 </head>
 <body>
-<h1>Document Details</h1>
-<div>
-    <strong>Name:</strong> <span th:text="${document.documentName}"></span>
-</div>
-<div>
-    <strong>Creation Date:</strong> <span th:text="${document.creationDate}"></span>
-</div>
-<div>
-    <strong>Type:</strong> <span th:text="${document.type}"></span>
-</div>
-<div>
-    <strong>Summary:</strong> <span th:text="${document.summary}"></span>
+<div class="hero is-fullheight">
+    <div class="hero-body">
+        <div class="container is-fluid">
+            <div class="columns">
+                <div class="column is-6 is-offset-2">
+                    <div class="box">
+                        <section class="section">
+                            <h1 class="title is-4">Details of the file:</h1>
+                            <h2 class="subtitle is-6"><span th:text="${document.documentName}">myAwesomeFile</span>
+                            </h2>
+                            <div class="content">
+                                <fieldset disabled>
+                                    <div class="field">
+                                        <label class="label" for="name">Name</label>
+                                        <div class="control has-icons-left">
+                                            <input class="input" id="name" placeholder="e.g. myAwesomeFile"
+                                                   th:value="${document.documentName}"
+                                                   type="text" value="myAwesomeFile">
+                                            <span class="icon is-small is-left">
+                                                    <i class="fas fa-align-left"></i>
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label" for="type">Type</label>
+                                        <div class="control has-icons-left">
+                                            <input class="input" id="type" placeholder="e.g. PDF"
+                                                   th:value="${document.type}" type="text"
+                                                   value="PDF">
+                                            <span class="icon is-small is-left">
+                                                    <i class="fas fa-file"></i>
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label" for="creationDate">Creation Date</label>
+                                        <div class="control has-icons-left">
+                                            <input class="input" id="creationDate" placeholder="e.g. 25/07/2024"
+                                                   th:value="${document.creationDate}"
+                                                   type="text" value="25/07/2024">
+                                            <span class="icon is-small is-left">
+                                                    <i class="fas fa-calendar"></i>
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label" for="summary">Summary</label>
+                                        <div class="control">
+                                                <textarea class="input" id="summary"
+                                                          placeholder="e.g. Classified Information, do not share!"
+                                                          th:text="${document.summary}">
+                                                </textarea>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <div class="column is-3">
+                    <div class="box">
+                        <aside class="menu">
+                            <p class="menu-label">Actions ⚙️</p>
+                            <ul class="menu-list">
+                                <li th:with="folderID=${document.folderID}">
+                                    <a th:href="@{/folder(folderID=${folderID})}">⬆️ Parent Folder</a>
+                                </li>
+                                <!-- FIXME: I cannot use Javascript! -->
+                                <li><a href="javascript:history.back()">🔙 Back</a></li>
+                                <li><a href="logout">🚪 Logout</a></li>
+                            </ul>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
