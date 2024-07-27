@@ -62,7 +62,11 @@
                         <aside class="menu">
                             <p class="menu-label">Actions ⚙️</p>
                             <ul class="menu-list">
-                                <li><a href="create">➕ Create New Folder/Document</a></li>
+                                <!-- Reused messageContext variable as the context for the page is the same -->
+                                <!-- Could be refactored to a new variable to make the code more readable -->
+                                <li th:if="${messageContext == 0}">
+                                    <a href="create">➕ Create New Folder/Document</a>
+                                </li>
                                 <li><a href="logout">🚪 Logout</a></li>
                             </ul>
                         </aside>
