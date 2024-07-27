@@ -7,6 +7,7 @@ import it.polimi.tiw.backend.dao.exceptions.LoginException;
 import it.polimi.tiw.backend.utilities.Validators;
 import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
 import it.polimi.tiw.backend.utilities.exceptions.UnknownErrorCodeException;
+import it.polimi.tiw.frontend.filters.MessageTypesEnumeration;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -67,8 +68,10 @@ public class UserAuthenticationServlet extends HttpServlet {
 
             if (errorCode == 0) {
                 context.setVariable("message", "Please enter your credentials to log in.");
+                context.setVariable("messageContext", MessageTypesEnumeration.DEFAULT.getValue());
             } else {
                 context.setVariable("message", Validators.retrieveErrorMessageFromErrorCode(errorCode));
+                context.setVariable("messageContext", MessageTypesEnumeration.ERROR.getValue());
             }
 
             templateEngine.process("UserAuthenticationTemplate", context, response.getWriter());

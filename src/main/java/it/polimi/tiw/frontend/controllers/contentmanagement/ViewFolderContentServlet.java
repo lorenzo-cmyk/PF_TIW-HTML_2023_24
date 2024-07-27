@@ -8,6 +8,7 @@ import it.polimi.tiw.backend.dao.FolderDAO;
 import it.polimi.tiw.backend.utilities.Validators;
 import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
 import it.polimi.tiw.backend.utilities.exceptions.UnknownErrorCodeException;
+import it.polimi.tiw.frontend.filters.MessageTypesEnumeration;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -73,12 +74,17 @@ public class ViewFolderContentServlet extends HttpServlet {
             int errorCode = Validators.parseInt(request.getParameter("errorCode") == null ?
                     "0" : request.getParameter("errorCode"));
 
+            // Create the WebContext object that will be passed to the Thymeleaf template
+            WebContext webContext = getWebContextFromServlet(this, request, response);
+
             // Build the page message based on the errorCode
             String message;
             if (errorCode == 0) {
-                message = "";
+                message = "Here you can see the content of the requested folder.";
+                webContext.setVariable("messageContext", MessageTypesEnumeration.DEFAULT.getValue());
             } else {
                 message = Validators.retrieveErrorMessageFromErrorCode(errorCode);
+                webContext.setVariable("messageContext", MessageTypesEnumeration.ERROR.getValue());
             }
 
             // Ensure that the folder I want to view actually exists and is owned by the user
@@ -96,9 +102,6 @@ public class ViewFolderContentServlet extends HttpServlet {
             // Retrieve the documents contained in the folder
             DocumentDAO documentDAO = new DocumentDAO(servletConnection);
             List<Document> documents = documentDAO.getDocumentsByFolder(folderID, ownerID);
-
-            // Create the WebContext object that will be passed to the Thymeleaf template
-            WebContext webContext = getWebContextFromServlet(this, request, response);
 
             // Set the variables in the context
             webContext.setVariable("message", message);

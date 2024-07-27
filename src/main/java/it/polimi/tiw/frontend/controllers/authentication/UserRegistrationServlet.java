@@ -8,6 +8,7 @@ import it.polimi.tiw.backend.utilities.Validators;
 import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
 import it.polimi.tiw.backend.utilities.exceptions.PasswordMismatchException;
 import it.polimi.tiw.backend.utilities.exceptions.UnknownErrorCodeException;
+import it.polimi.tiw.frontend.filters.MessageTypesEnumeration;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -72,11 +73,14 @@ public class UserRegistrationServlet extends HttpServlet {
 
             if (!success && errorCode == 0) {
                 context.setVariable("message", "Please fill in the form to register a new user.");
+                context.setVariable("messageContext", MessageTypesEnumeration.DEFAULT.getValue());
             } else if (!success && errorCode != 0) {
                 context.setVariable("message", Validators.retrieveErrorMessageFromErrorCode(errorCode));
+                context.setVariable("messageContext", MessageTypesEnumeration.ERROR.getValue());
             } else if (success && errorCode == 0) {
                 context.setVariable("message", "The user has been successfully registered!" +
                         " You can now log in with your credentials.");
+                context.setVariable("messageContext", MessageTypesEnumeration.SUCCESS.getValue());
             } else if (success && errorCode != 0) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid combination of parameters." +
                         " Are you trying to hijack the request?");
