@@ -75,7 +75,7 @@ public class CreateDocumentServlet extends HttpServlet {
 
             // Redirect to the folder page
             response.sendRedirect(getServletContext().getContextPath() +
-                    "/content?folderID=" + folderID);
+                    "/folder?folderID=" + folderID);
         } catch (FailedInputParsingException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed request. " +
                     "Are you trying to hijack the request?");
