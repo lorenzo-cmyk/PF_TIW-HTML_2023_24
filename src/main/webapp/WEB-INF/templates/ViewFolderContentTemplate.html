@@ -56,7 +56,7 @@
                                 <li th:if="${folder.parentFolderID == -1}"><a href="home">🔙 Back</a></li>
                                 <li th:if="${folder.parentFolderID != -1}"><a
                                         th:href="@{/folder(folderID=${folder.parentFolderID})}">🔙 Back</a></li>
-                                <li th:if="${folder.parentFolderID != -1}"><a href="home">🏠 Home</a></li>
+                                <li><a href="home">🏠 Home</a></li>
                                 <li><a href="logout">🚪 Logout</a></li>
                             </ul>
                         </aside>

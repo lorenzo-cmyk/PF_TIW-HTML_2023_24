@@ -6,6 +6,7 @@ import it.polimi.tiw.backend.beans.User;
 import it.polimi.tiw.backend.dao.DocumentDAO;
 import it.polimi.tiw.backend.dao.FolderDAO;
 import it.polimi.tiw.backend.dao.exceptions.DocumentMovingException;
+import it.polimi.tiw.backend.dao.exceptions.DuplicateDocumentException;
 import it.polimi.tiw.backend.utilities.Validators;
 import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
 import jakarta.servlet.annotation.WebServlet;
@@ -78,10 +79,11 @@ public class MoveDocumentServlet extends HttpServlet {
             // Move the document to the new folder
             try {
                 documentDAO.moveDocument(documentID, ownerID, folderID);
-            } catch (DocumentMovingException e) {
+            } catch (DocumentMovingException | DuplicateDocumentException e) {
                 // Redirect to the original folder page with an error message
                 response.sendRedirect(getServletContext().getContextPath() +
                         "/folder?folderID=" + document.getFolderID() + "&errorCode=" + e.getErrorCode());
+                return;
             }
 
             // Redirect to the folder page

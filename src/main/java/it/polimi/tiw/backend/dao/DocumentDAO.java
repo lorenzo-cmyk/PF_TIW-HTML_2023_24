@@ -279,7 +279,8 @@ public class DocumentDAO {
      * @throws SQLException            if an error occurs while moving the document in the database (SQL-Related).
      * @throws DocumentMovingException if an error occurs while moving the document (non SQL-Related).
      */
-    public void moveDocument(int documentID, int ownerID, int folderID) throws SQLException, DocumentMovingException {
+    public void moveDocument(int documentID, int ownerID, int folderID)
+            throws SQLException, DocumentMovingException, DuplicateDocumentException {
         // The raw SQL query for moving a document.
         String moveDocumentQuery;
         if (folderID != -1) {
@@ -304,6 +305,16 @@ public class DocumentDAO {
             if (newFolder == null && folderID != -1) {
                 throw new SecurityException("The user is attempting to move a document " +
                         "to a directory that it does not own. Security violation detected.");
+            }
+
+            // Retrieve the documents into the new folder.
+            // If a document with the same name already exists, we throw a DocumentMovingException as
+            // two documents with the same name cannot exist in the same directory.
+            List<Document> documents = getDocumentsByFolder(folderID, ownerID);
+            for (Document innerDocument : documents) {
+                if (innerDocument.getDocumentName().equals(document.getDocumentName())) {
+                    throw new DuplicateDocumentException();
+                }
             }
 
             // Since we are writing to the database, we need to use a transaction
