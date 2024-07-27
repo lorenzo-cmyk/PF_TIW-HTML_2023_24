@@ -9,6 +9,7 @@ import it.polimi.tiw.backend.utilities.Validators;
 import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
 import it.polimi.tiw.backend.utilities.templates.TreeNode;
 import it.polimi.tiw.backend.utilities.templates.Tuple;
+import it.polimi.tiw.frontend.filters.MessageTypesEnumeration;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -70,11 +71,14 @@ public class HomepageServlet extends HttpServlet {
             // Building the page message and the folderURL based on the actionCode
             String message;
             String folderURL;
+            int messageContext;
             if (actionCode == HomepageActionEnumeration.CHOOSE_FOLDER_CREATE_FOLDER.getActionCode()) {
                 message = "Choose the folder where you want to create the new directory";
+                messageContext = MessageTypesEnumeration.WARNING.getValue();
                 folderURL = getFoldersLink_CreateFolder(request);
             } else if (actionCode == HomepageActionEnumeration.CHOOSE_FOLDER_CREATE_DOCUMENT.getActionCode()) {
                 message = "Choose the folder where you want to create the new document";
+                messageContext = MessageTypesEnumeration.WARNING.getValue();
                 folderURL = getFoldersLink_CreateDocument(request);
             } else if (actionCode == HomepageActionEnumeration.CHOOSE_FOLDER_MOVE_DOCUMENT.getActionCode()) {
                 Tuple<String, Integer> results = getCompliantMessage_MoveDocument(request);
@@ -86,9 +90,11 @@ public class HomepageServlet extends HttpServlet {
                 webContext.setVariable("originalFolderID", results.secondItem());
 
                 message = results.firstItem();
+                messageContext = MessageTypesEnumeration.WARNING.getValue();
                 folderURL = getFoldersLink_MoveDocument(request);
             } else {
                 message = "Hi, welcome to the DMS!";
+                messageContext = MessageTypesEnumeration.DEFAULT.getValue();
                 folderURL = "/folder";
             }
 
@@ -100,6 +106,7 @@ public class HomepageServlet extends HttpServlet {
 
             webContext.setVariable("foldersTree", foldersTree);
             webContext.setVariable("message", message);
+            webContext.setVariable("messageContext", messageContext);
             webContext.setVariable("folderURL", folderURL);
 
             // Processing the template

@@ -15,7 +15,11 @@ public enum MessageTypesEnumeration {
     /**
      * The message is an error message
      */
-    ERROR(2);
+    ERROR(2),
+    /**
+     * The message is a warning message
+     */
+    WARNING(3);
 
     /**
      * The integer value associated with the enumeration value

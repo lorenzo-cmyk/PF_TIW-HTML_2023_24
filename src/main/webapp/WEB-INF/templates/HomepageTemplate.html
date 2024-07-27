@@ -22,9 +22,15 @@
                     <div class="box">
                         <section class="section">
                             <h1 class="title">Homepage 🏠</h1>
-                            <div class="content">
-                                <p th:if="${message}" th:text="${message}">Hi, welcome to the DMS!</p>
-                            </div>
+                            <article th:class="${messageContext == 0} ? 'message' :
+                                               (${messageContext == 1} ? 'message is-success' : (
+                                                ${messageContext == 2} ? 'message is-error' : 'message is-warning'))">
+                                <div class="message-body">
+                                    <p th:if="${message}" th:text="${message}">
+                                        Hi, welcome to the DMS!
+                                    </p>
+                                </div>
+                            </article>
                             <div class="content">
                                 <h1 class="title is-4">Directory Structure 🗂️</h1>
                                 <!-- Starting point of the recursive algorithm -->
