@@ -3,6 +3,7 @@ package it.polimi.tiw.frontend.controllers.contentmanagement;
 import it.polimi.tiw.backend.utilities.Validators;
 import it.polimi.tiw.backend.utilities.exceptions.FailedInputParsingException;
 import it.polimi.tiw.backend.utilities.exceptions.UnknownErrorCodeException;
+import it.polimi.tiw.frontend.filters.MessageTypesEnumeration;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,8 +64,10 @@ public class ContentManagementServlet extends HttpServlet {
             String message;
             if (errorCode == 0) {
                 message = "Here you can create a new folder, a new subfolder or a new document.";
+                webContext.setVariable("messageContext", MessageTypesEnumeration.DEFAULT.getValue());
             } else {
                 message = Validators.retrieveErrorMessageFromErrorCode(errorCode);
+                webContext.setVariable("messageContext", MessageTypesEnumeration.ERROR.getValue());
             }
 
             // Set the errorCode parameter in the context

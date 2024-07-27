@@ -16,10 +16,14 @@
                     <div class="box">
                         <section class="section">
                             <h1 class="title">Registration 📝</h1>
-                            <div class="content">
-                                <p th:if="${message}" th:text="${message}">Please fill in the form to register a new
-                                    user.</p>
-                            </div>
+                            <article th:class="${messageContext == 0} ? 'message' :
+                                               (${messageContext == 1} ? 'message is-success' : 'message is-danger')">
+                                <div class="message-body">
+                                    <p th:if="${message}" th:text="${message}">
+                                        Please fill in the form to register a new user.
+                                    </p>
+                                </div>
+                            </article>
                             <form action="#" method="POST" th:action="@{/register}">
                                 <div class="field">
                                     <label class="label" for="username">Username</label>

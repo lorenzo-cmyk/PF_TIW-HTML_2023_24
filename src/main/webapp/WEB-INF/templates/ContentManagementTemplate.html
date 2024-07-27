@@ -16,10 +16,14 @@
                     <div class="box">
                         <section class="section">
                             <h1 class="title">Document Management ➕</h1>
-                            <div class="content">
-                                <p th:if="${message}" th:text="${message}">Here you can create a new folder, a new
-                                    subfolder or a new document.</p>
-                            </div>
+                            <article th:class="${messageContext == 0} ? 'message' :
+                                               (${messageContext == 1} ? 'message is-success' : 'message is-danger')">
+                                <div class="message-body">
+                                    <p th:if="${message}" th:text="${message}">
+                                        Here you can create a new folder, a new subfolder or a new document.
+                                    </p>
+                                </div>
+                            </article>
                             <div class="card">
                                 <header class="card-header">
                                     <p class="card-header-title">Add a New Root Folder</p>
