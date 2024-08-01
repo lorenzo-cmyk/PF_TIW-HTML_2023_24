@@ -276,8 +276,9 @@ public class DocumentDAO {
      * @param documentID the ID of the document to be moved.
      * @param ownerID    the ID of the user who owns the document.
      * @param folderID   the ID of the folder to which the document is to be moved.
-     * @throws SQLException            if an error occurs while moving the document in the database (SQL-Related).
-     * @throws DocumentMovingException if an error occurs while moving the document (non SQL-Related).
+     * @throws SQLException               if an error occurs while moving the document in the database (SQL-Related).
+     * @throws DocumentMovingException    if an error occurs while moving the document (non SQL-Related).
+     * @throws DuplicateDocumentException if a document with the same name already exists in the target directory.
      */
     public void moveDocument(int documentID, int ownerID, int folderID)
             throws SQLException, DocumentMovingException, DuplicateDocumentException {
