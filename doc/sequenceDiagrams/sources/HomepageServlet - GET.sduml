@@ -1,4 +1,4 @@
-title HomepageServlet doGet Method
+title HomepageServlet - GET
 
 Client->HomepageServlet: GET /home
 activate HomepageServlet
