@@ -5,6 +5,7 @@
 \usepackage[italian]{babel}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{minted}
+\usepackage{calc} 
 
 \title{Gestione Documenti - Versione Pure-HTML}
 \author{Lorenzo Chiroli (C.P. 10797603 - MTR. 981392)}
@@ -348,6 +349,112 @@ CREATE TABLE IF NOT EXISTS Documents
     \begin{figure}
         \centering
         \includegraphics[width=0.9\linewidth]{Resources/IFMLs/images/IFML - Document Creation.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Application Design - Sequence Diagram}
+    \begin{itemize}
+        \item I diagrammi sequenziali che seguiranno rappresentano il flusso applicativo dei controller volti alla
+              gestione degli eventi utente.
+        \item Le servlet implementano sia i metodi "POST" e "GET", tuttavia, per mantenere la leggibilità dei diagrammi,
+              quando una servlet implementa uno di questi medoti come semplice wrapper rispetto all'altro (es. "GET" che
+              reindirizza a "POST" senza variazione di parametri), quest'ultimo viene omesso. Viene mostrato il metodo
+              "più significativo" per la servlet in questione.
+        \item La presentazione seguirà l'ordine individuato nella tabella dei componenti.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[height=\dimexpr 0.85\paperheight\relax, keepaspectratio]{Resources/SequenceDiagrams/images/UserAuthenticationServlet - GET.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[height=\dimexpr 0.85\paperheight\relax, keepaspectratio]{Resources/SequenceDiagrams/images/UserAuthenticationServlet - POST.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[height=\dimexpr 0.85\paperheight\relax, keepaspectratio]{Resources/SequenceDiagrams/images/UserDisconnectionServlet - GET.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[height=\dimexpr 0.85\paperheight\relax,
+            keepaspectratio]{Resources/SequenceDiagrams/images/UserRegistrationServlet - GET.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\dimexpr 0.9\paperwidth\relax, height=\dimexpr 0.85\paperheight\relax,
+            keepaspectratio]{Resources/SequenceDiagrams/images/UserRegistrationServlet - POST.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\dimexpr 0.9\paperwidth\relax, height=\dimexpr 0.85\paperheight\relax,
+            keepaspectratio]{Resources/SequenceDiagrams/images/ViewFolderContentServlet - GET.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\dimexpr 0.9\paperwidth\relax, height=\dimexpr 0.85\paperheight\relax,
+            keepaspectratio]{Resources/SequenceDiagrams/images/ViewDocumentDetailsServlet - GET.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\dimexpr 0.9\paperwidth\relax, height=\dimexpr 0.85\paperheight\relax,
+            keepaspectratio]{Resources/SequenceDiagrams/images/ContentManagementServlet - GET.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\dimexpr 0.9\paperwidth\relax, height=\dimexpr 0.85\paperheight\relax,
+            keepaspectratio]{Resources/SequenceDiagrams/images/MoveDocumentServlet - POST.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\dimexpr 0.9\paperwidth\relax, height=\dimexpr 0.85\paperheight\relax,
+            keepaspectratio]{Resources/SequenceDiagrams/images/CreateFolderServlet - POST.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\dimexpr 0.9\paperwidth\relax, height=\dimexpr 0.85\paperheight\relax,
+            keepaspectratio]{Resources/SequenceDiagrams/images/CreateDocumentServlet - POST.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\dimexpr 0.9\paperwidth\relax, height=\dimexpr 0.85\paperheight\relax,
+            keepaspectratio]{Resources/SequenceDiagrams/images/HomepageServlet - GET.png}
     \end{figure}
 \end{frame}
 
