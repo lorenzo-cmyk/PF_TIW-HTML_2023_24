@@ -1,67 +1,63 @@
 package it.polimi.tiw.frontend.filters;
 
 /**
- * Enum representing valid URLs for the application, detailing their authentication
- * requirement and history override capability.
+ * Enum representing valid URLs for the application, detailing their authentication requirement
  */
 public enum ValidURLsEnumeration {
 
     /**
-     * Servlet for user authentication, no authentication required, does not override history.
+     * Servlet for user authentication, no authentication required.
      */
-    UserAuthenticationServlet("/login", false, false),
+    UserAuthenticationServlet("/login", false),
     /**
-     * Servlet for user registration, no authentication required, does not override history.
+     * Servlet for user registration, no authentication required.
      */
-    UserRegistrationServlet("/register", false, false),
+    UserRegistrationServlet("/register", false),
     /**
-     * Servlet for user disconnection, authentication required, does not override history.
+     * Servlet for user disconnection, authentication required.
      */
-    UserDisconnectionServlet("/logout", true, false),
+    UserDisconnectionServlet("/logout", true),
     /**
-     * Servlet for the homepage, authentication required, overrides history.
+     * Servlet for the homepage, authentication required.
      */
-    HomepageServlet("/home", true, true),
+    HomepageServlet("/home", true),
     /**
-     * Servlet for content management, authentication required, overrides history.
+     * Servlet for content management, authentication required.
      */
-    ContentManagementServlet("/create", true, true),
+    ContentManagementServlet("/create", true),
     /**
-     * Servlet for creating a document, authentication required, does not override history.
+     * Servlet for creating a document, authentication required.
      */
-    CreateDocumentServlet("/create/create-document", true, false),
+    CreateDocumentServlet("/create/create-document", true),
     /**
-     * Servlet for creating a folder, authentication required, does not override history.
+     * Servlet for creating a folder, authentication required.
      */
-    CreateFolderServlet("/create/create-folder", true, false),
+    CreateFolderServlet("/create/create-folder", true),
     /**
-     * Servlet for moving a document, authentication required, does not override history.
+     * Servlet for moving a document, authentication required.
      */
-    MoveDocumentServlet("/move/move-document", true, false),
+    MoveDocumentServlet("/move/move-document", true),
     /**
-     * Servlet for viewing folder content, authentication required, overrides history.
+     * Servlet for viewing folder content, authentication required.
      */
-    ViewFolderContentServlet("/folder", true, true),
+    ViewFolderContentServlet("/folder", true),
     /**
-     * Servlet for viewing document details, authentication required, overrides history.
+     * Servlet for viewing document details, authentication required.
      */
-    ViewDocumentDetailsServlet("/document", true, true);
+    ViewDocumentDetailsServlet("/document", true);
 
     private final String URL;
     private final boolean requiresAuthentication;
-    private final boolean overrideHistory;
 
     /**
      * Constructor for enum constants.
      *
      * @param URL                    The URL path associated with the servlet.
      * @param requiresAuthentication Indicates if the servlet requires user authentication.
-     * @param overrideHistory        Indicates if navigating to the servlet should override browser history.
      */
-    ValidURLsEnumeration(String URL, boolean requiresAuthentication, boolean overrideHistory) {
+    ValidURLsEnumeration(String URL, boolean requiresAuthentication) {
         this.URL = URL;
         this.requiresAuthentication = requiresAuthentication;
-        this.overrideHistory = overrideHistory;
     }
 
     /**
@@ -82,12 +78,4 @@ public enum ValidURLsEnumeration {
         return requiresAuthentication;
     }
 
-    /**
-     * Checks if navigating to the servlet should override browser history.
-     *
-     * @return True if it should override, false otherwise.
-     */
-    public boolean isOverrideHistory() {
-        return overrideHistory;
-    }
 }
